@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:product0/screens/home/ui/viewmode/home_viewmodel.dart';
 import 'package:product0/screens/products/ui/products_screen.dart';
 
 import '../../../constants.dart';

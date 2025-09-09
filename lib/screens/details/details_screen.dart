@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product0/constants.dart';
-import 'package:product0/models/Product.dart';
 import 'package:product0/screens/details/components/body.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
-
-import '../home/components/favIcon.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Prod prod;
