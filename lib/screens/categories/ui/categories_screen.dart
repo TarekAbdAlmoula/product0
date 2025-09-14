@@ -1,0 +1,98 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/utils/ui_state.dart';
+import 'package:product0/models/categories.dart';
+import 'package:product0/screens/categories/data/datasource/categories_remote_source_impl.dart';
+import 'package:product0/screens/categories/data/repository/categories_repository_impl.dart';
+import 'package:product0/screens/categories/ui/viewmodel/categories_state.dart';
+import 'package:product0/screens/categories/ui/viewmodel/categories_viewmodel.dart';
+
+class CategoriesScreen extends StatelessWidget {
+  const CategoriesScreen({super.key, required this.id, required this.name});
+  final int id;
+  final String name;
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CategoriesViewmodel(
+        categoriesRepository: CategoriesRepositoryImpl(
+          categoriesRemoteSource: CategoriesRemoteSourceImpl(
+            api: DioConsumer(dio: Dio()),
+          ),
+        ),
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(name, style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          backgroundColor: const Color(0xff3da9fc),
+        ),
+        body: CategoriesScreenBody(id: id),
+      ),
+    );
+  }
+}
+
+class CategoriesScreenBody extends StatefulWidget {
+  const CategoriesScreenBody({super.key, required this.id});
+  final int id;
+
+  @override
+  State<CategoriesScreenBody> createState() => _CategoriesScreenBodyState();
+}
+
+class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
+  @override
+  void initState() {
+    BlocProvider.of<CategoriesViewmodel>(context).getCategoriesById(widget.id);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CategoriesViewmodel, CategoriesState>(
+      builder: (context, state) {
+        if (state.uiState == UiState.loading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state.uiState == UiState.data) {
+          return GridView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+            itemCount: state.categories.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 0,
+            ),
+            itemBuilder: (context, index) {
+              return CategoriesCardV2(categories: state.categories[index]);
+            },
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+}
+
+class CategoriesCardV2 extends StatelessWidget {
+  const CategoriesCardV2({super.key, required this.categories});
+  final Categories categories;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+          backgroundImage: NetworkImage(categories.image!.ulr),
+          radius: 43,
+        ),
+        SizedBox(height: 10),
+        Text(categories.name, style: TextStyle(fontSize: 15)),
+      ],
+    );
+  }
+}

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:product0/models/Product.dart';
 
 import '../../../constants.dart';
 
 class ColorAndSize extends StatelessWidget {
   const ColorAndSize({super.key, required this.product});
 
-  final Product product;
+  final product;
 
   @override
   Widget build(BuildContext context) {

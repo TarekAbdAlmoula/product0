@@ -17,7 +17,7 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   @override
   Future getCategories() async {
     var response = await api.get(
-      'https://barmijha.net/test/wp-json/wc/v3/products/categories?_fields=id,name',
+      'https://wasla.barmijha.net/wp-json/custom-api/v1/services_categories?parent=0',
     );
     return response;
   }
@@ -28,6 +28,14 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
       'https://barmijha.net/test/wp-json/wc/v3/products?category=$id&_fields=id,name,price,images,rating_count,featured,short_description&per_page=100',
     );
     print('------------------->$response');
+    return response;
+  }
+
+  @override
+  Future getAdds() async {
+    var response = await api.get(
+      'https://wasla.barmijha.net/wp-json/wp/v2/ads?_fields=id,title,featured_image_url',
+    );
     return response;
   }
 }

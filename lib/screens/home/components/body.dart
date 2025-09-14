@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:product0/constants.dart';
+import 'package:product0/models/categories.dart';
 import 'package:product0/screens/details/details_screen.dart';
-import 'package:product0/screens/home/components/categorries.dart';
+import 'package:product0/screens/home/components/categorries_card.dart';
 import 'package:product0/screens/home/components/item_card_v2.dart';
-import 'package:product0/screens/home/data/model/categories.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 
 import 'item_card.dart';
@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 230.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +28,7 @@ class Body extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Featured Products",
+                    'الورشات الأعلى تقيماً',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   // Text(

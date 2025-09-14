@@ -59,14 +59,6 @@ class ProductsScreenBody extends StatefulWidget {
 
 class _ProductsScreenBodyState extends State<ProductsScreenBody> {
   @override
-  ///
-  /// This method is invoked when this object is inserted into the tree.
-  ///
-  /// It initializes the ProductsViewmodel with a call to
-  /// getProductsByCategory with the id of 31. This is a temporary
-  /// solution until the category id is passed from the home screen.
-  ///
-  /// TODO: pass the category id from the home screen.
   void initState() {
     // TODO: implement initState
     super.initState();

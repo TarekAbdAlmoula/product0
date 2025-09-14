@@ -1,4 +1,4 @@
-import 'package:product0/screens/home/data/model/categories.dart';
+import 'package:product0/models/categories.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository.dart';
 import 'package:product0/screens/home/datasource/home_remote_source_impl.dart';
@@ -36,5 +36,15 @@ class HomeRepositoryImpl implements HomeRepository {
       prod.add(Prod.fromJson(data));
     }
     return prod;
+  }
+
+  @override
+  Future getAdds() async {
+    var response = await homeRemoteSourceImpl.getAdds();
+    List<String> adds = [];
+    for (var data in response) {
+      adds.add(data['featured_image_url']);
+    }
+    return adds;
   }
 }
