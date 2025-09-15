@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:product0/constants.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/models/categories.dart';
 import 'package:product0/screens/categories/ui/categories_screen.dart';
 

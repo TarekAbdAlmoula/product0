@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/constants.dart';
 
 class ItemCardV2 extends StatelessWidget {
   final GestureTapCallback? press;

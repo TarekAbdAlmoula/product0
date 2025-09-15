@@ -1,3 +1,3 @@
-abstract class ProductsRemoteSource {
+abstract class WorkshopsRepository {
   Future getProductsByCategory(int id);
 }

@@ -2,12 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/models/categories.dart';
 import 'package:product0/screens/categories/data/datasource/categories_remote_source_impl.dart';
 import 'package:product0/screens/categories/data/repository/categories_repository_impl.dart';
 import 'package:product0/screens/categories/ui/viewmodel/categories_state.dart';
 import 'package:product0/screens/categories/ui/viewmodel/categories_viewmodel.dart';
+import 'package:product0/screens/workshops/ui/workshop_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key, required this.id, required this.name});
@@ -57,18 +59,31 @@ class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
     return BlocBuilder<CategoriesViewmodel, CategoriesState>(
       builder: (context, state) {
         if (state.uiState == UiState.loading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: kMainColor));
         } else if (state.uiState == UiState.data) {
           return GridView.builder(
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             itemCount: state.categories.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisSpacing: 20,
+              mainAxisSpacing: 30,
               crossAxisSpacing: 0,
             ),
             itemBuilder: (context, index) {
-              return CategoriesCardV2(categories: state.categories[index]);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkshopScreen(
+                        categoryId: state.categories[index].id,
+                        title: state.categories[index].name,
+                      ),
+                    ),
+                  );
+                },
+                child: CategoriesCardV2(categories: state.categories[index]),
+              );
             },
           );
         } else {
@@ -91,7 +106,15 @@ class CategoriesCardV2 extends StatelessWidget {
           radius: 43,
         ),
         SizedBox(height: 10),
-        Text(categories.name, style: TextStyle(fontSize: 15)),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.025,
+          width: MediaQuery.of(context).size.width * 0.35,
+          child: Text(
+            categories.name,
+            style: TextStyle(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ],
     );
   }

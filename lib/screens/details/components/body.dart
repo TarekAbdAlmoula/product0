@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
+import 'package:product0/screens/workshops/data/model/workshop.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/constants.dart';
 import 'color_and_size.dart';
 import 'description.dart';
 
 class Body extends StatelessWidget {
-  final Prod prod;
-  const Body({super.key, required this.prod});
+  final Workshop workshop;
+  const Body({super.key, required this.workshop});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -64,10 +65,10 @@ class Body extends StatelessWidget {
                         ),
                         Expanded(
                           child: Hero(
-                            tag: "hero_${prod.id}",
+                            tag: "hero_${workshop.code}",
                             child: ClipRRect(
                               borderRadius: BorderRadiusGeometry.circular(20),
-                              child: Image.network(prod.images[0].src),
+                              child: Image.network(workshop.featuredImageUrl),
                             ),
                           ),
                         ),
@@ -97,7 +98,7 @@ class Body extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      prod.name,
+                      workshop.title,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 20,
@@ -106,14 +107,14 @@ class Body extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          "  \$${prod.price}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
+                        // Text(
+                        //   "  \$${prod.price}",
+                        //   style: const TextStyle(
+                        //     fontWeight: FontWeight.w700,
+                        //     fontSize: 16,
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
@@ -121,7 +122,7 @@ class Body extends StatelessWidget {
                 const SizedBox(height: 10),
                 // Sizes(),
                 const SizedBox(height: 20),
-                Description(prod: prod),
+                // Description(prod: prod),
                 const SizedBox(height: kDefaultPaddin / 3),
 
                 const SizedBox(height: kDefaultPaddin / 2),

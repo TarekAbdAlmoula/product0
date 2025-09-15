@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:product0/constants.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/details/details_screen.dart';
-import 'package:product0/screens/home/components/item_card.dart';
-import 'package:product0/screens/products/data/datasource/products_remote_source_impl.dart';
-import 'package:product0/screens/products/data/repository/products_repository_impl.dart';
-import 'package:product0/screens/products/ui/viewmode/products_state.dart';
-import 'package:product0/screens/products/ui/viewmode/products_viewmodel.dart';
+import 'package:product0/screens/workshops/ui/workshop_card.dart';
+import 'package:product0/screens/workshops/data/datasource/workshops_remote_source_impl.dart';
+import 'package:product0/screens/workshops/data/repository/workshops_repository_impl.dart';
+import 'package:product0/screens/workshops/ui/viewmode/workshops_state.dart';
+import 'package:product0/screens/workshops/ui/viewmode/workshops_viewmodel.dart';
 
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({
+class WorkshopScreen extends StatelessWidget {
+  const WorkshopScreen({
     super.key,
     required this.categoryId,
     required this.title,
@@ -37,8 +37,8 @@ class ProductsScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => ProductsViewmodel(
-          productsRepositoryImpl: ProductsRepositoryImpl(
-            productsRemoteSourceImpl: ProductsRemoteSourceImpl(
+          productsRepositoryImpl: WorkshopsRepositoryImpl(
+            productsRemoteSourceImpl: WorkshopsRemoteSourceImpl(
               DioConsumer(dio: Dio()),
             ),
           ),
@@ -72,32 +72,28 @@ class _ProductsScreenBodyState extends State<ProductsScreenBody> {
     return BlocBuilder<ProductsViewmodel, ProductsState>(
       builder: (context, state) {
         if (state.uiState == UiState.loading) {
-          return Center(child: CircularProgressIndicator(color: Colors.red));
+          return Center(child: CircularProgressIndicator(color: kMainColor));
         } else if (state.uiState == UiState.data) {
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.9,
-              crossAxisCount: 2,
-            ),
-            itemCount: state.prodByCategory.length,
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            itemCount: state.workshop.length,
             itemBuilder: (context, index) {
-              return ItemCard(
-                press: () async {
-                  await Navigator.push(
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          DetailsScreen(prod: state.prodByCategory[index]),
+                          DetailsScreen(workshop: state.workshop[index]),
                     ),
                   );
                 },
-                prod: state.prodByCategory[index],
+                child: ItemCard(press: () {}, workshop: state.workshop[index]),
               );
             },
           );
         } else {
-          return Text('There is an Error');
+          return Container();
         }
       },
     );
