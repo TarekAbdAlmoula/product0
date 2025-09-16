@@ -75,7 +75,7 @@ class _ProductsScreenBodyState extends State<ProductsScreenBody> {
           return Center(child: CircularProgressIndicator(color: kMainColor));
         } else if (state.uiState == UiState.data) {
           return ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             itemCount: state.workshop.length,
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -88,7 +88,18 @@ class _ProductsScreenBodyState extends State<ProductsScreenBody> {
                     ),
                   );
                 },
-                child: ItemCard(press: () {}, workshop: state.workshop[index]),
+                child: ItemCard(
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetailsScreen(workshop: state.workshop[index]),
+                      ),
+                    );
+                  },
+                  workshop: state.workshop[index],
+                ),
               );
             },
           );

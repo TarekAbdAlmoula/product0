@@ -16,16 +16,16 @@ class ItemCard extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.15,
         padding: EdgeInsets.only(right: 10),
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        margin: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: kTextColor,
-              spreadRadius: 0.1,
-              blurRadius: 2,
-              offset: Offset(0, 1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 10),
             ),
           ],
         ),
@@ -44,14 +44,19 @@ class ItemCard extends StatelessWidget {
                         height: 20,
                         color: Colors.amber,
                       ),
-                      SizedBox(width: 57),
+                      SizedBox(width: 25),
 
-                      Text(
-                        workshop.title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff094067),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        child: Text(
+                          textAlign: TextAlign.end,
+                          workshop.title,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff094067),
+                          ),
                         ),
                       ),
                     ],
@@ -81,10 +86,15 @@ class ItemCard extends StatelessWidget {
                       ),
                     ),
                     // Spacer(),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.2),
-                    Text(
-                      'id:${workshop.code}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.278),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.156,
+                      child: Text(
+                        maxLines: 1,
+                        textAlign: TextAlign.end,
+                        'ID:${workshop.code}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -93,13 +103,17 @@ class ItemCard extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.only(left: 5),
-              child: SizedBox(
-                height: 100,
-                child: Hero(
-                  tag: "hero_${workshop.code}",
-                  child: ClipRRect(
+              child: Hero(
+                tag: "hero_${workshop.code}",
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(workshop.featuredImageUrl),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(workshop.featuredImageUrl),
+                    ),
                   ),
                 ),
               ),

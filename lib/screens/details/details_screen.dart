@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/screens/details/components/body.dart';
-import 'package:product0/screens/home/data/model/prod.dart';
 import 'package:product0/screens/workshops/data/model/workshop.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -12,27 +10,11 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context),
-      body: Body(workshop: workshop),
-    );
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: kMainColor,
-      elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          'assets/icons/back.svg',
-          color: Colors.white,
-          height: 25,
-        ),
-        onPressed: () => Navigator.pop(context),
+      appBar: AppBar(
+        backgroundColor: kMainColor,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      actions: <Widget>[
-        // FavIcon(product: product),
-        const SizedBox(width: kDefaultPaddin),
-      ],
+      body: DetailsScreenBody(workshop: workshop),
     );
   }
 }

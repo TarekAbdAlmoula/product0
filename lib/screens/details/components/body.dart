@@ -1,135 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:product0/screens/home/data/model/prod.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/screens/workshops/data/model/workshop.dart';
 
-import '../../../core/utils/constants.dart';
-import 'color_and_size.dart';
-import 'description.dart';
-
-class Body extends StatelessWidget {
+class DetailsScreenBody extends StatelessWidget {
   final Workshop workshop;
-  const Body({super.key, required this.workshop});
+  const DetailsScreenBody({super.key, required this.workshop});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPaddin,
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            productInfo(title: "Brand", product: 'adidas'),
-                            const SizedBox(height: kDefaultPaddin / 2),
-                            productInfo(title: "Code", product: '0000'),
-                            const SizedBox(height: kDefaultPaddin / 2),
-                            productInfo(title: "Leather", product: '25%'),
-                            const SizedBox(height: kDefaultPaddin / 2),
-                            const Text(
-                              "Color",
-                              style: const TextStyle(color: Color(0xFF8B2833)),
-                            ),
-                            Row(
-                              children: const <Widget>[
-                                ColorDot(
-                                  color: Color(0xFF356C95),
-                                  isSelected: false,
-                                ),
-                                ColorDot(
-                                  color: Color(0xFFF88000),
-                                  isSelected: false,
-                                ),
-                                ColorDot(
-                                  color: Color(0xFFA29B9B),
-                                  isSelected: false,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Hero(
-                            tag: "hero_${workshop.code}",
-                            child: ClipRRect(
-                              borderRadius: BorderRadiusGeometry.circular(20),
-                              child: Image.network(workshop.featuredImageUrl),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Hero(
+              tag: "hero_${workshop.code}",
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                    image: NetworkImage(workshop.featuredImageUrl),
+                    fit: BoxFit.fill,
                   ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: kDefaultPaddin,
-              right: kDefaultPaddin,
-            ),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: kDefaultPaddin / 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      workshop.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        // Text(
-                        //   "  \$${prod.price}",
-                        //   style: const TextStyle(
-                        //     fontWeight: FontWeight.w700,
-                        //     fontSize: 16,
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ],
                 ),
-                const SizedBox(height: 10),
-                // Sizes(),
-                const SizedBox(height: 20),
-                // Description(prod: prod),
-                const SizedBox(height: kDefaultPaddin / 3),
-
-                const SizedBox(height: kDefaultPaddin / 2),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.3,
+              ),
+            ),
+            Row(
+              // spacing: ,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'ID:${workshop.code}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  textAlign: TextAlign.end,
+                  workshop.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
+            Text(
+              workshop.content,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+                decoration: BoxDecoration(
+                  color: kMainColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.phone, color: Colors.white),
+                      Text(
+                        workshop.phoneNumner,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
