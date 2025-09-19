@@ -30,7 +30,10 @@ class DetailsCard extends StatelessWidget {
           Text(
             content,
             textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(
+              fontSize: 18,
+              color: const Color.fromARGB(255, 140, 140, 140),
+            ),
           ),
         ],
       ),

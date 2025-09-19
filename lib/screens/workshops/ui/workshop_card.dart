@@ -66,14 +66,25 @@ class ItemCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 60,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   width: 160,
                   child: Text(
                     textAlign: TextAlign.end,
                     workshop.content,
                     style: TextStyle(fontSize: 12),
-                    maxLines: 3,
+                    maxLines: 2,
                   ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      workshop.location.isNotEmpty
+                          ? workshop.location.split('ـ')[0].trim()
+                          : '',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Icon(Icons.location_on, color: Colors.amber, size: 20),
+                  ],
                 ),
                 Row(
                   children: [
@@ -88,7 +99,9 @@ class ItemCard extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.14,
                       height: MediaQuery.of(context).size.height * 0.025,
                       child: Text(
-                        '${((workshop.rating / 5) * 100).toString()}%',
+                        ((workshop.rating / 5) * 100).toString().length > 4
+                            ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
+                            : '${((workshop.rating / 5) * 100).toString()}%',
                         style: TextStyle(
                           color: workshop.rating >= 2.5
                               ? Colors.green

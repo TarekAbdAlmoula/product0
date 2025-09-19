@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,7 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  int rating = 0;
+  num rating = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +56,39 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             margin: const EdgeInsets.all(10),
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.2,
-                            child: BlocBuilder<DetailsViewmodel, DetailsState>(
+                            child: BlocConsumer<DetailsViewmodel, DetailsState>(
+                              listener: (context, state) {
+                                if (state.uiState == UiState.data &&
+                                    state.rating == rating) {
+                                  AwesomeDialog(
+                                    context: bottomSheetContext,
+                                    btnOkText: 'إغلاق',
+                                    title: 'تم التقييم بنجاح',
+                                    dialogType: DialogType.success,
+                                    btnOkOnPress: () {
+                                      Navigator.pop(
+                                        bottomSheetContext,
+                                      ); // اغلق الـ bottom sheet بعد الضغط OK
+                                    },
+                                  ).show();
+                                }
+                              },
                               builder: (context, state) {
                                 if (state.uiState == UiState.loading) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CircularProgressIndicator(
+                                      color: kMainColor,
+                                    ),
                                   );
                                 } else if (state.uiState == UiState.data) {
                                   return Column(
                                     children: [
                                       Text(
                                         'ما رأيك ب ${widget.workshop.title}',
-                                        style: TextStyle(fontSize: 18),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                       RatingBar.builder(
                                         itemBuilder: (context, index) => Icon(
@@ -74,16 +96,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           color: Colors.amber,
                                         ),
                                         onRatingUpdate: (value) {
-                                          setState(() {
-                                            rating = value.toInt();
-                                          });
+                                          rating = value.toInt();
                                         },
                                       ),
                                       SizedBox(height: 10),
                                       CustomButton(
-                                        onTap: () {
-                                          detailsViewmodel.sendRating(rating);
-                                          Navigator.pop(context);
+                                        onTap: () async {
+                                          await detailsViewmodel.sendRating(
+                                            rating,
+                                            widget.workshop.id,
+                                          );
+                                          // print('------------>${state.rating}');
+                                          // print('------------>${rating}');
+                                          // state.rating == rating
+                                          //     ? print('yes')
+                                          //     : print('No');
+                                          // Navigator.pop(context);
                                         },
                                       ),
                                     ],
@@ -103,7 +131,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: SvgPicture.asset(
                       'assets/icons/Star.svg',
                       height: 20,
-                      color: Colors.yellow,
+                      color: Colors.amber,
                     ),
                   ),
                 ),

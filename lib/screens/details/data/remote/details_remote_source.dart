@@ -1,3 +1,3 @@
 abstract class DetailsRemoteSource {
-  Future sendRating(int rating);
+  Future sendRating(num rating, int workshopId);
 }

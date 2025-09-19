@@ -24,11 +24,7 @@ class WorkshopsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 25,
-          ), // لون السهم
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 25),
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: kMainColor,

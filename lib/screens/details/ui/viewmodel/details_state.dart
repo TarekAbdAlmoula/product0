@@ -2,7 +2,7 @@ import 'package:product0/core/utils/ui_state.dart';
 
 class DetailsState {
   final UiState? uiState;
-  final num? rating;
+  num? rating;
   DetailsState({this.uiState, this.rating});
 
   DetailsState copyWith({UiState? uiState, num? rating}) {

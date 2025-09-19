@@ -5,7 +5,11 @@ class DetailsRepositoryImpl implements DetailsRepository {
   final DetailsRemoteSourceImpl detailsRemoteSourceImpl;
   DetailsRepositoryImpl({required this.detailsRemoteSourceImpl});
   @override
-  Future sendRating(int rating) async {
-    await detailsRemoteSourceImpl.sendRating(rating);
+  Future sendRating(num rating, int workshopId) async {
+    num newRating = await detailsRemoteSourceImpl.sendRating(
+      rating,
+      workshopId,
+    );
+    return newRating;
   }
 }

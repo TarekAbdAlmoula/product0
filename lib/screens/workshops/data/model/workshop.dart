@@ -1,4 +1,5 @@
 class Workshop {
+  int id;
   String title;
   String content;
   String code;
@@ -8,6 +9,7 @@ class Workshop {
   num rating;
   String location;
   Workshop({
+    required this.id,
     required this.title,
     required this.content,
     required this.code,
@@ -19,6 +21,7 @@ class Workshop {
   });
   factory Workshop.fromJson(Map<String, dynamic> json) {
     return Workshop(
+      id: json['id'] ?? 0,
       title: json['title'] ?? '',
       content: json['content'] ?? '',
       code: json['workshop_code'] ?? '',
