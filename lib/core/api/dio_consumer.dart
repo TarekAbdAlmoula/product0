@@ -22,8 +22,8 @@ class DioConsumer implements ApiConsumer {
   }
 
   @override
-  Future post(String path, {data}) {
-    // TODO: implement post
-    throw UnimplementedError();
+  Future post(String path, {data}) async {
+    var res = await dio.post(path, data: data);
+    return res.data;
   }
 }

@@ -5,6 +5,8 @@ class Workshop {
   bool isFeatured;
   String featuredImageUrl;
   String phoneNumner;
+  num rating;
+  String location;
   Workshop({
     required this.title,
     required this.content,
@@ -12,6 +14,8 @@ class Workshop {
     required this.isFeatured,
     required this.featuredImageUrl,
     required this.phoneNumner,
+    required this.rating,
+    required this.location,
   });
   factory Workshop.fromJson(Map<String, dynamic> json) {
     return Workshop(
@@ -21,6 +25,8 @@ class Workshop {
       isFeatured: json['is_featured'] ?? false,
       featuredImageUrl: json['featured_image_url'] ?? '',
       phoneNumner: json['phone_number'] ?? '',
+      rating: json['average_rating'] ?? 0,
+      location: json['location'] ?? '',
     );
   }
 }

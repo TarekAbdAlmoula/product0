@@ -13,6 +13,15 @@ class WorkshopsRepositoryImpl extends WorkshopsRepository {
     for (var data in response) {
       workshop.add(Workshop.fromJson(data));
     }
+    workshop.sort((a, b) {
+      if (a.isFeatured == b.isFeatured) {
+        return 0;
+      } else if (a.isFeatured) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
     return workshop;
   }
 }

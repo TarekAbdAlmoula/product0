@@ -27,7 +27,6 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
     var response = await api.get(
       'https://barmijha.net/test/wp-json/wc/v3/products?category=$id&_fields=id,name,price,images,rating_count,featured,short_description&per_page=100',
     );
-    print('------------------->$response');
     return response;
   }
 

@@ -19,14 +19,6 @@ class HomeViewModel extends Cubit<HomeState> {
     await Future.wait([getAdds(), getCategories()]);
   }
 
-  // Future getProducts() async {
-  //   emit(state.copyWith(uiState: UiState.loading));
-  //   try {
-  //     List<Prod> prod = await homeRepositoryImpl.getProducts();
-  //     emit(state.copyWith(uiState: UiState.data, prod: prod));
-  //   } catch (e) {}
-  // }
-
   Future getCategories() async {
     emit(state.copyWith(uiState: UiState.loading));
     try {
@@ -65,10 +57,6 @@ class HomeViewModel extends Cubit<HomeState> {
         ),
       );
     });
-  }
-
-  Future<void> prt() async {
-    print('Hello');
   }
 
   @override

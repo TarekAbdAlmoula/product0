@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/details/details_screen.dart';
+import 'package:product0/screens/details/ui/details_screen.dart';
 import 'package:product0/screens/workshops/ui/workshop_card.dart';
 import 'package:product0/screens/workshops/data/datasource/workshops_remote_source_impl.dart';
 import 'package:product0/screens/workshops/data/repository/workshops_repository_impl.dart';
 import 'package:product0/screens/workshops/ui/viewmode/workshops_state.dart';
 import 'package:product0/screens/workshops/ui/viewmode/workshops_viewmodel.dart';
 
-class WorkshopScreen extends StatelessWidget {
-  const WorkshopScreen({
+class WorkshopsScreen extends StatelessWidget {
+  const WorkshopsScreen({
     super.key,
     required this.categoryId,
     required this.title,
@@ -43,21 +43,21 @@ class WorkshopScreen extends StatelessWidget {
             ),
           ),
         ),
-        child: ProductsScreenBody(categoryId: categoryId),
+        child: WorkshopsScreenBody(categoryId: categoryId),
       ),
     );
   }
 }
 
-class ProductsScreenBody extends StatefulWidget {
+class WorkshopsScreenBody extends StatefulWidget {
   final int categoryId;
-  const ProductsScreenBody({super.key, required this.categoryId});
+  const WorkshopsScreenBody({super.key, required this.categoryId});
 
   @override
-  State<ProductsScreenBody> createState() => _ProductsScreenBodyState();
+  State<WorkshopsScreenBody> createState() => _WorkshopsScreenBodyState();
 }
 
-class _ProductsScreenBodyState extends State<ProductsScreenBody> {
+class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
   @override
   void initState() {
     // TODO: implement initState

@@ -75,7 +75,7 @@ class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WorkshopScreen(
+                      builder: (context) => WorkshopsScreen(
                         categoryId: state.categories[index].id,
                         title: state.categories[index].name,
                       ),

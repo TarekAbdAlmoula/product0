@@ -39,10 +39,13 @@ class ItemCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 5),
                   child: Row(
                     children: [
-                      SvgPicture.asset(
-                        'assets/images/crown.svg',
-                        height: 20,
-                        color: Colors.amber,
+                      Visibility(
+                        visible: workshop.isFeatured,
+                        child: SvgPicture.asset(
+                          'assets/images/crown.svg',
+                          height: 20,
+                          color: Colors.amber,
+                        ),
                       ),
                       SizedBox(width: 25),
 
@@ -76,17 +79,27 @@ class ItemCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5, right: 2),
-                      child: SvgPicture.asset('assets/icons/Star.svg'),
+                      child: SvgPicture.asset(
+                        'assets/icons/Star.svg',
+                        color: Colors.amber,
+                      ),
                     ),
-                    Text(
-                      '75%',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.14,
+                      height: MediaQuery.of(context).size.height * 0.025,
+                      child: Text(
+                        '${((workshop.rating / 5) * 100).toString()}%',
+                        style: TextStyle(
+                          color: workshop.rating >= 2.5
+                              ? Colors.green
+                              : Colors.red,
+
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     // Spacer(),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.278),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.21),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.156,
                       child: Text(

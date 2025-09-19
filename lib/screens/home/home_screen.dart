@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/home/components/categories_card.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository_impl.dart';
 import 'package:product0/screens/home/datasource/home_remote_source_impl.dart';
+import 'package:product0/screens/home/ui/viewmode/components/custom_appbar.dart';
 import 'package:product0/screens/home/ui/viewmode/home_State.dart';
 import 'package:product0/screens/home/ui/viewmode/home_viewmodel.dart';
 
@@ -27,7 +29,9 @@ class HomeScreen extends StatelessWidget {
         body: BlocBuilder<HomeViewModel, HomeState>(
           builder: (context, state) {
             if (state.uiState == UiState.loading) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(color: kMainColor),
+              );
             } else if (state.uiState == UiState.data) {
               PageController pageController = changeImage(state);
 
@@ -76,6 +80,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      TopRatedCard(),
                     ],
                   ),
                 ),
@@ -106,56 +111,69 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+class TopRatedCard extends StatelessWidget {
+  const TopRatedCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            Row(
+    return SizedBox(
+      height: 170,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: ListView.builder(
+          itemCount: 5,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Stack(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text('مرحبا بك', style: TextStyle(fontSize: 20)),
-                        SizedBox(width: 5),
-                        Image.asset('assets/images/hello_icon.png', height: 20),
-                      ],
-                    ),
-                    Text('عبد الله', style: TextStyle(fontSize: 25)),
-                  ],
+                Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  // margin: EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 150,
+                        // padding: EdgeInsets.symmetric(horizontal: 10),
+                        // margin: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/0.jpg'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      // Text('data', textAlign: TextAlign.start),
+                    ],
+                  ),
                 ),
-                Spacer(flex: 2),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_on,
-                    color: Color(0xff3da9fc),
-                    size: 30,
+                Positioned(
+                  left: 85,
+                  top: 5,
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Color(0xffEF4565),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'غيار زيت',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               ],
-            ),
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey.shade200,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: 'بحث ...',
-                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 25),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

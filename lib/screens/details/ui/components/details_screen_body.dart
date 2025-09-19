@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:product0/core/utils/constants.dart';
+import 'package:product0/screens/details/ui/components/details_card.dart';
 import 'package:product0/screens/workshops/data/model/workshop.dart';
 
 class DetailsScreenBody extends StatelessWidget {
   final Workshop workshop;
   const DetailsScreenBody({super.key, required this.workshop});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -29,7 +31,6 @@ class DetailsScreenBody extends StatelessWidget {
               ),
             ),
             Row(
-              // spacing: ,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -51,13 +52,12 @@ class DetailsScreenBody extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              workshop.content,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black.withOpacity(0.5),
-              ),
+            DetailsCard(content: workshop.content, title: ': الوصف'),
+            DetailsCard(
+              content: workshop.location.isNotEmpty
+                  ? workshop.location
+                  : 'لايوجد',
+              title: ': منطقة الخدمة',
             ),
             GestureDetector(
               onTap: () {},
@@ -84,27 +84,6 @@ class DetailsScreenBody extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class productInfo extends StatelessWidget {
-  const productInfo({super.key, required this.product, required this.title});
-
-  final String product;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: TextStyle(color: Color(0xFF8B2833))),
-        Text(
-          product,
-          style: TextStyle(color: Color(0xFF8B2833).withOpacity(0.5)),
-        ),
-      ],
     );
   }
 }
