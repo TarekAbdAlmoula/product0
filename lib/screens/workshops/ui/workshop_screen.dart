@@ -5,11 +5,11 @@ import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/details/ui/details_screen.dart';
+import 'package:product0/screens/workshops/data/repository/workshops_repository_impl.dart';
+import 'package:product0/screens/workshops/ui/viewmode/workshops_viewmodel.dart';
 import 'package:product0/screens/workshops/ui/workshop_card.dart';
 import 'package:product0/screens/workshops/data/datasource/workshops_remote_source_impl.dart';
-import 'package:product0/screens/workshops/data/repository/workshops_repository_impl.dart';
 import 'package:product0/screens/workshops/ui/viewmode/workshops_state.dart';
-import 'package:product0/screens/workshops/ui/viewmode/workshops_viewmodel.dart';
 
 class WorkshopsScreen extends StatelessWidget {
   const WorkshopsScreen({
@@ -84,7 +84,7 @@ class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
                     ),
                   );
                 },
-                child: ItemCard(
+                child: WorkshopCard(
                   press: () {
                     Navigator.push(
                       context,

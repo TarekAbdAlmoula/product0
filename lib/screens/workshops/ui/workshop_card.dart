@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 
 import '../../../core/utils/constants.dart';
 
-class ItemCard extends StatelessWidget {
+class WorkshopCard extends StatelessWidget {
   final Workshop workshop;
   final GestureTapCallback? press;
-  const ItemCard({super.key, required this.press, required this.workshop});
+  const WorkshopCard({super.key, required this.press, required this.workshop});
 
   @override
   Widget build(BuildContext context) {

@@ -4,15 +4,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/home/components/categories_card.dart';
+import 'package:product0/screens/details/ui/details_screen.dart';
+import 'package:product0/screens/home/ui/components/categories_card.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository_impl.dart';
-import 'package:product0/screens/home/datasource/home_remote_source_impl.dart';
-import 'package:product0/screens/home/ui/viewmode/components/custom_appbar.dart';
-import 'package:product0/screens/home/ui/viewmode/home_State.dart';
-import 'package:product0/screens/home/ui/viewmode/home_viewmodel.dart';
+import 'package:product0/screens/home/data/datasource/home_remote_source_impl.dart';
+import 'package:product0/screens/home/ui/components/custom_appbar.dart';
+import 'package:product0/screens/home/ui/components/home_workshop_card.dart';
+import 'package:product0/screens/home/ui/components/showMore_screen.dart';
+import 'package:product0/screens/home/ui/viewmodel/home_State.dart';
+import 'ui/viewmodel/home_viewmodel.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +81,117 @@ class HomeScreen extends StatelessWidget {
                       ),
                       CategoriesCard(categories: state.categories),
 
-                      Row(
-                        spacing: 140,
-                        children: [
-                          Text('عرض الكل', style: TextStyle(fontSize: 16)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              ':الأعلى تقيماً',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 0,
+                        ),
+                        child: Row(
+                          spacing: 180,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ShowmoreScreen(
+                                      workshop: state.featuredWorkshop,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'عرض الكل',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Text('المميزون', style: TextStyle(fontSize: 25)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 180,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          reverse: true,
+                          itemCount: state.featuredWorkshop.length > 5
+                              ? 5
+                              : state.featuredWorkshop.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return HomeWorkshopCard(
+                              press: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailsScreen(
+                                      workshop: state.featuredWorkshop[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              workshop: state.featuredWorkshop[index],
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 0,
+                        ),
+                        child: Row(
+                          spacing: 155,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ShowmoreScreen(
+                                      workshop: state.topRatedWorkshop,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'عرض الكل',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Text(
+                              'الأعلى تقيماً',
                               style: TextStyle(fontSize: 25),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      TopRatedCard(),
+                      SizedBox(
+                        height: 180,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          reverse: true,
+                          itemCount: state.topRatedWorkshop.length > 5
+                              ? 5
+                              : state.topRatedWorkshop.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return HomeWorkshopCard(
+                              press: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailsScreen(
+                                      workshop: state.topRatedWorkshop[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              workshop: state.topRatedWorkshop[index],
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -108,74 +219,5 @@ class HomeScreen extends StatelessWidget {
       }
     });
     return _pageController;
-  }
-}
-
-class TopRatedCard extends StatelessWidget {
-  const TopRatedCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 170,
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView.builder(
-          itemCount: 5,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(5),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  // margin: EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 120,
-                        width: 150,
-                        // padding: EdgeInsets.symmetric(horizontal: 10),
-                        // margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/0.jpg'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      // Text('data', textAlign: TextAlign.start),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  left: 85,
-                  top: 5,
-                  child: Container(
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Color(0xffEF4565),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'غيار زيت',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    );
   }
 }

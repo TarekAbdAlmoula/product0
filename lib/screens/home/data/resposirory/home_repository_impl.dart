@@ -1,7 +1,8 @@
 import 'package:product0/models/categories.dart';
+import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository.dart';
-import 'package:product0/screens/home/datasource/home_remote_source_impl.dart';
+import 'package:product0/screens/home/data/datasource/home_remote_source_impl.dart';
 
 class HomeRepositoryImpl implements HomeRepository {
   final HomeRemoteSourceImpl homeRemoteSourceImpl;
@@ -46,5 +47,33 @@ class HomeRepositoryImpl implements HomeRepository {
       adds.add(data['featured_image_url']);
     }
     return adds;
+  }
+
+  @override
+  Future getFeaturedWorkshops() async {
+    List<Workshop> workshop = [];
+    var response = await homeRemoteSourceImpl.getFeaturedWorkshops();
+    for (var data in response) {
+      workshop.add(Workshop.fromJson(data));
+    }
+    workshop.sort((a, b) {
+      return b.rating.compareTo(a.rating);
+    });
+    return workshop;
+  }
+
+  @override
+  Future getTopRatedWorkshop() async {
+    var response = await homeRemoteSourceImpl.getTopRatedWorkshop();
+    List<Workshop> topRatedWorkshop = [];
+    for (var data in response) {
+      if (((data['average_rating'] / 5) * 100) >= 50) {
+        topRatedWorkshop.add(Workshop.fromJson(data));
+      }
+    }
+    topRatedWorkshop.sort((a, b) {
+      return b.rating.compareTo(a.rating);
+    });
+    return topRatedWorkshop;
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/workshops/data/repository/workshops_repository_impl.dart';
 import 'package:product0/screens/workshops/ui/viewmode/workshops_state.dart';
 

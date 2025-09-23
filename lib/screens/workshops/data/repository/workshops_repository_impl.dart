@@ -1,5 +1,5 @@
 import 'package:product0/screens/workshops/data/datasource/workshops_remote_source_impl.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/workshops/data/repository/workshops_repository.dart';
 
 class WorkshopsRepositoryImpl extends WorkshopsRepository {

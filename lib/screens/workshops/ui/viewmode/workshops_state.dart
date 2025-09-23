@@ -1,5 +1,5 @@
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 
 class ProductsState {
   final UiState? uiState;

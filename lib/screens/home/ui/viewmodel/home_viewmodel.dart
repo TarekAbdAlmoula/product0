@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/models/categories.dart';
+import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository_impl.dart';
-import 'package:product0/screens/home/ui/viewmode/home_State.dart';
+import 'package:product0/screens/home/ui/viewmodel/home_State.dart';
 
 class HomeViewModel extends Cubit<HomeState> {
   final HomeRepositoryImpl homeRepositoryImpl;
@@ -16,7 +17,12 @@ class HomeViewModel extends Cubit<HomeState> {
   }
 
   Future init() async {
-    await Future.wait([getAdds(), getCategories()]);
+    await Future.wait([
+      getFeaturedWorkshops(),
+      getAdds(),
+      getCategories(),
+      getTopRatedWorkshop(),
+    ]);
   }
 
   Future getCategories() async {
@@ -24,16 +30,6 @@ class HomeViewModel extends Cubit<HomeState> {
     try {
       List<Categories> categories = await homeRepositoryImpl.getCategories();
       emit(state.copyWith(uiState: UiState.data, categories: categories));
-    } catch (e) {}
-  }
-
-  Future getProductsByCategory({required int id}) async {
-    emit(state.copyWith(uiState: UiState.loading));
-    try {
-      // List<Prod> prod = await homeRepositoryImpl.getProductsByCategory(id);
-      // print(prod);
-
-      // emit(state.copyWith(uiState: UiState.data, prodByCategory: prod));
     } catch (e) {}
   }
 
@@ -59,9 +55,37 @@ class HomeViewModel extends Cubit<HomeState> {
     });
   }
 
+  Future getFeaturedWorkshops() async {
+    emit(state.copyWith(uiState: UiState.loading));
+    try {
+      List<Workshop> featuredWorkshop = await homeRepositoryImpl
+          .getFeaturedWorkshops();
+      emit(
+        state.copyWith(
+          uiState: UiState.data,
+          featuredWorkshop: featuredWorkshop,
+        ),
+      );
+    } catch (e) {}
+  }
+
+  Future getTopRatedWorkshop() async {
+    emit(state.copyWith(uiState: UiState.loading));
+    try {
+      List<Workshop> topRatedWorkshop = await homeRepositoryImpl
+          .getTopRatedWorkshop();
+      emit(
+        state.copyWith(
+          uiState: UiState.data,
+          topRatedWorkshop: topRatedWorkshop,
+        ),
+      );
+    } catch (e) {}
+  }
+
   @override
   Future<void> close() {
-    _bannerTimer?.cancel(); // <-- نوقف التايمر
+    _bannerTimer?.cancel();
     return super.close();
   }
 }

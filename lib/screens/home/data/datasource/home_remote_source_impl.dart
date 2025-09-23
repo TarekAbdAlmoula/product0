@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:product0/core/api/api_consumer.dart';
-import 'package:product0/screens/home/datasource/home_remote_source.dart';
+import 'package:product0/screens/home/data/datasource/home_remote_source.dart';
 
 class HomeRemoteSourceImpl implements HomeRemoteSource {
   final ApiConsumer api;
@@ -34,6 +34,22 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   Future getAdds() async {
     var response = await api.get(
       'https://wasla.barmijha.net/wp-json/wp/v2/ads?_fields=id,title,featured_image_url',
+    );
+    return response;
+  }
+
+  @override
+  Future getFeaturedWorkshops() async {
+    var response = await api.get(
+      'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple?is_featured=true',
+    );
+    return response;
+  }
+
+  @override
+  Future getTopRatedWorkshop() async {
+    var response = await api.get(
+      'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple',
     );
     return response;
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/screens/details/ui/components/details_card.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreenBody extends StatelessWidget {
@@ -36,7 +36,7 @@ class DetailsScreenBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
+                  // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       'ID:${workshop.code}',
@@ -47,6 +47,7 @@ class DetailsScreenBody extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
@@ -59,7 +60,9 @@ class DetailsScreenBody extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%',
+                          ((workshop.rating / 5) * 100).toString().length > 4
+                              ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
+                              : '${((workshop.rating / 5) * 100).toString()}%',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             fontSize: 16,

@@ -3,4 +3,6 @@ abstract class HomeRepository {
   Future getProductsByCategory(int id);
   Future getCategories();
   Future getAdds();
+  Future getFeaturedWorkshops();
+  Future getTopRatedWorkshop();
 }

@@ -13,7 +13,7 @@ import 'package:product0/screens/details/ui/components/custom_button.dart';
 import 'package:product0/screens/details/ui/components/details_screen_body.dart';
 import 'package:product0/screens/details/ui/viewmodel/details_state.dart';
 import 'package:product0/screens/details/ui/viewmodel/details_viewmodel.dart';
-import 'package:product0/screens/workshops/data/model/workshop.dart';
+import 'package:product0/models/workshop.dart';
 
 class DetailsScreen extends StatefulWidget {
   final Workshop workshop;
@@ -106,12 +106,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                             rating,
                                             widget.workshop.id,
                                           );
-                                          // print('------------>${state.rating}');
-                                          // print('------------>${rating}');
-                                          // state.rating == rating
-                                          //     ? print('yes')
-                                          //     : print('No');
-                                          // Navigator.pop(context);
                                         },
                                       ),
                                     ],

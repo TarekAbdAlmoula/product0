@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:product0/core/utils/constants.dart';
+import 'package:product0/models/workshop.dart';
+import 'package:product0/screens/workshops/ui/workshop_card.dart';
+
+class ShowmoreScreen extends StatelessWidget {
+  final List<Workshop> workshop;
+  const ShowmoreScreen({super.key, required this.workshop});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: kMainColor,
+      ),
+      body: ListView.builder(
+        itemCount: workshop.length,
+        itemBuilder: (context, index) {
+          return WorkshopCard(press: () {}, workshop: workshop[index]);
+        },
+      ),
+    );
+  }
+}
