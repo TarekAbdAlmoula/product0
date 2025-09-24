@@ -1,4 +1,5 @@
 abstract class AppRouteConstants {
+  static String register = 'register';
   static String home = 'home';
   static String notification = 'notification';
   static String premieum = 'premieum';
