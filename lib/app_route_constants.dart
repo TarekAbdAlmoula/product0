@@ -5,4 +5,5 @@ abstract class AppRouteConstants {
   static String premieum = 'premieum';
   static String profile = 'profile';
   static String about = 'about';
+  static String otp = 'otp';
 }

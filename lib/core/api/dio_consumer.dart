@@ -23,7 +23,10 @@ class DioConsumer implements ApiConsumer {
 
   @override
   Future post(String path, {data}) async {
-    var res = await dio.post(path, data: data);
+    final String key = 'x-api-key';
+    final String value = r'wMoo0]{Jkq9r_Vw!8LSD,p#2X$Aq7';
+    final option = Options(headers: {key: value});
+    var res = await dio.post(path, data: data, options: option);
     return res.data;
   }
 }

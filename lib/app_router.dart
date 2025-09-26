@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/screens/about/ui/about_screen.dart';
-import 'package:product0/screens/auth/register/register_screen.dart';
+import 'package:product0/screens/auth/register/ui/otp_screen.dart';
+import 'package:product0/screens/auth/register/ui/register_screen.dart';
 import 'package:product0/screens/home/home_screen.dart';
 import 'package:product0/screens/notification/ui/notification_screen.dart';
 import 'package:product0/screens/premieum/ui/premieum_screen.dart';
@@ -10,7 +11,7 @@ import 'package:product0/shell_screen.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/register',
     routes: [
       ShellRoute(
         builder: (context, state, child) => ShellScreen(child: child),
@@ -59,6 +60,13 @@ abstract class AppRouter {
           return RegisterScreen();
         },
       ),
+      // GoRoute(
+      //   name: AppRouteConstants.otp,
+      //   path: '/otp',
+      //   builder: (context, state) {
+      //     return OtpScreen();
+      //   },
+      // ),
     ],
   );
 }
