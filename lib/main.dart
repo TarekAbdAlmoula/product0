@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       routerConfig: AppRouter.router,
       theme: ThemeData(fontFamily: 'Tajawal'),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
     );
   }
 }

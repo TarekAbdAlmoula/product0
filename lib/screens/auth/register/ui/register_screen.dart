@@ -23,7 +23,7 @@ class RegisterScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthViewmodel(
         registerRepositoryImp: RegisterRepositoryImpl(
-          // registerLocalSourceImpl: RegisterLocalSourceImpl(),
+          registerLocalSourceImpl: RegisterLocalSourceImpl(),
           registerRemoteSourceImpl: RegisterRemoteSourceImpl(
             api: DioConsumer(dio: Dio()),
           ),
@@ -140,8 +140,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       await BlocProvider.of<AuthViewmodel>(
                         context,
                       ).createNewUser(user);
-
-                      // context.goNamed(AppRouteConstants.otp);
+                      context.goNamed(AppRouteConstants.otp);
                     },
                   ),
                 ],

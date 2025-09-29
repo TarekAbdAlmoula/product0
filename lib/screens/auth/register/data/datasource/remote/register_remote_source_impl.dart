@@ -29,13 +29,11 @@ class RegisterRemoteSourceImpl implements RegisterRemoteSource {
     );
     return response;
   }
+
   Future login({required String username, required String password}) async {
     var response = await api.post(
       'https://wasla.barmijha.net/wp-json/jwt-auth/v1/token',
-      data: {
-        "username": username,
-        "password": password,
-      },
+      data: {"username": username, "password": password},
     );
     return response;
   }

@@ -24,7 +24,11 @@ class PremieumScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
-        appBar: AppBar(backgroundColor: kMainColor),
+        appBar: AppBar(
+          backgroundColor: kMainColor,
+          title: Text('اشترك معنا'),
+          centerTitle: true,
+        ),
         body: const PremieumScreenBody(),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/screens/about/ui/about_screen.dart';
-import 'package:product0/screens/auth/register/ui/otp_screen.dart';
 import 'package:product0/screens/auth/register/ui/register_screen.dart';
 import 'package:product0/screens/home/home_screen.dart';
 import 'package:product0/screens/notification/ui/notification_screen.dart';
