@@ -2,7 +2,7 @@
   <uses-permission android:name="android.permission.INTERNET"/> <!-- Add this -->
 
     <application
-        android:label="product0"
+        android:label="وصلة"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

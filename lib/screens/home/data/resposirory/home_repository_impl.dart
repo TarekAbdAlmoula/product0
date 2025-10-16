@@ -1,12 +1,17 @@
 import 'package:product0/models/categories.dart';
 import 'package:product0/models/workshop.dart';
+import 'package:product0/screens/home/data/datasource/local/home_local_source_impl.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository.dart';
-import 'package:product0/screens/home/data/datasource/home_remote_source_impl.dart';
+import 'package:product0/screens/home/data/datasource/remote/home_remote_source_impl.dart';
 
 class HomeRepositoryImpl implements HomeRepository {
+  final HomeLocalSourceImpl homeLocalSourceImpl;
   final HomeRemoteSourceImpl homeRemoteSourceImpl;
-  HomeRepositoryImpl({required this.homeRemoteSourceImpl});
+  HomeRepositoryImpl({
+    required this.homeRemoteSourceImpl,
+    required this.homeLocalSourceImpl,
+  });
   @override
   Future getProducts() async {
     var response = await homeRemoteSourceImpl.getProducts();
@@ -59,6 +64,7 @@ class HomeRepositoryImpl implements HomeRepository {
     workshop.sort((a, b) {
       return b.rating.compareTo(a.rating);
     });
+    // print('----------category--------->${workshop[0].servicesCategory[0]}');
     return workshop;
   }
 
@@ -75,5 +81,22 @@ class HomeRepositoryImpl implements HomeRepository {
       return b.rating.compareTo(a.rating);
     });
     return topRatedWorkshop;
+  }
+
+  @override
+  Future getLocalData({required String key}) async {
+    return await homeLocalSourceImpl.getLocalData(key);
+  }
+
+  @override
+  Future getUserPoints() async {
+    final String token = await homeLocalSourceImpl.getLocalData('token');
+    return await homeRemoteSourceImpl.getUserPoints(token: token);
+  }
+
+  @override
+  Future addPoints({required String action}) async {
+    final String token = await homeLocalSourceImpl.getLocalData('token');
+    await homeRemoteSourceImpl.addPoints(action: action, token: token);
   }
 }

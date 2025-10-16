@@ -22,6 +22,8 @@ class HomeViewModel extends Cubit<HomeState> {
       getAdds(),
       getCategories(),
       getTopRatedWorkshop(),
+      addPoints(),
+      getUserName(),
     ]);
   }
 
@@ -57,6 +59,7 @@ class HomeViewModel extends Cubit<HomeState> {
 
   Future getFeaturedWorkshops() async {
     emit(state.copyWith(uiState: UiState.loading));
+
     try {
       List<Workshop> featuredWorkshop = await homeRepositoryImpl
           .getFeaturedWorkshops();
@@ -81,6 +84,27 @@ class HomeViewModel extends Cubit<HomeState> {
         ),
       );
     } catch (e) {}
+  }
+
+  Future getUserName() async {
+    emit(state.copyWith(uiState: UiState.loading));
+    try {
+      String userNamae = await homeRepositoryImpl.getLocalData(key: 'username');
+      emit(state.copyWith(uiState: UiState.data, userName: userNamae));
+    } catch (e) {}
+  }
+
+  Future getUserPoints() async {
+    try {
+      int userPoints = await homeRepositoryImpl.getUserPoints();
+
+      emit(state.copyWith(uiState: UiState.data, userPoints: userPoints));
+    } catch (e) {}
+  }
+
+  Future addPoints() async {
+    await homeRepositoryImpl.addPoints(action: 'daily_login');
+    await getUserPoints();
   }
 
   @override

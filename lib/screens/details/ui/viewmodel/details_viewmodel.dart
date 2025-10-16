@@ -8,14 +8,17 @@ class DetailsViewmodel extends Cubit<DetailsState> {
   DetailsViewmodel({required this.detailsRepositoryImpl})
     : super(DetailsState(uiState: UiState.data));
 
-  Future sendRating(num rating, int workshopId) async {
+  Future sendRating(num rating, int workshopId, {String? comment}) async {
     emit(state.copyWith(uiState: UiState.loading));
     try {
       num newRating = await detailsRepositoryImpl.sendRating(
         rating,
         workshopId,
+        comment: comment,
       );
       emit(state.copyWith(uiState: UiState.data, rating: newRating));
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

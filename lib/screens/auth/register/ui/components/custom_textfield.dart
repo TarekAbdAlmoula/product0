@@ -6,21 +6,29 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.onChanged,
+    required this.formKey,
+    required this.validator,
+    this.keyBoardType,
   });
   final TextEditingController controller;
   final String hintText;
   final void Function(String)? onChanged;
+  final GlobalKey formKey;
+  final String? Function(String?)? validator;
+  final TextInputType? keyBoardType;
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: TextFormField(
+        keyboardType: keyBoardType,
+        validator: validator,
         onChanged: onChanged,
         cursorColor: Colors.white,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: const Color.fromARGB(135, 64, 63, 63)),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(color: const Color.fromARGB(255, 2, 2, 2)),
+          hintStyle: TextStyle(color: const Color.fromARGB(135, 64, 63, 63)),
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(10),

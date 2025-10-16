@@ -12,6 +12,8 @@ class HomeState {
   final int currentBannerIndex;
   final List<Workshop> featuredWorkshop;
   final List<Workshop> topRatedWorkshop;
+  final String? userName;
+  final int? userPoints;
   HomeState({
     this.uiState,
     this.prod = const [],
@@ -21,6 +23,8 @@ class HomeState {
     this.currentBannerIndex = 0,
     this.featuredWorkshop = const [],
     this.topRatedWorkshop = const [],
+    this.userName,
+    this.userPoints,
   });
 
   HomeState copyWith({
@@ -32,6 +36,8 @@ class HomeState {
     int? currentBannerIndex,
     List<Workshop>? featuredWorkshop,
     List<Workshop>? topRatedWorkshop,
+    String? userName,
+    int? userPoints,
   }) {
     return HomeState(
       uiState: uiState ?? this.uiState,
@@ -42,6 +48,8 @@ class HomeState {
       currentBannerIndex: currentBannerIndex ?? this.currentBannerIndex,
       featuredWorkshop: featuredWorkshop ?? this.featuredWorkshop,
       topRatedWorkshop: topRatedWorkshop ?? this.topRatedWorkshop,
+      userName: userName ?? this.userName,
+      userPoints: userPoints ?? this.userPoints,
     );
   }
 }

@@ -26,7 +26,7 @@ class PremieumScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kMainColor,
-          title: Text('اشترك معنا'),
+          title: Text('اشترك معنا', style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),
         body: const PremieumScreenBody(),

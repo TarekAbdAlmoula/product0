@@ -11,6 +11,7 @@ import 'package:product0/screens/about/data/datasource/remote/about_remote_sourc
 import 'package:product0/screens/about/data/repository/about_repository_impl.dart';
 import 'package:product0/screens/about/ui/viewmodel/about_state.dart';
 import 'package:product0/screens/about/ui/viewmodel/about_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -27,8 +28,15 @@ class AboutScreen extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          shadowColor: Colors.transparent,
+
           backgroundColor: kMainColor,
-          title: const Text('عن التطبيق'),
+          title: const Text(
+            'عن التطبيق',
+
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
         ),
         body: const AboutScreenBody(),
@@ -58,15 +66,16 @@ class AboutScreenLogo extends StatelessWidget {
             child: CircularProgressIndicator(color: kMainColor),
           );
         } else if (state.uiState == UiState.data) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.05,
-              vertical: MediaQuery.of(context).size.height * 0.01,
-            ),
-            child: SingleChildScrollView(
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsetsGeometry.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.05,
+                vertical: MediaQuery.of(context).size.height * 0.01,
+              ),
               child: Column(
                 children: [
                   Container(
+                    // margin: EdgeInsets.all(20),
                     width: MediaQuery.of(context).size.width * 0.7,
                     height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
@@ -102,7 +111,7 @@ class AboutScreenLogo extends StatelessWidget {
                       Text(
                         'من نحن؟',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
 
                           fontWeight: FontWeight.bold,
                           color: Color(0xff094067),
@@ -118,6 +127,7 @@ class AboutScreenLogo extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -125,7 +135,7 @@ class AboutScreenLogo extends StatelessWidget {
                         'مايميزنا؟',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
 
                           fontWeight: FontWeight.bold,
                           color: Color(0xff094067),
@@ -143,7 +153,7 @@ class AboutScreenLogo extends StatelessWidget {
                         return Directionality(
                           textDirection: TextDirection.rtl,
                           child: Text(
-                            '-${state.about[0].features[index]}',
+                            '${state.about[0].features[index]}',
                             textAlign: TextAlign.right,
                             style: TextStyle(fontSize: 16),
                           ),
@@ -151,6 +161,8 @@ class AboutScreenLogo extends StatelessWidget {
                       },
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -158,7 +170,7 @@ class AboutScreenLogo extends StatelessWidget {
                         'تواصل معنا',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
 
                           fontWeight: FontWeight.bold,
                           color: Color(0xff094067),
@@ -171,8 +183,10 @@ class AboutScreenLogo extends StatelessWidget {
                     phone: state.about[0].contactInfo.phone,
                     website: state.about[0].contactInfo.website,
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+                  CallButton(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                  // AnimatedBorderCircle(),
                 ],
               ),
             ),
@@ -183,74 +197,6 @@ class AboutScreenLogo extends StatelessWidget {
       },
     );
   }
-}
-
-class AnimatedBorderCircle extends StatefulWidget {
-  const AnimatedBorderCircle({super.key});
-
-  @override
-  State<AnimatedBorderCircle> createState() => _AnimatedBorderCircleState();
-}
-
-class _AnimatedBorderCircleState extends State<AnimatedBorderCircle>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    )..repeat(); // يجعل الحركة مستمرة
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: BorderPainter(animation: _controller),
-      child: SizedBox(width: 200, height: 200),
-    );
-  }
-}
-
-class BorderPainter extends CustomPainter {
-  final Animation<double> animation;
-
-  BorderPainter({required this.animation}) : super(repaint: animation);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    double strokeWidth = 6;
-    double radius = (size.width / 2) - strokeWidth;
-
-    final paint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round;
-
-    // زاوية البداية للحركة
-    double startAngle = animation.value * 2 * pi;
-
-    // رسم قوس (جزء من الدائرة) يمثل الخط المتحرك
-    canvas.drawArc(
-      Rect.fromCircle(center: size.center(Offset.zero), radius: radius),
-      startAngle,
-      pi / 3, // طول القوس (يمكن تغييره ليطول أو يقصر الخط)
-      false,
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(BorderPainter oldDelegate) => true;
 }
 
 class ContuctUs extends StatelessWidget {
@@ -268,7 +214,11 @@ class ContuctUs extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text('لأي استفسار أو ملاحظات يمكنك التواصل معنا عير'),
+        Text(
+          'لأي استفسار أو ملاحظات يمكنك التواصل معنا عبر',
+          style: TextStyle(fontSize: 16),
+          textAlign: TextAlign.end,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -281,7 +231,7 @@ class ContuctUs extends StatelessWidget {
                   ),
                   TextSpan(
                     text: ' : البريد الألكتروني',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],
               ),
@@ -289,30 +239,7 @@ class ContuctUs extends StatelessWidget {
             Icon(Icons.email, color: kMainColor),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: phone,
-                    style: TextStyle(color: kMainColor),
-                  ),
-                  TextSpan(
-                    text: ' : واتساب',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-            Image.asset(
-              'assets/images/whatsapp.png',
-              height: MediaQuery.of(context).size.height * 0.04,
-              width: MediaQuery.of(context).size.width * 0.06,
-            ),
-          ],
-        ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -321,11 +248,11 @@ class ContuctUs extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: website,
-                    style: TextStyle(color: kMainColor),
+                    style: TextStyle(color: kMainColor, fontSize: 16),
                   ),
                   TextSpan(
                     text: ' : الموقع الألكتروني',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: 16),
                   ),
                 ],
               ),
@@ -334,6 +261,72 @@ class ContuctUs extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class CallButton extends StatefulWidget {
+  const CallButton({super.key});
+
+  @override
+  State<CallButton> createState() => _CallButtonState();
+}
+
+class _CallButtonState extends State<CallButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(
+      begin: 1.0,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _animation,
+      child: ElevatedButton.icon(
+        onPressed: () async {
+          final String phoneNumber = "963965325745"; // رقم الهاتف بصيغة دولية
+          final String message = "مرحبًا، أودّ التواصل معكم.";
+          final url = Uri.parse(
+            "https://wa.me/${phoneNumber.replaceAll('+', '')}?text=${Uri.encodeComponent(message)}",
+          );
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+
+          // if (await canLaunchUrl(url)) {
+          // } else {
+          //   throw 'لا يمكن فتح واتساب على هذا الجهاز';
+          // }
+        },
+        label: const Text(
+          'تواصل معنا عبر الواتساب',
+          style: TextStyle(color: Colors.white),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kMainDarkColor,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -15,6 +15,10 @@ class ShowmoreScreen extends StatelessWidget {
         backgroundColor: kMainColor,
       ),
       body: ListView.builder(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.03,
+        ),
+
         itemCount: workshop.length,
         itemBuilder: (context, index) {
           return WorkshopCard(press: () {}, workshop: workshop[index]);

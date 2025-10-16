@@ -9,6 +9,7 @@ class WorkshopsRemoteSourceImpl extends WorkshopRemoteSource {
     var response = await api.get(
       'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple?category=$id',
     );
+    print('workshop response--------->$response');
     return response;
   }
 }

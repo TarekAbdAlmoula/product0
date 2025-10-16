@@ -5,4 +5,7 @@ abstract class HomeRepository {
   Future getAdds();
   Future getFeaturedWorkshops();
   Future getTopRatedWorkshop();
+  Future getLocalData({required String key});
+  Future getUserPoints();
+  Future addPoints({required String action});
 }

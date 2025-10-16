@@ -12,7 +12,7 @@ class DetailsCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: const Color.fromARGB(255, 241, 238, 238),
+        color: const Color.fromARGB(255, 242, 242, 242),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -21,7 +21,7 @@ class DetailsCard extends StatelessWidget {
             title,
             style: TextStyle(
               color: kMainColor,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.end,
@@ -31,7 +31,7 @@ class DetailsCard extends StatelessWidget {
             content,
             textAlign: TextAlign.end,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 17,
               color: const Color.fromARGB(255, 140, 140, 140),
             ),
           ),

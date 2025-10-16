@@ -71,7 +71,9 @@ class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
           return Center(child: CircularProgressIndicator(color: kMainColor));
         } else if (state.uiState == UiState.data) {
           return ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+            ),
             itemCount: state.workshop.length,
             itemBuilder: (context, index) {
               return GestureDetector(

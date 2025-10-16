@@ -15,7 +15,10 @@ class WorkshopCard extends StatelessWidget {
       onTap: press,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.15,
-        padding: EdgeInsets.only(right: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.02,
+          vertical: MediaQuery.of(context).size.height * 0.007,
+        ),
         margin: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -35,35 +38,32 @@ class WorkshopCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Row(
-                    children: [
-                      Visibility(
-                        visible: workshop.isFeatured,
-                        child: SvgPicture.asset(
-                          'assets/images/crown.svg',
-                          height: 20,
-                          color: Colors.amber,
-                        ),
+                Row(
+                  children: [
+                    Visibility(
+                      visible: workshop.isFeatured,
+                      child: SvgPicture.asset(
+                        'assets/images/crown.svg',
+                        height: 20,
+                        color: Colors.amber,
                       ),
-                      SizedBox(width: 25),
+                    ),
+                    SizedBox(width: 25),
 
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        child: Text(
-                          textAlign: TextAlign.end,
-                          workshop.title,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff094067),
-                          ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      child: Text(
+                        textAlign: TextAlign.end,
+                        workshop.title,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff094067),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -76,16 +76,27 @@ class WorkshopCard extends StatelessWidget {
                   ),
                 ),
                 Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       workshop.location.isNotEmpty
                           ? workshop.location.split('ـ')[0].trim()
                           : '',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: kMainDarkColor,
+                      ),
                     ),
-                    Icon(Icons.location_on, color: Colors.amber, size: 20),
+                    SvgPicture.asset(
+                      'assets/icons/location.svg',
+                      height: MediaQuery.of(context).size.height * 0.017,
+                      width: 4,
+                      color: Colors.amber,
+                    ),
+                    // Icon(Icons.location_on, color: Colors.amber, size: 17),
                   ],
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.003),
                 Row(
                   children: [
                     Padding(
@@ -119,7 +130,10 @@ class WorkshopCard extends StatelessWidget {
                         maxLines: 1,
                         textAlign: TextAlign.end,
                         'ID:${workshop.code}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: kMainDarkColor,
+                        ),
                       ),
                     ),
                   ],
@@ -132,8 +146,7 @@ class WorkshopCard extends StatelessWidget {
               child: Hero(
                 tag: "hero_${workshop.code}",
                 child: Container(
-                  width: 100,
-                  height: 100,
+                  width: MediaQuery.of(context).size.height * 0.14,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(

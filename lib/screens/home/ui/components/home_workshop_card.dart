@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:product0/core/utils/constants.dart';
 import 'package:product0/models/workshop.dart';
 
 class HomeWorkshopCard extends StatelessWidget {
@@ -16,39 +17,70 @@ class HomeWorkshopCard extends StatelessWidget {
     return GestureDetector(
       onTap: press,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             // padding: const EdgeInsets.all(3),
-            height: 160,
-            width: 140,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            padding: EdgeInsets.symmetric(vertical: 8),
+            // height: MediaQuery.of(context).size.height * 0.,
+            width: MediaQuery.of(context).size.width * 0.4,
+            // height: 170,
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              border: Border(
+                top: BorderSide(color: Colors.black.withOpacity(0.15)),
+              ),
+              color: const Color.fromARGB(255, 255, 255, 255),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: 0.6,
-                  blurRadius: 2,
-                  offset: Offset(0, 1),
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 1,
+                  spreadRadius: 1,
+                  offset: Offset(0, 2), // ظل علوي
                 ),
               ],
             ),
             child: Column(
               children: [
-                Container(
-                  height: 90,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(workshop.featuredImageUrl),
+                Stack(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.125,
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(workshop.featuredImageUrl),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: ClipRRect(borderRadius: BorderRadius.circular(10)),
+                    Positioned(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        // width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        decoration: BoxDecoration(
+                          color: Color(0xffF75859),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
+                            topRight: Radius.circular(15),
+                          ),
+                        ),
+                        child: Text(
+                          workshop.servicesCategory![0],
+                          textAlign: TextAlign.end,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -56,14 +88,20 @@ class HomeWorkshopCard extends StatelessWidget {
                     horizontal: 4,
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(height: 5),
                       Text(
-                        // textAlign: TextAlign.end,
+                        textAlign: TextAlign.center,
                         workshop.title,
                         maxLines: 1,
-                        style: const TextStyle(color: Colors.black),
+                        style: const TextStyle(
+                          color: kMainDarkColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      SizedBox(height: 5),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -89,14 +127,19 @@ class HomeWorkshopCard extends StatelessWidget {
                                     ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
                                     : '${((workshop.rating / 5) * 100).toString()}%',
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                  color: kMainDarkColor,
+
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
                           ),
                           Text(
                             'ID:${workshop.code.toString()}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: kMainDarkColor,
+                            ),
                           ),
                         ],
                       ),

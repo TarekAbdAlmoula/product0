@@ -5,4 +5,4 @@ const kTextLightColor = Color(0xff232946);
 
 const kDefaultPaddin = 20.0;
 const kMainColor = Color(0xff3da9fc);
-const kMainDarkColor = Color.fromARGB(255, 5, 4, 4);
+const kMainDarkColor = Color(0xff094067);

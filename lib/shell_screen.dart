@@ -34,6 +34,7 @@ class _ShellScreenState extends State<ShellScreen> {
     return Scaffold(
       body: widget.child,
       bottomNavigationBar: ConvexAppBar(
+        height: MediaQuery.of(context).size.height * 0.07,
         // backgroundColor: Colors.white,
         items: [
           TabItem(icon: Icons.info, title: 'عن التطبيق'),
@@ -44,7 +45,6 @@ class _ShellScreenState extends State<ShellScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                // borderRadius: BorderRadius.circular(40),
               ),
               child: SvgPicture.asset(
                 'assets/images/crown.svg',

@@ -7,11 +7,18 @@ class DetailsRemoteSourceImpl implements DetailsRemoteSource {
   final ApiConsumer api;
   DetailsRemoteSourceImpl({required this.api});
   @override
-  Future sendRating(num rating, int workshopId) async {
+  Future sendRating(
+    num rating,
+    int workshopId,
+    String token, {
+    String? comment,
+  }) async {
     var response = await api.post(
       'https://wasla.barmijha.net/wp-json/custom-api/v1/rate_service',
-      data: {"service_id": "$workshopId", "rating": rating},
+      data: {"service_id": "$workshopId", "rating": rating, "comment": comment},
+      token: token,
     );
+    print('rating response------------------->$response');
 
     return response["new_rating"];
   }
