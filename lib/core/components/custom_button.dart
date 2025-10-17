@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
-import 'package:product0/core/utils/constants.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onTap, required this.color});
+  const CustomButton({
+    super.key,
+    required this.onTap,
+    required this.color,
+    required this.btnText,
+  });
   final void Function()? onTap;
+  final String btnText;
   final Color color;
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// and handles the onTap callback when the button is pressed.
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
@@ -25,7 +27,7 @@ class CustomButton extends StatelessWidget {
               vertical: MediaQuery.of(context).size.height * 0.01,
             ),
             child: Text(
-              'إرسال',
+              btnText,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

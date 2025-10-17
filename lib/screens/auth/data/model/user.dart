@@ -1,13 +1,13 @@
 class User {
-  final String? email;
-  final String? password;
-  final String? firstName;
-  final String? lastName;
-  final String? userType;
-  final String? phoneNumber;
-  final String? token;
-  final bool isLoggedIn;
-  final int? userId;
+  String? email;
+  String? password;
+  String? firstName;
+  String? lastName;
+  String? userType;
+  String? phoneNumber;
+  String? token;
+  bool isLoggedIn;
+  int? userId;
   User({
     this.email,
     this.password,

@@ -22,6 +22,8 @@ class CustomLoadingDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CustomButton(
+        btnText: 'إرسال ',
+
         color: kMainColor,
         onTap: () {
           AwesomeDialog(

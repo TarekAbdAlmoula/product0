@@ -147,7 +147,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                         },
                       ),
                       CustomTextField(
-                        hintText: 'البريد الالكتروني',
+                        hintText: 'البريد الالكتروني مثل wasla@gmail.com',
                         controller: emailController,
                         onChanged: (value) => emailController.text = value,
                         formKey: formKey,
@@ -265,6 +265,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           horizontal: MediaQuery.of(context).size.width * 0.1,
                         ),
                         child: CustomButton(
+                          btnText: 'إرسال ',
                           color: kMainColor,
                           onTap: () async {
                             final user = User(

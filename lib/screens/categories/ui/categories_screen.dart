@@ -30,7 +30,7 @@ class CategoriesScreen extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(name, style: TextStyle(color: Colors.white)),
           centerTitle: true,
-          backgroundColor: const Color(0xff3da9fc),
+          backgroundColor: kMainDarkColor,
         ),
         body: CategoriesScreenBody(id: id),
       ),

@@ -27,7 +27,7 @@ class WorkshopsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 25),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: kMainColor,
+        backgroundColor: kMainDarkColor,
         title: Text(title, style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),

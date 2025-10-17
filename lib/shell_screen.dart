@@ -41,7 +41,7 @@ class _ShellScreenState extends State<ShellScreen> {
         items: [
           TabItem(icon: Icons.info, title: 'عن التطبيق'),
 
-          TabItem(icon: Icons.people, title: 'ملفي'),
+          TabItem(icon: Icons.people, title: 'حسابي'),
           TabItem(
             icon: Container(
               decoration: BoxDecoration(

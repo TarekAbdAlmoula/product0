@@ -157,6 +157,8 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                   ),
                 ),
                 CustomButton(
+                  btnText: 'إرسال ',
+
                   color: kMainColor,
                   onTap: () {
                     AwesomeDialog(

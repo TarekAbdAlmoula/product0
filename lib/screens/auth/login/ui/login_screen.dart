@@ -48,11 +48,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
   final _formKey = GlobalKey<FormState>();
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Initializes the state of the widget. This function is called
-  /// when this widget is inserted into the tree. It overrides the
-  /// didChangeDependencies method from the State class.
-  /*******  144c82d1-f1ec-48c9-bcfb-f8354291bc25  *******/
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -108,7 +103,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
                   CustomTextField(
-                    hintText: 'البريد الالكتروني مثل jHwFV@gmail.com',
+                    hintText: 'البريد الالكتروني مثل wasla@gmail.com',
                     controller: emailController,
                     onChanged: (value) => emailController.text = value,
                     formKey: _formKey,
@@ -144,6 +139,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
                   Center(
                     child: CustomButton(
+                      btnText: 'إرسال ',
+
                       color: kMainColor,
                       onTap: () {
                         AwesomeDialog(

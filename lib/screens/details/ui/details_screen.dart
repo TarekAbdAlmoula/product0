@@ -9,7 +9,6 @@ import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/auth/register/ui/components/custom_textfield.dart';
 import 'package:product0/screens/details/data/remote/details_remote_source_impl.dart';
 import 'package:product0/screens/details/data/repository/details_repository_impl.dart';
 import 'package:product0/core/components/custom_button.dart';
@@ -147,6 +146,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           ),
 
                                           CustomButton(
+                                            btnText: 'إرسال ',
+
                                             color: kMainColor,
                                             onTap: () async {
                                               await detailsViewmodel.sendRating(
@@ -181,7 +182,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                 ),
               ],
-              backgroundColor: kMainColor,
+              backgroundColor: kMainDarkColor,
               iconTheme: IconThemeData(color: Colors.white),
             ),
             body: DetailsScreenBody(workshop: widget.workshop),
