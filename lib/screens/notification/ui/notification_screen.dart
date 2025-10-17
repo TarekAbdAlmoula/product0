@@ -31,7 +31,7 @@ class NotificationScreen extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: kMainColor,
+          backgroundColor: kMainDarkColor,
           title: Text('الاشعارات', style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),

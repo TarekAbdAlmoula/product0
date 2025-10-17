@@ -5,6 +5,7 @@ abstract class AuthLocalSource {
     required num userId,
     required String email,
     required String accountType,
+    String? token,
   });
 
   Future<void> getData(String data);

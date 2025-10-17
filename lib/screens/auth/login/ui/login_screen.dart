@@ -48,6 +48,11 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
   final _formKey = GlobalKey<FormState>();
   @override
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /// Initializes the state of the widget. This function is called
+  /// when this widget is inserted into the tree. It overrides the
+  /// didChangeDependencies method from the State class.
+  /*******  144c82d1-f1ec-48c9-bcfb-f8354291bc25  *******/
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -65,6 +70,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
         height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
+          color: kMainDarkColor,
           image: DecorationImage(
             image: AssetImage("assets/images/gradient_background.png"),
             fit: BoxFit.fill,
@@ -74,11 +80,17 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.only(top: 50, right: 30, left: 30),
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.04,
+                right: 30,
+                left: 30,
+              ),
               child: Column(
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
+
                     children: [
                       Text(
                         'تسجيل الدخول',
@@ -90,13 +102,13 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                   AnimatedBorderCircle(),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
                   CustomTextField(
-                    hintText: 'البريد الالكتروني',
+                    hintText: 'البريد الالكتروني مثل jHwFV@gmail.com',
                     controller: emailController,
                     onChanged: (value) => emailController.text = value,
                     formKey: _formKey,
@@ -132,6 +144,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
                   Center(
                     child: CustomButton(
+                      color: kMainColor,
                       onTap: () {
                         AwesomeDialog(
                           dismissOnTouchOutside: false,

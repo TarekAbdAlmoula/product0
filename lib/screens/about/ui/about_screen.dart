@@ -31,7 +31,7 @@ class AboutScreen extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
 
-          backgroundColor: kMainColor,
+          backgroundColor: kMainDarkColor,
           title: const Text(
             'عن التطبيق',
 

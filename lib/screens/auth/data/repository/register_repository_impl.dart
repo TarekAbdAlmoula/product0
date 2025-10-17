@@ -18,11 +18,11 @@ class AuthRepositoryImpl implements AuthRepository {
     final AuthResponse authResponse = AuthResponse.fromJson(response);
     if (authResponse.isSuccess == true) {
       authLocalSourceImpl.saveUserData(
-        username: user.firstName,
-        password: user.password,
+        username: user.firstName ?? '',
+        password: user.password ?? '',
         userId: authResponse.userId,
-        email: user.email,
-        accountType: user.userType,
+        email: user.email ?? '',
+        accountType: user.userType ?? '',
       );
     }
 
@@ -49,12 +49,21 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future login({required String email, required String password}) async {
-    bool isLoggedIn = await authRemoteSourceImpl.login(
+    final User user = await authRemoteSourceImpl.login(
       email: email,
       password: password,
     );
-    if (isLoggedIn == true) {}
-    return isLoggedIn;
+    if (user.isLoggedIn) {
+      await authLocalSourceImpl.saveUserData(
+        username: user.firstName ?? '',
+        password: user.password ?? '',
+        userId: user.userId ?? 0,
+        email: user.email ?? '',
+        accountType: user.userType ?? '',
+        token: user.token,
+      );
+    }
+    return user.isLoggedIn;
   }
 
   @override

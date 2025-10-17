@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: kMainColor,
+        backgroundColor: kMainDarkColor,
         body: RegisterScreenBody(),
       ),
     );
@@ -78,6 +78,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
+              // color: kMainDarkColor,
               image: DecorationImage(
                 image: AssetImage("assets/images/gradient_background.png"),
                 fit: BoxFit.fill,
@@ -91,17 +92,28 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        // textAlign: TextAlign.end,
-                        'إنشاء حساب',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              context.goNamed(AppRouteConstants.login);
+                            },
+                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                          ),
+                          Text(
+                            // textAlign: TextAlign.end,
+                            'إنشاء حساب',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.08,
+                        height: MediaQuery.of(context).size.height * 0.04,
                       ),
 
                       AnimatedBorderCircle(),
@@ -190,12 +202,11 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       Directionality(
                         textDirection: TextDirection.rtl,
                         child: DropdownButtonFormField<String>(
-                          focusColor: Colors.white,
+                          focusColor: Colors.red,
+                          dropdownColor: kMainDarkColor,
                           hint: Text(
                             'نوع الحساب',
-                            style: TextStyle(
-                              color: const Color.fromARGB(135, 64, 63, 63),
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
 
                           borderRadius: BorderRadius.circular(20),
@@ -228,14 +239,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                                       children: [
                                         Text(
                                           userType[i],
-                                          style: TextStyle(
-                                            color: const Color.fromARGB(
-                                              135,
-                                              64,
-                                              63,
-                                              63,
-                                            ),
-                                          ),
+                                          style: TextStyle(color: Colors.white),
                                         ),
                                       ],
                                     ),
@@ -261,6 +265,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           horizontal: MediaQuery.of(context).size.width * 0.1,
                         ),
                         child: CustomButton(
+                          color: kMainColor,
                           onTap: () async {
                             final user = User(
                               email: emailController.text,

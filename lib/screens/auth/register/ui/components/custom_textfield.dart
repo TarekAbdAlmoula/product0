@@ -25,10 +25,10 @@ class CustomTextField extends StatelessWidget {
         validator: validator,
         onChanged: onChanged,
         cursorColor: Colors.white,
-        style: TextStyle(color: const Color.fromARGB(135, 64, 63, 63)),
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(color: const Color.fromARGB(135, 64, 63, 63)),
+          hintStyle: TextStyle(color: Colors.white),
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(10),

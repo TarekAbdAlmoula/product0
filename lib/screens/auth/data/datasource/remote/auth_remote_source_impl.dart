@@ -7,6 +7,15 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
   final ApiConsumer api;
   AuthRemoteSourceImpl({required this.api});
   @override
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /// Registers a new user on the server.
+  ///
+  /// The [User] object is used to construct the request body.
+  ///
+  /// The response is the JSON response from the server.
+  ///
+  /// Returns a Future that completes with the JSON response from the server.
+  /*******  55519016-5122-43bb-8d7a-f0e28a93543a  *******/
   Future createNewUser({required User user}) async {
     var response = await api.post(
       'https://wasla.barmijha.net/wp-json/custom-api/v1/register',
@@ -28,7 +37,6 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
       'https://wasla.barmijha.net/wp-json/custom-api/v1/verify-otp',
       data: {"user_id": int.parse(userId), "otp": otp},
     );
-    print('-----OTP------>$response');
     if (response['success'] == true) {
       // await addPoints(action: 'first_signup', token: response['token']);
       return response['token'];
@@ -42,8 +50,10 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
         'https://wasla.barmijha.net/wp-json/jwt-auth/v1/token',
         data: {"username": email, "password": password},
       );
-      print(response);
-      return response['success'];
+      final User user = User.fromJson(response);
+      print('$user');
+
+      return user;
     } on DioException catch (e) {}
   }
 
@@ -54,7 +64,6 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
       data: {"action": action},
       token: token,
     );
-    print('response----------->$response');
     return response;
   }
 }

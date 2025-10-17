@@ -147,6 +147,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           ),
 
                                           CustomButton(
+                                            color: kMainColor,
                                             onTap: () async {
                                               await detailsViewmodel.sendRating(
                                                 rating,

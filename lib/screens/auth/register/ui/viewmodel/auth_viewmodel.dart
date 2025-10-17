@@ -36,11 +36,8 @@ class AuthViewmodel extends Cubit<AuthState> {
 
   Future login(String email, String password) async {
     try {
-      bool isLoggedIn = await authRepositoryImp.login(
-        email: email,
-        password: password,
-      );
-      emit(state.copyWith(uiState: UiState.data, isLoggedIn: isLoggedIn));
+      await authRepositoryImp.login(email: email, password: password);
+      emit(state.copyWith(uiState: UiState.data, isLoggedIn: true));
     } catch (e) {}
   }
 }

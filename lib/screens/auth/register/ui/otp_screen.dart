@@ -157,6 +157,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                   ),
                 ),
                 CustomButton(
+                  color: kMainColor,
                   onTap: () {
                     AwesomeDialog(
                       // dismissOnTouchOutside: false,

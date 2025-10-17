@@ -25,7 +25,7 @@ class PremieumScreen extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: kMainColor,
+          backgroundColor: kMainDarkColor,
           title: Text('اشترك معنا', style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),
@@ -77,7 +77,7 @@ class PremieumCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(0xff094067),
+        color: kMainDarkColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(

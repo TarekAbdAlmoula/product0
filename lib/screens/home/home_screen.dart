@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return SafeArea(
                 child: RefreshIndicator(
-                  color: kMainColor, // لون دائرة التحديث
+                  color: kMainColor,
 
                   onRefresh: () async {
                     await BlocProvider.of<HomeViewModel>(context).init();
