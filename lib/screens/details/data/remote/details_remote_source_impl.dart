@@ -14,12 +14,11 @@ class DetailsRemoteSourceImpl implements DetailsRemoteSource {
     String? comment,
   }) async {
     var response = await api.post(
-      'https://wasla.barmijha.net/wp-json/custom-api/v1/rate_service',
+      'https://wasla.barmijha.net/wp-json/custom-api/v1/rate-service',
       data: {"service_id": "$workshopId", "rating": rating, "comment": comment},
       token: token,
     );
-    print('rating response------------------->$response');
-
-    return response["new_rating"];
+    print(response);
+    return response;
   }
 }

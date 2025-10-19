@@ -259,7 +259,10 @@ class _ProductImagesViewerState extends State<ProductImagesViewer> {
                       height: 60,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.lineSpinFadeLoader,
+                          colors: [kMainColor, kMainDarkColor],
+                        ),
                       ),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),

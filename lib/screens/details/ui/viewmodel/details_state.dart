@@ -1,14 +1,15 @@
 import 'package:product0/core/utils/ui_state.dart';
+import 'package:product0/screens/details/data/model/rating.dart';
 
 class DetailsState {
   final UiState? uiState;
-  num? rating;
-  DetailsState({this.uiState, this.rating});
+  Rating? ratingModel;
+  DetailsState({this.uiState, this.ratingModel});
 
-  DetailsState copyWith({UiState? uiState, num? rating}) {
+  DetailsState copyWith({UiState? uiState, Rating? ratingModel}) {
     return DetailsState(
       uiState: uiState ?? this.uiState,
-      rating: rating ?? this.rating,
+      ratingModel: ratingModel ?? this.ratingModel,
     );
   }
 }

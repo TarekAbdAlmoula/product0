@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/auth/data/model/user.dart';
@@ -24,13 +26,26 @@ class AuthViewmodel extends Cubit<AuthState> {
   }
 
   Future verifyOtp({required String otp, required num userId}) async {
-    // emit(state.copyWith(uiState: UiState.loading));
     try {
       bool isOtpVerified = await authRepositoryImp.verifyOtp(otp: otp);
-      if (isOtpVerified) {
-        await authRepositoryImp.addPoints(action: 'first_signup');
+      print('🎯 isOtpVerified=====================$isOtpVerified');
+
+      if (isOtpVerified == true) {
+        String addedPoints = await authRepositoryImp.addPoints(
+          action: 'first_signup',
+        );
+        print(
+          '🎯 isOtpVerified 1 =$isOtpVerified | addedPoints 1 =$addedPoints',
+        );
+
+        emit(
+          state.copyWith(
+            uiState: UiState.data,
+            isOtpVerified: isOtpVerified,
+            addedPoints: addedPoints,
+          ),
+        );
       }
-      emit(state.copyWith(uiState: UiState.data, isOtpVerified: isOtpVerified));
     } catch (e) {}
   }
 

@@ -7,15 +7,6 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
   final ApiConsumer api;
   AuthRemoteSourceImpl({required this.api});
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Registers a new user on the server.
-  ///
-  /// The [User] object is used to construct the request body.
-  ///
-  /// The response is the JSON response from the server.
-  ///
-  /// Returns a Future that completes with the JSON response from the server.
-  /*******  55519016-5122-43bb-8d7a-f0e28a93543a  *******/
   Future createNewUser({required User user}) async {
     var response = await api.post(
       'https://wasla.barmijha.net/wp-json/custom-api/v1/register',
@@ -58,12 +49,13 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
   }
 
   @override
-  Future addPoints({required String action, required String token}) {
-    var response = api.post(
+  Future addPoints({required String action, required String token}) async {
+    var response = await api.post(
       'https://wasla.barmijha.net/wp-json/custom-api/v1/user_points',
       data: {"action": action},
       token: token,
     );
-    return response;
+    print(' points response ${response['points_added']}');
+    return response['points_added'].toString();
   }
 }

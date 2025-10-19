@@ -23,37 +23,31 @@ class CustomAppBar extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.success,
-                        title: 'تهينينا لقد حصت على 50 نقطة',
-                        btnOkText: 'حسناً',
-                        btnOkOnPress: () {},
-                      ).show();
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          'مرحبا بك',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: kMainDarkColor,
-                          ),
+                  Row(
+                    children: [
+                      Text(
+                        'مرحبا بك',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: kMainDarkColor,
                         ),
-                        SizedBox(width: 5),
-                        Image.asset('assets/images/hello_icon.png', height: 20),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 5),
+                      Image.asset('assets/images/hello_icon.png', height: 20),
+                    ],
                   ),
-                  Text(
-                    userName,
-                    style: TextStyle(
-                      color: kMainDarkColor,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.45,
+
+                    child: Text(
+                      userName,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: kMainDarkColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -74,13 +68,12 @@ class CustomAppBar extends StatelessWidget {
               ),
               // Spacer(flex: 0),
               IconButton(
-                // padding: EdgeInsets.all(5),
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return Container(
-                        margin: EdgeInsets.all(20),
+                        margin: EdgeInsets.all(0),
                         height: double.infinity,
                         width: double.infinity,
                         decoration: BoxDecoration(

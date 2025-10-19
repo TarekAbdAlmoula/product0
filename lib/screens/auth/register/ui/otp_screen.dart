@@ -32,7 +32,7 @@ class OtpScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
-        backgroundColor: kMainColor,
+        backgroundColor: kMainDarkColor,
         resizeToAvoidBottomInset: true,
         body: OtpScreenBody(userId: userId),
       ),
@@ -57,10 +57,12 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
     return BlocListener<AuthViewmodel, AuthState>(
       listener: (context, state) {
         if (state.isOtpVerified == true) {
+          print('inside the listener');
+          // Navigator.pop(context);
           AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
-            title: 'تهينينا لقد حصت على 50 نقطة',
+            title: 'تهانينا  لقد حصت على ${state.addedPoints} نقطة',
             btnOkText: 'حسناً',
             btnOkOnPress: () {
               context.goNamed(AppRouteConstants.home);
@@ -105,7 +107,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                       Text(
                         'أدخل الرمز ',
                         style: TextStyle(
-                          color: kMainDarkColor,
+                          color: kMainColor,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -160,43 +162,50 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                   btnText: 'إرسال ',
 
                   color: kMainColor,
-                  onTap: () {
-                    AwesomeDialog(
-                      // dismissOnTouchOutside: false,
-                      dialogBackgroundColor: Colors.white,
-                      titleTextStyle: TextStyle(color: Colors.black),
-                      context: context,
-                      dialogType: DialogType.noHeader,
-                      body: Column(
-                        children: [
-                          Text(
-                            'جاري إنشاء حساب جديد',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: kMainDarkColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.14,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: LoadingIndicator(
-                              indicatorType: Indicator.ballClipRotatePulse,
-                              colors: const [kMainDarkColor, kMainColor],
-                              strokeWidth: 3,
-                              backgroundColor: Colors.white,
-                              pathBackgroundColor: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ).show();
+                  onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      BlocProvider.of<AuthViewmodel>(
+                      // BlocProvider.of<AuthViewmodel>(
+                      //   context,
+                      // ).verifyOtp(otp: otp, userId: int.parse(widget.userId));
+
+                      AwesomeDialog(
+                        // dismissOnTouchOutside: false,
+                        dialogBackgroundColor: Colors.white,
+                        titleTextStyle: TextStyle(color: Colors.black),
+                        context: context,
+                        dialogType: DialogType.noHeader,
+                        body: Column(
+                          children: [
+                            Text(
+                              'جاري إنشاء حساب جديد',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: kMainDarkColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.14,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: LoadingIndicator(
+                                indicatorType: Indicator.ballClipRotatePulse,
+                                colors: const [kMainDarkColor, kMainColor],
+                                strokeWidth: 3,
+                                backgroundColor: Colors.white,
+                                pathBackgroundColor: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ).show();
+                      await BlocProvider.of<AuthViewmodel>(
                         context,
                       ).verifyOtp(otp: otp, userId: int.parse(widget.userId));
+
+                      // Navigator.pop(context);
                     }
+
                     // context.goNamed(AppRouteConstants.home);
                   },
                 ),

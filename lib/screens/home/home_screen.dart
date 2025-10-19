@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: kMainColor,
 
                   onRefresh: () async {
-                    await BlocProvider.of<HomeViewModel>(context).init();
+                    // await BlocProvider.of<HomeViewModel>(context).init();
                   },
                   child: SingleChildScrollView(
                     child: Padding(

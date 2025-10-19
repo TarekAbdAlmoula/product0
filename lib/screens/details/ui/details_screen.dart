@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -71,17 +72,33 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               child: BlocConsumer<DetailsViewmodel, DetailsState>(
                                 listener: (context, state) {
                                   if (state.uiState == UiState.data &&
-                                      state.rating == rating) {
+                                      state.ratingModel!.success == true) {
                                     AwesomeDialog(
                                       context: bottomSheetContext,
                                       btnOkText: 'إغلاق',
-                                      title: 'تم التقييم بنجاح',
+                                      // title: state.ratingModel!.message,
                                       dialogType: DialogType.success,
                                       btnOkOnPress: () {
                                         Navigator.pop(bottomSheetContext);
                                         ratingController.clear();
                                         context.goNamed(AppRouteConstants.home);
                                       },
+                                      body: Html(
+                                        data: state.ratingModel!.message,
+                                      ),
+                                    ).show();
+                                  } else if (state.uiState == UiState.data &&
+                                      state.ratingModel!.success == false) {
+                                    AwesomeDialog(
+                                      context: bottomSheetContext,
+                                      btnOkText: 'إغلاق',
+                                      title: state.ratingModel!.message,
+                                      dialogType: DialogType.error,
+                                      btnOkOnPress: () {
+                                        Navigator.pop(bottomSheetContext);
+                                        ratingController.clear();
+                                      },
+                                      // body: Text('data'),
                                     ).show();
                                   }
                                 },

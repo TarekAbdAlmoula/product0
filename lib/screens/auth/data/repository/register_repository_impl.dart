@@ -36,6 +36,8 @@ class AuthRepositoryImpl implements AuthRepository {
       otp: otp,
       userId: userId,
     );
+    print('🔑 token from remote = "$token"');
+
     await authLocalSourceImpl.saveSpecificData(value: token);
     bool status;
     if (token.isNotEmpty) {
@@ -69,6 +71,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future addPoints({required String action}) async {
     final String token = await authLocalSourceImpl.getData('token');
-    return await authRemoteSourceImpl.addPoints(action: action, token: token);
+    String addedPoints = await authRemoteSourceImpl.addPoints(
+      action: action,
+      token: token,
+    );
+    print('points_added ----------->from repos $addedPoints');
+    return addedPoints;
   }
 }
