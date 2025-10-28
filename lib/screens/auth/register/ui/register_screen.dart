@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
@@ -28,7 +29,14 @@ class RegisterScreen extends StatelessWidget {
         authRepositoryImp: AuthRepositoryImpl(
           authLocalSourceImpl: AuthLocalSourceImpl(),
           authRemoteSourceImpl: AuthRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  receiveTimeout: const Duration(seconds: 5),
+                  connectTimeout: const Duration(seconds: 5),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -62,14 +70,45 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
 
     return BlocConsumer<AuthViewmodel, AuthState>(
       listener: (context, state) {
-        final response = state.authResponse;
-        if (response != null && response.isSuccess == true) {
-          if (mounted) {
-            context.goNamed(
-              AppRouteConstants.otp,
-              pathParameters: {'userId': response.userId.toString()},
-            );
-          }
+        if (state.authResponse != null &&
+            state.authResponse!.isSuccess == true) {
+          context.goNamed(
+            AppRouteConstants.otp,
+            pathParameters: {'userId': state.authResponse!.userId.toString()},
+          );
+        } else if (state.authResponse != null &&
+            state.authResponse!.isSuccess == false) {
+          context.pop();
+          AwesomeDialog(
+            dialogBackgroundColor: Colors.white,
+            titleTextStyle: TextStyle(color: Colors.black),
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.bottomSlide,
+            body: Html(data: state.authResponse!.message),
+            btnOkOnPress: () {
+              context.goNamed(AppRouteConstants.login);
+            },
+            btnOkText: 'حسناً',
+          ).show();
+        } else if (state.uiState == UiState.error) {
+          context.pop();
+          AwesomeDialog(
+            dialogBackgroundColor: Colors.white,
+            titleTextStyle: TextStyle(color: Colors.black),
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.bottomSlide,
+            body: Text(
+              state.erroemessage ?? '',
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 16),
+            ),
+            btnOkOnPress: () {
+              context.goNamed(AppRouteConstants.register);
+            },
+            btnOkText: 'حسناً',
+          ).show();
         }
       },
       builder: (context, state) {
@@ -96,6 +135,10 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height * 0.01,
+                            ),
+
                             onPressed: () {
                               context.goNamed(AppRouteConstants.login);
                             },
@@ -123,6 +166,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       ),
 
                       CustomTextField(
+                        onTap: () {},
                         hintText: 'الاسم الاول',
                         controller: firstNameController,
                         onChanged: (value) => firstNameController.text = value,
@@ -131,10 +175,14 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           if (value == null || value.isEmpty) {
                             return "الرجاء إدخال الاسم";
                           }
+                          if (value.length > 12) {
+                            return 'يجب أن يكون 12 أحرف على الأكثر';
+                          }
                           return null;
                         },
                       ),
                       CustomTextField(
+                        onTap: () {},
                         hintText: 'الاسم الاخير',
                         controller: lastNameController,
                         onChanged: (value) => lastNameController.text = value,
@@ -143,10 +191,14 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           if (value == null || value.isEmpty) {
                             return "الرجاء إدخال الاسم";
                           }
+                          if (value.length > 12) {
+                            return 'يجب أن يكون 12 أحرف على الأكثر';
+                          }
                           return null;
                         },
                       ),
                       CustomTextField(
+                        onTap: () {},
                         hintText: 'البريد الالكتروني مثل wasla@gmail.com',
                         controller: emailController,
                         onChanged: (value) => emailController.text = value,
@@ -168,6 +220,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                         },
                       ),
                       CustomTextField(
+                        onTap: () {},
                         hintText: 'كلمة المرور',
                         controller: passwordController,
                         onChanged: (value) => passwordController.text = value,
@@ -176,25 +229,30 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           if (value == null || value.isEmpty) {
                             return "الرجاء إدخال كلمة المرور";
                           }
+                          if (value.length < 8) {
+                            return 'يجب أن يكون 8 خانات على الأقل';
+                          }
                           return null;
                         },
                       ),
 
                       CustomTextField(
+                        onTap: () {},
                         hintText: 'رقم الهاتف',
                         controller: phoneController,
                         onChanged: (value) => phoneController.text = value,
                         formKey: formKey,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "الرجاء إدخال رقم الهاتف";
+                            return 'الرجاء إدخال رقم الهاتف';
                           }
-
-                          final phoneRegex = RegExp(r'^[0-9]{8,15}$');
-                          if (!phoneRegex.hasMatch(value)) {
-                            return "رقم الهاتف غير صالح، الرجاء إدخال أرقام فقط";
+                          final regex = RegExp(r'^09\d+$');
+                          if (!regex.hasMatch(value)) {
+                            return 'الرقم يجب أن يبدأ بـ 09 ويحتوي على أرقام فقط';
                           }
-
+                          if (value.length != 10) {
+                            return 'الرقم يجب أن يتكون من 10 أرقام';
+                          }
                           return null;
                         },
                         keyBoardType: TextInputType.number,
@@ -247,6 +305,8 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                                 ),
                               ),
                           ],
+                          validator: (value) =>
+                              value == null ? 'حقل مطلوب' : null,
                           onChanged: (value) {
                             if (value == userType[1]) {
                               accountType.text = 'ورشة';
@@ -278,7 +338,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                             );
                             if (formKey.currentState!.validate()) {
                               AwesomeDialog(
-                                // dismissOnTouchOutside: false,
+                                dismissOnTouchOutside: false,
                                 dialogBackgroundColor: Colors.white,
                                 titleTextStyle: TextStyle(color: Colors.black),
                                 context: context,
@@ -286,7 +346,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                                 body: Column(
                                   children: [
                                     Text(
-                                      'سيتم إرسال رمز التحقق إلى الايميل',
+                                      'جاري التحقق من عملية إنشاء الحساب',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: kMainDarkColor,

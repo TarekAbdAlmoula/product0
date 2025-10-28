@@ -62,7 +62,6 @@ class HomeWorkshopCard extends StatelessWidget {
                     Positioned(
                       child: Container(
                         padding: EdgeInsets.all(5),
-                        // width: MediaQuery.of(context).size.width * 0.2,
                         height: MediaQuery.of(context).size.height * 0.03,
                         decoration: BoxDecoration(
                           color: Color(0xffF75859),

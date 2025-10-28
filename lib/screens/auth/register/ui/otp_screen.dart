@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -56,16 +57,25 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
   Widget build(BuildContext context) {
     return BlocListener<AuthViewmodel, AuthState>(
       listener: (context, state) {
-        if (state.isOtpVerified == true) {
-          print('inside the listener');
-          // Navigator.pop(context);
+        if (state.authResponse!.isSuccess == true) {
           AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
-            title: 'تهانينا  لقد حصت على ${state.addedPoints} نقطة',
+            body: Html(data: state.pointsMessage),
             btnOkText: 'حسناً',
             btnOkOnPress: () {
               context.goNamed(AppRouteConstants.home);
+            },
+          ).show();
+        } else if (state.authResponse!.isSuccess == false) {
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.error,
+            title: 'خطأ',
+            body: Html(data: state.authResponse!.message),
+            btnOkText: 'حسناً',
+            btnOkOnPress: () {
+              context.goNamed(AppRouteConstants.register);
             },
           ).show();
         }
@@ -126,20 +136,20 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                       key: _formKey,
 
                       child: PinCodeTextField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "الرجاء إدخال الكود";
-                          } else if (value.length < 6) {
-                            return "الكود يجب أن يحتوي على6 أرقام";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "الرجاء إدخال الكود";
+                        //   } else if (value.length < 6) {
+                        //     return "الكود يجب أن يحتوي على6 أرقام";
+                        //   }
+                        //   return null;
+                        // },
                         keyboardType: TextInputType.number,
                         textStyle: TextStyle(color: Colors.white),
                         pinTheme: PinTheme(
                           inactiveColor: Colors.white,
                           disabledColor: Colors.amber,
-                          selectedColor: kMainDarkColor,
+                          selectedColor: kMainColor,
                           // activeColor: kMainDarkColor,
                           fieldOuterPadding: EdgeInsets.all(0),
                           shape: PinCodeFieldShape.circle,

@@ -26,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: kMainDarkColor,
         centerTitle: true,
@@ -56,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               CustomProfileCard(
                 title: ':رقم الهاتف',
-                content: user.userType ?? '',
+                content: user.phoneNumber ?? '',
               ),
               CustomProfileCard(
                 title: ':نوع الحساب',
@@ -67,14 +68,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTap: () async {
                   final storage = FlutterSecureStorage();
                   await storage.delete(key: 'token');
+                  await storage.delete(key: 'userId');
+                  await storage.delete(key: 'username');
+                  await storage.delete(key: 'email');
+                  await storage.delete(key: 'accountType');
+                  await storage.delete(key: 'phoneNumber');
+
                   context.goNamed(AppRouteConstants.splash);
                 },
                 color: Colors.red,
                 btnText: 'تسجيل الخروج',
-              ),
-              Text(
-                user.userType ?? '',
-                style: TextStyle(color: kMainDarkColor),
               ),
             ],
           ),
@@ -88,6 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     user.userType = await _storage.read(key: 'accountType');
     user.email = await _storage.read(key: 'email');
     user.userType = await _storage.read(key: 'accountType');
+    user.phoneNumber = await _storage.read(key: 'phoneNumber');
     setState(() {});
   }
 }
@@ -124,8 +128,9 @@ class CustomProfileCard extends StatelessWidget {
               height: 40,
               width: double.infinity,
               decoration: BoxDecoration(
+                border: Border.all(color: Color(0xff9F9F9F)),
                 borderRadius: BorderRadius.circular(5),
-                color: const Color.fromARGB(255, 234, 234, 234),
+                color: const Color(0xffF8F8F8),
               ),
               child: Row(children: [Text(content)]),
             ),

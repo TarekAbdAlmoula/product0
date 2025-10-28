@@ -8,6 +8,7 @@ import 'package:product0/screens/auth/register/ui/register_screen.dart';
 import 'package:product0/screens/categories/ui/categories_screen.dart';
 import 'package:product0/screens/details/ui/details_screen.dart';
 import 'package:product0/screens/home/home_screen.dart';
+import 'package:product0/screens/home/ui/components/search.dart';
 import 'package:product0/screens/home/ui/components/showMore_screen.dart';
 import 'package:product0/screens/notification/ui/notification_screen.dart';
 import 'package:product0/screens/premieum/ui/premieum_screen.dart';
@@ -112,6 +113,15 @@ abstract class AppRouter {
         builder: (context, state) {
           final workshop = state.extra as Workshop;
           return DetailsScreen(workshop: workshop);
+        },
+      ),
+      GoRoute(
+        name: AppRouteConstants.search,
+        path: '/search/:query',
+        builder: (context, state) {
+          final query = state.pathParameters['query'];
+
+          return SearchScreen(query: query ?? '');
         },
       ),
     ],

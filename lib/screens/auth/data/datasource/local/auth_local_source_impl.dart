@@ -11,6 +11,8 @@ class AuthLocalSourceImpl implements AuthLocalSource {
     required num userId,
     required String email,
     required String accountType,
+    required String phoneNumber,
+
     String? token,
   }) async {
     await _storage.write(key: 'username', value: username);
@@ -18,6 +20,7 @@ class AuthLocalSourceImpl implements AuthLocalSource {
     await _storage.write(key: 'userId', value: userId.toString());
     await _storage.write(key: 'email', value: email);
     await _storage.write(key: 'accountType', value: accountType);
+    await _storage.write(key: 'phoneNumber', value: phoneNumber);
     if (token != null) await _storage.write(key: 'token', value: token);
   }
 

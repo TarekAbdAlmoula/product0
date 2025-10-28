@@ -52,20 +52,20 @@ class Workshop {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'content': content,
-      'excerpt': excerpt,
-      'workshop_code': code,
-      'is_featured': isFeatured,
-      'featured_image_url': featuredImageUrl,
-      'phone_number': phoneNumber,
-      'average_rating': rating,
-      'location': location,
-      'gallery': gallery,
-      'services_category': servicesCategory,
-    };
-  }
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'id': id,
+  //     'title': title,
+  //     'content': content,
+  //     'excerpt': excerpt,
+  //     'workshop_code': code,
+  //     'is_featured': isFeatured,
+  //     'featured_image_url': featuredImageUrl,
+  //     'phone_number': phoneNumber,
+  //     'average_rating': rating,
+  //     'location': location,
+  //     'gallery': gallery,
+  //     'services_category': servicesCategory,
+  //   };
+  // }
 }

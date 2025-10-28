@@ -30,6 +30,7 @@ class NotificationScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           backgroundColor: kMainDarkColor,
           title: Text('الاشعارات', style: TextStyle(color: Colors.white)),
@@ -45,17 +46,6 @@ class NotificationScreenBody extends StatelessWidget {
   const NotificationScreenBody({super.key});
 
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Builds the widget tree for the NotificationScreen.
-  ///
-  /// It returns a BlocProvider which creates an instance of NotificationViewmodel
-  /// and uses it to build the widget tree.
-  ///
-  /// The widget tree is built according to the state of the NotificationViewmodel.
-  /// If the state is loading, it shows a CircularProgressIndicator.
-  /// If the state is data, it shows a listview of NotificationCard widgets.
-  /// If the state is error, it shows a Text widget with an error message.
-  /*******  6ee14a56-2869-45db-9697-b44a2be9de82  *******/
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationViewmodel, NotificationState>(
       builder: (context, state) {
@@ -91,8 +81,8 @@ class NotificationCard extends StatelessWidget {
       width: double.infinity,
 
       decoration: BoxDecoration(
-        border: Border.all(color: kMainColor),
-        color: kMainDarkColor.withAlpha(15),
+        border: Border.all(color: Color(0xffA3A3A3)),
+        color: Color(0xffF8F8F8),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -103,16 +93,17 @@ class NotificationCard extends StatelessWidget {
             textAlign: TextAlign.end,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black,
+              fontSize: 18,
+              color: kMainColor,
             ),
           ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.001),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.85,
             child: Text(
               notification.content,
               textAlign: TextAlign.end,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Color(0xff5C5C5C), fontSize: 17),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),

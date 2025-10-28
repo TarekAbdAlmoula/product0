@@ -27,8 +27,8 @@ class AboutScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        backgroundColor: backgroundColor,
         appBar: AppBar(
-          elevation: 0,
           shadowColor: Colors.transparent,
 
           backgroundColor: kMainDarkColor,
@@ -79,7 +79,7 @@ class AboutScreenLogo extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.7,
                     height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
-                      color: Color(0xffEEEEEE),
+                      color: Color(0xffF8F8F8),
                       shape: BoxShape.circle,
                       border: Border.all(color: kMainColor, width: 1),
                     ),

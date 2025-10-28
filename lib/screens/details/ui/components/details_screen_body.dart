@@ -113,7 +113,7 @@ class DetailsScreenBody extends StatelessWidget {
             DetailsCard(content: workshop.content, title: ': الوصف'),
             DetailsCard(
               content: workshop.phoneNumber,
-              title: 'معلومات الاتصال',
+              title: ': معلومات الاتصال',
             ),
             DetailsCard(
               content: workshop.location.isNotEmpty

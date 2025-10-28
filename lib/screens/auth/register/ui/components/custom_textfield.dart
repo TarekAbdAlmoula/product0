@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
     required this.onChanged,
     required this.formKey,
     required this.validator,
+    required this.onTap,
     this.keyBoardType,
   });
   final TextEditingController controller;
@@ -16,11 +17,13 @@ class CustomTextField extends StatelessWidget {
   final GlobalKey formKey;
   final String? Function(String?)? validator;
   final TextInputType? keyBoardType;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: TextFormField(
+        onTap: onTap,
         keyboardType: keyBoardType,
         validator: validator,
         onChanged: onChanged,

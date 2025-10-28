@@ -12,6 +12,10 @@ class HomeState {
   final int currentBannerIndex;
   final List<Workshop> featuredWorkshop;
   final List<Workshop> topRatedWorkshop;
+  final bool hasSearched; // 👈 متغير جديد
+
+  final List<Workshop> searchedWorkshops;
+
   final String? userName;
   final int? userPoints;
   HomeState({
@@ -23,8 +27,10 @@ class HomeState {
     this.currentBannerIndex = 0,
     this.featuredWorkshop = const [],
     this.topRatedWorkshop = const [],
+    this.searchedWorkshops = const [],
     this.userName,
     this.userPoints,
+    this.hasSearched = false, // 👈 القيمة الافتراضية
   });
 
   HomeState copyWith({
@@ -36,6 +42,9 @@ class HomeState {
     int? currentBannerIndex,
     List<Workshop>? featuredWorkshop,
     List<Workshop>? topRatedWorkshop,
+    List<Workshop>? searchedWorkshops,
+    bool? hasSearched,
+
     String? userName,
     int? userPoints,
   }) {
@@ -48,8 +57,10 @@ class HomeState {
       currentBannerIndex: currentBannerIndex ?? this.currentBannerIndex,
       featuredWorkshop: featuredWorkshop ?? this.featuredWorkshop,
       topRatedWorkshop: topRatedWorkshop ?? this.topRatedWorkshop,
+      searchedWorkshops: searchedWorkshops ?? this.searchedWorkshops,
       userName: userName ?? this.userName,
       userPoints: userPoints ?? this.userPoints,
+      hasSearched: hasSearched ?? this.hasSearched, // 👈
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/workshops/ui/workshop_card.dart';
@@ -12,7 +14,7 @@ class ShowmoreScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: kMainColor,
+        backgroundColor: kMainDarkColor,
       ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(
@@ -21,7 +23,15 @@ class ShowmoreScreen extends StatelessWidget {
 
         itemCount: workshop.length,
         itemBuilder: (context, index) {
-          return WorkshopCard(press: () {}, workshop: workshop[index]);
+          return WorkshopCard(
+            press: () {
+              context.pushNamed(
+                AppRouteConstants.details,
+                extra: workshop[index],
+              );
+            },
+            workshop: workshop[index],
+          );
         },
       ),
     );

@@ -64,7 +64,6 @@ class HomeRepositoryImpl implements HomeRepository {
     workshop.sort((a, b) {
       return b.rating.compareTo(a.rating);
     });
-    // print('----------category--------->${workshop[0].servicesCategory[0]}');
     return workshop;
   }
 
@@ -98,5 +97,15 @@ class HomeRepositoryImpl implements HomeRepository {
   Future addPoints({required String action}) async {
     final String token = await homeLocalSourceImpl.getLocalData('token');
     await homeRemoteSourceImpl.addPoints(action: action, token: token);
+  }
+
+  @override
+  Future searchWorkshops({required String query}) async {
+    List<Workshop> searchedWorkshops = [];
+    var response = await homeRemoteSourceImpl.searchWorkshops(query: query);
+    for (var data in response) {
+      searchedWorkshops.add(Workshop.fromJson(data));
+    }
+    return searchedWorkshops;
   }
 }

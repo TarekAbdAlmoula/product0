@@ -8,4 +8,5 @@ abstract class HomeRepository {
   Future getLocalData({required String key});
   Future getUserPoints();
   Future addPoints({required String action});
+  Future searchWorkshops({required String query});
 }

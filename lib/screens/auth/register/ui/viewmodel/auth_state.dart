@@ -6,14 +6,16 @@ class AuthState {
   final AuthResponse? authResponse;
   final bool isOtpVerified;
   final bool isLoggedIn;
-  final String addedPoints;
+  final String pointsMessage;
+  final String? erroemessage;
 
   AuthState({
     this.uiState,
     this.authResponse,
     this.isOtpVerified = false,
     this.isLoggedIn = false,
-    this.addedPoints = '',
+    this.pointsMessage = '',
+    this.erroemessage,
   });
 
   AuthState copyWith({
@@ -22,13 +24,15 @@ class AuthState {
     bool? isOtpVerified,
     bool? isLoggedIn,
     String? addedPoints,
+    String? erroemessage,
   }) {
     return AuthState(
       uiState: uiState ?? this.uiState,
       authResponse: authResponse ?? this.authResponse,
       isOtpVerified: isOtpVerified ?? this.isOtpVerified,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
-      addedPoints: addedPoints ?? this.addedPoints,
+      pointsMessage: addedPoints ?? this.pointsMessage,
+      erroemessage: erroemessage ?? this.erroemessage,
     );
   }
 }

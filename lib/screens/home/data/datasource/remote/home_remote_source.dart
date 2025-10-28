@@ -7,4 +7,5 @@ abstract class HomeRemoteSource {
   Future getTopRatedWorkshop();
   Future getUserPoints({required String token});
   Future addPoints({required String action, required String token});
+  Future searchWorkshops({required String query});
 }

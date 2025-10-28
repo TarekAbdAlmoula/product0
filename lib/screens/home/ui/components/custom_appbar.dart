@@ -1,14 +1,18 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/utils/constants.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String userName;
   final String userPoints;
+  final void Function(String)? onSubmitted;
   const CustomAppBar({
     super.key,
     required this.userName,
     required this.userPoints,
+    required this.onSubmitted,
   });
 
   @override
@@ -25,12 +29,17 @@ class CustomAppBar extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        'مرحبا بك',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: kMainDarkColor,
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed(AppRouteConstants.search);
+                        },
+                        child: Text(
+                          'مرحبا بك',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: kMainDarkColor,
+                          ),
                         ),
                       ),
                       SizedBox(width: 5),
@@ -52,23 +61,25 @@ class CustomAppBar extends StatelessWidget {
                   ),
                 ],
               ),
-              Spacer(flex: 1),
+
+              Spacer(flex: 20),
               Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.width * 0.03,
+                  left: MediaQuery.of(context).size.width * 0.01,
+                ),
                 child: Text(
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   userPoints,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: kMainColor,
-                    fontSize: 18,
+                    fontSize: 28,
                   ),
-                  // textAlign: TextAlign.start,
                 ),
               ),
-              // Spacer(flex: 0),
-              IconButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -87,25 +98,33 @@ class CustomAppBar extends StatelessWidget {
                     },
                   );
                 },
-                icon: Icon(Icons.card_giftcard, color: kMainDarkColor),
+                child: SvgPicture.asset(
+                  'assets/icons/gift.svg',
+                  height: 25,
+                  width: 25,
+                  color: kMainDarkColor,
+                ),
               ),
-              SizedBox(
-                // width: ,
-                height: MediaQuery.of(context).size.height * 0.06,
-                child: Image.asset('assets/images/wasla_logo_wb.png'),
-              ),
+              Spacer(),
             ],
           ),
           TextField(
+            cursorColor: kMainColor,
+            onSubmitted: onSubmitted,
+
             decoration: InputDecoration(
               filled: true,
+
               fillColor: Colors.grey.shade200,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
               ),
               hintText: 'بحث ...',
-              prefixIcon: Icon(Icons.search, color: Colors.grey, size: 25),
+              prefixIcon: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.search, color: Colors.grey, size: 30),
+              ),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.015),

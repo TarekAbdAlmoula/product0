@@ -5,6 +5,7 @@ abstract class AuthLocalSource {
     required num userId,
     required String email,
     required String accountType,
+    required String phoneNumber,
     String? token,
   });
 

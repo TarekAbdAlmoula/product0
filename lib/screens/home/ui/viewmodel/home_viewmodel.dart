@@ -40,22 +40,22 @@ class HomeViewModel extends Cubit<HomeState> {
     try {
       var adds = await homeRepositoryImpl.getAdds();
       emit(state.copyWith(uiState: UiState.data, adds: adds));
-      startBanerAutoScroll();
+      // startBanerAutoScroll();
     } catch (e) {}
   }
 
-  void startBanerAutoScroll() {
-    if (state.adds.isEmpty) return;
-    _bannerTimer = Timer.periodic(Duration(seconds: 3), (timer) {
-      emit(
-        state.copyWith(
-          uiState: UiState.data,
-          currentBannerIndex:
-              (state.currentBannerIndex + 1) % state.adds.length,
-        ),
-      );
-    });
-  }
+  // void startBanerAutoScroll() {
+  //   if (state.adds.isEmpty) return;
+  //   _bannerTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+  //     emit(
+  //       state.copyWith(
+  //         uiState: UiState.data,
+  //         currentBannerIndex:
+  //             (state.currentBannerIndex + 1) % state.adds.length,
+  //       ),
+  //     );
+  //   });
+  // }
 
   Future getFeaturedWorkshops() async {
     emit(state.copyWith(uiState: UiState.loading));
@@ -107,6 +107,24 @@ class HomeViewModel extends Cubit<HomeState> {
     await getUserPoints();
   }
 
+  Future searchWorkshops({required String query}) async {
+    try {
+      emit(state.copyWith(uiState: UiState.loading));
+      List<Workshop>? searchedWorkshops;
+      searchedWorkshops = await homeRepositoryImpl.searchWorkshops(
+        query: query,
+      );
+      emit(
+        state.copyWith(
+          uiState: UiState.data,
+          searchedWorkshops: searchedWorkshops,
+          hasSearched: true,
+        ),
+      );
+    } catch (e) {}
+  }
+
+  // Future searchWorkshops() {}
   @override
   Future<void> close() {
     _bannerTimer?.cancel();

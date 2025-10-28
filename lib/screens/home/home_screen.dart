@@ -1,12 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
-import 'package:product0/screens/details/ui/details_screen.dart';
 import 'package:product0/screens/home/data/datasource/local/home_local_source_impl.dart';
 import 'package:product0/screens/home/ui/components/categories_card.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository_impl.dart';
@@ -25,6 +27,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /// Initializes the state of the widget. ///
+  /// This is usually called when the widget is inserted into the tree. ///
+  /// It is not called when the widget is reinserted into the tree,
+  /*******  ebe36792-ec1c-46d4-8bcd-f356aa4b2960  *******/
   void initState() {
     super.initState();
   }
@@ -36,13 +43,21 @@ class _HomeScreenState extends State<HomeScreen> {
         homeRepositoryImpl: HomeRepositoryImpl(
           homeLocalSourceImpl: HomeLocalSourceImpl(),
           homeRemoteSourceImpl: HomeRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(milliseconds: 8000),
+                  receiveTimeout: const Duration(milliseconds: 8000),
+                ),
+              ),
+            ),
           ),
         ),
       ),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: BlocBuilder<HomeViewModel, HomeState>(
+        body: BlocConsumer<HomeViewModel, HomeState>(
+          listener: (context, state) {},
           builder: (context, state) {
             if (state.uiState == UiState.loading) {
               return Center(
@@ -51,192 +66,232 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (state.uiState == UiState.data) {
               PageController pageController = changeImage(state);
 
-              return SafeArea(
-                child: RefreshIndicator(
-                  color: kMainColor,
+              return RefreshIndicator(
+                color: kMainColor,
 
-                  onRefresh: () async {
-                    // await BlocProvider.of<HomeViewModel>(context).init();
-                  },
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          CustomAppBar(
-                            userName: state.userName ?? '',
-                            userPoints: state.userPoints == null
-                                ? ''
-                                : state.userPoints.toString(),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            child: PageView.builder(
-                              controller: pageController,
-                              itemCount: state.adds.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 5,
+                onRefresh: () async {
+                  await BlocProvider.of<HomeViewModel>(context).init();
+                },
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 5,
+                      left: 5,
+                      top: MediaQuery.of(context).size.height * 0.04,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CustomAppBar(
+                          onSubmitted: (query) async {
+                            if (query.length > 2) {
+                              context.pushNamed(
+                                AppRouteConstants.search,
+                                pathParameters: {'query': query},
+                              );
+                            }
+                          },
+                          userName: state.userName ?? '',
+                          userPoints: state.userPoints == null
+                              ? ''
+                              : state.userPoints.toString(),
+                        ),
+                        CarouselSlider.builder(
+                          itemCount: state.adds.length,
+                          itemBuilder: (context, index, realIndex) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: CachedNetworkImage(
+                                imageUrl: state.adds[index],
+                                fit: BoxFit.fill,
+                                placeholder: (context, url) => const Center(
+                                  child: LoadingIndicator(
+                                    indicatorType: Indicator.lineSpinFadeLoader,
+                                    colors: [kMainColor, kMainDarkColor],
                                   ),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(state.adds[index]),
+                                ),
+                                errorWidget: (context, url, error) => Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'خطأ في تحميل الصورة',
+                                      style: TextStyle(fontSize: 16),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-
-                          CategoriesCard(categories: state.categories),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  context.pushNamed(
-                                    AppRouteConstants.showMore,
-                                    extra: state.featuredWorkshop,
-                                  );
-                                },
-                                child: Text(
-                                  'عرض الكل',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: kMainColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                    const Icon(Icons.error),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                'المميزون',
+                            );
+                          },
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            viewportFraction: 1,
+                            aspectRatio: 16 / 9,
+                            initialPage: 0,
+                          ),
+                        ),
+                        // SizedBox(
+                        //   height: MediaQuery.of(context).size.height * 0.25,
+                        //   child: PageView.builder(
+                        //     controller: pageController,
+                        //     itemCount: state.adds.length,
+                        //     itemBuilder: (context, index) {
+                        //       return Container(
+                        //         margin: const EdgeInsets.symmetric(
+                        //           horizontal: 5,
+                        //         ),
+                        //         height:
+                        //             MediaQuery.of(context).size.height * 0.25,
+                        //         width: double.infinity,
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(20),
+                        //           image: DecorationImage(
+                        //             fit: BoxFit.fill,
+                        //             image: NetworkImage(state.adds[index]),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+
+                        CategoriesCard(categories: state.categories),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConstants.showMore,
+                                  extra: state.featuredWorkshop,
+                                );
+                              },
+                              child: Text(
+                                'عرض الكل',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  color: kMainDarkColor,
+                                  fontSize: 14,
+                                  color: kMainColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.23,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                              reverse: true,
-                              // shrinkWrap: true,
-                              itemCount: state.featuredWorkshop.length > 5
-                                  ? 5
-                                  : state.featuredWorkshop.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Center(
-                                  child: HomeWorkshopCard(
-                                    press: () {
-                                      context.pushNamed(
-                                        AppRouteConstants.details,
-                                        extra: state.featuredWorkshop[index],
-                                      );
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => DetailsScreen(
-                                      //       workshop:
-                                      //           state.featuredWorkshop[index],
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    },
-                                    workshop: state.featuredWorkshop[index],
-                                  ),
-                                );
-                              },
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  context.pushNamed(
-                                    AppRouteConstants.showMore,
-                                    extra: state.featuredWorkshop,
-                                  );
-                                },
-                                child: Text(
-                                  'عرض الكل',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: kMainColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                            Text(
+                              'المميزون',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: kMainDarkColor,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Text(
-                                'ًالأعلى تقييما',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: kMainDarkColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.24,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                              reverse: true,
-
-                              itemCount: state.topRatedWorkshop.length > 5
-                                  ? 5
-                                  : state.topRatedWorkshop.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return HomeWorkshopCard(
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.23,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            reverse: true,
+                            // shrinkWrap: true,
+                            itemCount: state.featuredWorkshop.length > 5
+                                ? 5
+                                : state.featuredWorkshop.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: HomeWorkshopCard(
                                   press: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailsScreen(
-                                          workshop:
-                                              state.topRatedWorkshop[index],
-                                        ),
-                                      ),
+                                    context.pushNamed(
+                                      AppRouteConstants.details,
+                                      extra: state.featuredWorkshop[index],
                                     );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => DetailsScreen(
+                                    //       workshop:
+                                    //           state.featuredWorkshop[index],
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
-                                  workshop: state.topRatedWorkshop[index],
+                                  workshop: state.featuredWorkshop[index],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConstants.showMore,
+                                  extra: state.featuredWorkshop,
                                 );
                               },
+                              child: Text(
+                                'عرض الكل',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kMainColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
+                            Text(
+                              'ًالأعلى تقييما',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: kMainDarkColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.24,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            reverse: true,
+
+                            itemCount: state.topRatedWorkshop.length > 5
+                                ? 5
+                                : state.topRatedWorkshop.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return HomeWorkshopCard(
+                                press: () {
+                                  context.pushNamed(
+                                    AppRouteConstants.details,
+                                    extra: state.featuredWorkshop[index],
+                                  );
+                                },
+                                workshop: state.topRatedWorkshop[index],
+                              );
+                            },
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.025,
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.025,
+                        ),
+                      ],
                     ),
                   ),
                 ),

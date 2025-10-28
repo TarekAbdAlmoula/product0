@@ -2,12 +2,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/animated_border_circle.dart';
 import 'package:product0/core/utils/constants.dart';
+import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/auth/data/datasource/local/auth_local_source_impl.dart';
 import 'package:product0/screens/auth/data/datasource/remote/auth_remote_source_impl.dart';
 import 'package:product0/screens/auth/data/repository/register_repository_impl.dart';
@@ -26,7 +28,15 @@ class LoginScreen extends StatelessWidget {
         authRepositoryImp: AuthRepositoryImpl(
           authLocalSourceImpl: AuthLocalSourceImpl(),
           authRemoteSourceImpl: AuthRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  receiveTimeout: const Duration(seconds: 5),
+                  sendTimeout: const Duration(seconds: 5),
+                  connectTimeout: const Duration(seconds: 5),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -59,6 +69,31 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
       listener: (context, state) {
         if (state.isLoggedIn == true) {
           context.goNamed(AppRouteConstants.home);
+        } else if (state.authResponse != null &&
+            state.authResponse!.isSuccess == false) {
+          context.pop();
+          AwesomeDialog(
+            dialogBackgroundColor: Colors.white,
+            titleTextStyle: TextStyle(color: Colors.black),
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.bottomSlide,
+            body: Html(data: state.authResponse!.message),
+            btnOkOnPress: () {},
+            btnOkText: 'حسناً',
+          ).show();
+        } else if (state.uiState == UiState.error) {
+          context.pop();
+          AwesomeDialog(
+            dialogBackgroundColor: Colors.white,
+            titleTextStyle: TextStyle(color: Colors.black),
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.bottomSlide,
+            body: Text(state.erroemessage ?? 'حدث خطأ غير متوقع'),
+            btnOkOnPress: () {},
+            btnOkText: 'حسناً',
+          ).show();
         }
       },
       child: Container(
@@ -103,6 +138,11 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
                   CustomTextField(
+                    onTap: () {
+                      emailController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: emailController.text.length),
+                      );
+                    },
                     hintText: 'البريد الالكتروني مثل wasla@gmail.com',
                     controller: emailController,
                     onChanged: (value) => emailController.text = value,
@@ -124,8 +164,14 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     },
                   ),
                   CustomTextField(
+                    onTap: () {
+                      passwordController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: passwordController.text.length),
+                      );
+                    },
                     hintText: 'كلمة المرور',
                     controller: passwordController,
+
                     onChanged: (value) => passwordController.text = value,
                     formKey: _formKey,
                     validator: (value) {
@@ -143,40 +189,45 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
                       color: kMainColor,
                       onTap: () {
-                        AwesomeDialog(
-                          dismissOnTouchOutside: false,
-                          dialogBackgroundColor: Colors.white,
-                          titleTextStyle: TextStyle(color: Colors.black),
-                          context: context,
-                          dialogType: DialogType.noHeader,
-                          body: Column(
-                            children: [
-                              Text(
-                                'جاري تسجيل الدخول',
-                                style: TextStyle(
-                                  color: kMainDarkColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                        if (_formKey.currentState!.validate()) {
+                          AwesomeDialog(
+                            dismissOnTouchOutside: false,
+                            dialogBackgroundColor: Colors.white,
+                            titleTextStyle: TextStyle(color: Colors.black),
+                            context: context,
+                            dialogType: DialogType.noHeader,
+                            body: Column(
+                              children: [
+                                Text(
+                                  'جاري تسجيل الدخول',
+                                  style: TextStyle(
+                                    color: kMainDarkColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.14,
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                child: LoadingIndicator(
-                                  indicatorType: Indicator.ballClipRotatePulse,
-                                  colors: const [kMainDarkColor, kMainColor],
-                                  strokeWidth: 3,
-                                  backgroundColor: Colors.white,
-                                  pathBackgroundColor: Colors.black,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.14,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
+                                  child: LoadingIndicator(
+                                    indicatorType:
+                                        Indicator.ballClipRotatePulse,
+                                    colors: const [kMainDarkColor, kMainColor],
+                                    strokeWidth: 3,
+                                    backgroundColor: Colors.white,
+                                    pathBackgroundColor: Colors.black,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ).show();
-                        BlocProvider.of<AuthViewmodel>(
-                          context,
-                        ).login(emailController.text, passwordController.text);
+                              ],
+                            ),
+                          ).show();
+                          BlocProvider.of<AuthViewmodel>(context).login(
+                            emailController.text,
+                            passwordController.text,
+                          );
+                        }
                       },
                     ),
                   ),
