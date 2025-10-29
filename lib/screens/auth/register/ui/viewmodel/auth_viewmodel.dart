@@ -31,7 +31,6 @@ class AuthViewmodel extends Cubit<AuthState> {
         otp: otp,
       );
       if (authResponse.isSuccess == true) {
-        print('inside if from otp');
         String addedPoints = await authRepositoryImp.addPoints(
           action: 'first_signup',
         );
@@ -43,8 +42,6 @@ class AuthViewmodel extends Cubit<AuthState> {
           ),
         );
       } else if (authResponse.isSuccess == false) {
-        print('inside else if from otp');
-
         emit(state.copyWith(uiState: UiState.data, authResponse: authResponse));
       }
     } catch (e) {}

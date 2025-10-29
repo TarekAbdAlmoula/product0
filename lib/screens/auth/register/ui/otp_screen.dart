@@ -10,6 +10,7 @@ import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/animated_border_circle.dart';
 import 'package:product0/core/utils/constants.dart';
+import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/auth/data/datasource/local/auth_local_source_impl.dart';
 import 'package:product0/screens/auth/data/datasource/remote/auth_remote_source_impl.dart';
 import 'package:product0/screens/auth/data/repository/register_repository_impl.dart';
@@ -57,7 +58,8 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
   Widget build(BuildContext context) {
     return BlocListener<AuthViewmodel, AuthState>(
       listener: (context, state) {
-        if (state.authResponse!.isSuccess == true) {
+        if (state.authResponse != null &&
+            state.authResponse!.isSuccess == true) {
           AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
@@ -67,7 +69,8 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
               context.goNamed(AppRouteConstants.home);
             },
           ).show();
-        } else if (state.authResponse!.isSuccess == false) {
+        } else if (state.authResponse != null &&
+            state.authResponse!.isSuccess == false) {
           AwesomeDialog(
             context: context,
             dialogType: DialogType.error,
@@ -77,6 +80,24 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
             btnOkOnPress: () {
               context.goNamed(AppRouteConstants.register);
             },
+          ).show();
+        } else if (state.uiState == UiState.error) {
+          context.pop();
+          AwesomeDialog(
+            dialogBackgroundColor: Colors.white,
+            titleTextStyle: TextStyle(color: Colors.black),
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.bottomSlide,
+            body: Text(
+              state.erroemessage ?? '',
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 16),
+            ),
+            btnOkOnPress: () {
+              // context.goNamed(AppRouteConstants.login);
+            },
+            btnOkText: 'حسناً',
           ).show();
         }
       },
@@ -134,16 +155,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                     padding: const EdgeInsets.only(top: 0),
                     child: Form(
                       key: _formKey,
-
                       child: PinCodeTextField(
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return "الرجاء إدخال الكود";
-                        //   } else if (value.length < 6) {
-                        //     return "الكود يجب أن يحتوي على6 أرقام";
-                        //   }
-                        //   return null;
-                        // },
                         keyboardType: TextInputType.number,
                         textStyle: TextStyle(color: Colors.white),
                         pinTheme: PinTheme(

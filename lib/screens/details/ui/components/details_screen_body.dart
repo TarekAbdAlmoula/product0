@@ -66,7 +66,7 @@ class DetailsScreenBody extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black.withOpacity(0.7),
+                        color: Color(0xff5C5C5C),
                       ),
                     ),
                     SizedBox(height: 5),
@@ -143,6 +143,7 @@ class DetailsScreenBody extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
           ],
         ),
       ),

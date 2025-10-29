@@ -11,6 +11,7 @@ class Workshop {
   final String location;
   final List<String> gallery;
   final List<String> servicesCategory;
+  final num totalRateers;
 
   Workshop({
     required this.id,
@@ -25,6 +26,7 @@ class Workshop {
     required this.location,
     required this.gallery,
     required this.servicesCategory,
+    required this.totalRateers,
   });
 
   factory Workshop.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class Workshop {
       phoneNumber: json['phone_number'] ?? '',
       rating: (json['average_rating'] ?? 0) as num,
       location: json['location'] ?? '',
+      totalRateers: json['total_raters'] ?? 0,
       gallery:
           (json['gallery'] as List<dynamic>?)
               ?.map((e) => e.toString())

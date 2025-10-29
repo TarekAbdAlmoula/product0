@@ -47,6 +47,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.white,
             appBar: AppBar(
+              title: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.workshop.totalRateers.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      '  عدد التقيمات ',
+
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
+                  ],
+                ),
+              ),
+              centerTitle: true,
               actions: [
                 GestureDetector(
                   onTap: () {
@@ -81,7 +99,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       btnOkOnPress: () {
                                         Navigator.pop(bottomSheetContext);
                                         ratingController.clear();
-                                        context.goNamed(AppRouteConstants.home);
                                       },
                                       body: Html(
                                         data: state.ratingModel!.message,
@@ -92,7 +109,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     AwesomeDialog(
                                       context: bottomSheetContext,
                                       btnOkText: 'إغلاق',
-                                      title: state.ratingModel!.message,
+                                      body: Html(
+                                        data: state.ratingModel!.message,
+                                      ),
                                       dialogType: DialogType.error,
                                       btnOkOnPress: () {
                                         Navigator.pop(bottomSheetContext);
@@ -135,8 +154,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: TextField(
+                                              cursorColor: kMainColor,
                                               controller: ratingController,
-                                              maxLength: 25,
+                                              maxLength: 50,
 
                                               decoration: InputDecoration(
                                                 enabledBorder: OutlineInputBorder(
