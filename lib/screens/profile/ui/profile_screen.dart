@@ -63,6 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: ':نوع الحساب',
                 content: user.userType ?? '',
               ),
+              CustomProfileCard(
+                title: ': الموقع ',
+                content: user.location ?? '',
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               CustomButton(
                 onTap: () async {
@@ -79,6 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.red,
                 btnText: 'تسجيل الخروج',
               ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             ],
           ),
         ),
@@ -92,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     user.email = await _storage.read(key: 'email');
     user.userType = await _storage.read(key: 'accountType');
     user.phoneNumber = await _storage.read(key: 'phoneNumber');
+    user.location = await _storage.read(key: 'location');
     setState(() {});
   }
 }

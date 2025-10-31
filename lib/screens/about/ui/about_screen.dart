@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/app_images.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
@@ -22,7 +21,15 @@ class AboutScreen extends StatelessWidget {
       create: (context) => AboutViewmodel(
         aboutRepositoryImpl: AboutRepositoryImpl(
           aboutRemoteSource: AboutRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -191,8 +198,15 @@ class AboutScreenLogo extends StatelessWidget {
               ),
             ),
           );
+        } else if (state.uiState == UiState.error) {
+          return NoInternetWidget(
+            onTap: () async {
+              BlocProvider.of<AboutViewmodel>(context).fetchAboutInfo();
+            },
+            errorMessage: state.erroemessage ?? '',
+          );
         } else {
-          return Text('data');
+          return SizedBox();
         }
       },
     );

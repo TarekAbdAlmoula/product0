@@ -26,6 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
           email: user.email ?? '',
           accountType: user.userType ?? '',
           phoneNumber: user.phoneNumber ?? '',
+          location: user.location ?? '',
         );
       }
       return authResponse;
@@ -51,6 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
           email: user.email ?? '',
           accountType: user.userType ?? '',
           token: user.token,
+          location: user.location ?? '',
           phoneNumber: user.phoneNumber ?? '',
         );
         return true;

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/notification/data/datasource/notification_remote_source_impl.dart';
@@ -25,7 +26,15 @@ class NotificationScreen extends StatelessWidget {
       create: (context) => NotificationViewmodel(
         notificationRepositoryImpl: NotificationRepositoryImpl(
           notificationRemoteSource: NotificationRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -59,7 +68,14 @@ class NotificationScreenBody extends StatelessWidget {
             },
           );
         } else if (state.uiState == UiState.error) {
-          return Center(child: Text('حدث خطأ'));
+          return NoInternetWidget(
+            onTap: () async {
+              BlocProvider.of<NotificationViewmodel>(
+                context,
+              ).getNotifications();
+            },
+            errorMessage: state.erroemessage ?? '',
+          );
         } else {
           return Center(child: Text('لا يوجد اشعارات'));
         }
@@ -89,11 +105,11 @@ class NotificationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            ' : ${notification.title}',
+            notification.title,
             textAlign: TextAlign.end,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              fontSize: 17,
               color: kMainColor,
             ),
           ),
@@ -103,7 +119,7 @@ class NotificationCard extends StatelessWidget {
             child: Text(
               notification.content,
               textAlign: TextAlign.end,
-              style: TextStyle(color: Color(0xff5C5C5C), fontSize: 17),
+              style: TextStyle(color: Color(0xff5C5C5C), fontSize: 16),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),

@@ -19,7 +19,10 @@ class DetailsViewmodel extends Cubit<DetailsState> {
       );
       emit(state.copyWith(uiState: UiState.data, ratingModel: ratingModel));
     } catch (e) {
-      print(e.toString());
+      final errorMessage = e is String
+          ? e
+          : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
+      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
     }
   }
 }

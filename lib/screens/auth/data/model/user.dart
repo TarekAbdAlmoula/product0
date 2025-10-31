@@ -8,6 +8,7 @@ class User {
   String? token;
   bool isLoggedIn;
   int? userId;
+  String? location;
   User({
     this.email,
     this.password,
@@ -18,6 +19,7 @@ class User {
     this.token,
     this.isLoggedIn = false,
     this.userId,
+    this.location,
   });
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -30,6 +32,7 @@ class User {
       token: json['token'],
       isLoggedIn: json['success'],
       userId: json['id'],
+      location: json['user_location'],
     );
   }
   //add to string funstion

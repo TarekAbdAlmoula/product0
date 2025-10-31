@@ -12,12 +12,12 @@ class HomeState {
   final int currentBannerIndex;
   final List<Workshop> featuredWorkshop;
   final List<Workshop> topRatedWorkshop;
-  final bool hasSearched; // 👈 متغير جديد
-
+  final bool hasSearched;
+  final String? erroemessage;
   final List<Workshop> searchedWorkshops;
-
   final String? userName;
   final int? userPoints;
+  final String? pointMessage;
   HomeState({
     this.uiState,
     this.prod = const [],
@@ -30,7 +30,9 @@ class HomeState {
     this.searchedWorkshops = const [],
     this.userName,
     this.userPoints,
-    this.hasSearched = false, // 👈 القيمة الافتراضية
+    this.hasSearched = false,
+    this.erroemessage,
+    this.pointMessage,
   });
 
   HomeState copyWith({
@@ -44,6 +46,8 @@ class HomeState {
     List<Workshop>? topRatedWorkshop,
     List<Workshop>? searchedWorkshops,
     bool? hasSearched,
+    String? erroemessage,
+    String? pointMessage,
 
     String? userName,
     int? userPoints,
@@ -60,7 +64,9 @@ class HomeState {
       searchedWorkshops: searchedWorkshops ?? this.searchedWorkshops,
       userName: userName ?? this.userName,
       userPoints: userPoints ?? this.userPoints,
-      hasSearched: hasSearched ?? this.hasSearched, // 👈
+      hasSearched: hasSearched ?? this.hasSearched,
+      erroemessage: erroemessage ?? this.erroemessage,
+      pointMessage: pointMessage ?? this.pointMessage,
     );
   }
 }

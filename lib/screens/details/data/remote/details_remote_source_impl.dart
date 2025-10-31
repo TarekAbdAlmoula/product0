@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:product0/core/api/api_consumer.dart';
+import 'package:product0/core/utils/error_handler.dart';
+import 'package:product0/core/utils/exceptions.dart';
 import 'package:product0/screens/details/data/remote/details_remote_source.dart';
 
 class DetailsRemoteSourceImpl implements DetailsRemoteSource {
@@ -13,12 +16,21 @@ class DetailsRemoteSourceImpl implements DetailsRemoteSource {
     String token, {
     String? comment,
   }) async {
-    var response = await api.post(
-      'https://wasla.barmijha.net/wp-json/custom-api/v1/rate-service',
-      data: {"service_id": "$workshopId", "rating": rating, "comment": comment},
-      token: token,
-    );
-    print(response);
-    return response;
+    try {
+      var response = await api.post(
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/rate-service',
+        data: {
+          "service_id": "$workshopId",
+          "rating": rating,
+          "comment": comment,
+        },
+        token: token,
+      );
+      return response;
+    } on DioException catch (e) {
+      throw ErrorHandler.handleDioError(e);
+    } catch (e) {
+      throw ServerException("حدث خطأ غير متوقع ");
+    }
   }
 }

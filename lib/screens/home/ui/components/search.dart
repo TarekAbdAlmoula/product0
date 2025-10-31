@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:product0/app_route_constants.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
@@ -30,7 +29,7 @@ class SearchScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
-        //wrap scaffold with bloc provider
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           backgroundColor: kMainDarkColor,
           iconTheme: IconThemeData(color: Colors.white),
@@ -71,7 +70,15 @@ class _SearchScreenBodyState extends State<SearchScreenBody> {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
         if (state.uiState == UiState.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballScaleMultiple,
+              colors: const [kMainDarkColor, kMainColor],
+              strokeWidth: 1,
+              backgroundColor: backgroundColor,
+              pathBackgroundColor: Colors.black,
+            ),
+          );
         }
 
         if (state.hasSearched) {
@@ -106,10 +113,7 @@ class _SearchScreenBodyState extends State<SearchScreenBody> {
           );
         }
 
-        // 👇 في أول مرة قبل أي بحث، لا نعرض شيئًا
-        return const Center(
-          child: Text('...جاري البحث', style: TextStyle(fontSize: 16)),
-        );
+        return SizedBox();
       },
     );
   }

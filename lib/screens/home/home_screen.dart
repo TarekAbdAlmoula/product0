@@ -1,12 +1,18 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/components/custom_button.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
+import 'package:product0/core/utils/app_images.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/home/data/datasource/local/home_local_source_impl.dart';
@@ -27,12 +33,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Initializes the state of the widget. ///
-  /// This is usually called when the widget is inserted into the tree. ///
-  /// It is not called when the widget is reinserted into the tree,
-  /*******  ebe36792-ec1c-46d4-8bcd-f356aa4b2960  *******/
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: kMainDarkColor,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
     super.initState();
   }
 
@@ -46,8 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
             api: DioConsumer(
               dio: Dio(
                 BaseOptions(
-                  connectTimeout: const Duration(milliseconds: 8000),
-                  receiveTimeout: const Duration(milliseconds: 8000),
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
                 ),
               ),
             ),
@@ -55,17 +63,28 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         body: BlocConsumer<HomeViewModel, HomeState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state.uiState == UiState.data && state.pointMessage != '') {
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.success,
+                body: Html(data: state.pointMessage ?? "<p></p>"),
+                btnOkText: 'حسناً',
+                btnOkOnPress: () {
+                  print(state.pointMessage);
+                  setState(() {});
+                },
+              ).show();
+            }
+          },
           builder: (context, state) {
             if (state.uiState == UiState.loading) {
               return Center(
                 child: CircularProgressIndicator(color: kMainColor),
               );
             } else if (state.uiState == UiState.data) {
-              PageController pageController = changeImage(state);
-
               return RefreshIndicator(
                 color: kMainColor,
 
@@ -131,30 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialPage: 0,
                           ),
                         ),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.25,
-                        //   child: PageView.builder(
-                        //     controller: pageController,
-                        //     itemCount: state.adds.length,
-                        //     itemBuilder: (context, index) {
-                        //       return Container(
-                        //         margin: const EdgeInsets.symmetric(
-                        //           horizontal: 5,
-                        //         ),
-                        //         height:
-                        //             MediaQuery.of(context).size.height * 0.25,
-                        //         width: double.infinity,
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           image: DecorationImage(
-                        //             fit: BoxFit.fill,
-                        //             image: NetworkImage(state.adds[index]),
-                        //           ),
-                        //         ),
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
+
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
@@ -214,15 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       AppRouteConstants.details,
                                       extra: state.featuredWorkshop[index],
                                     );
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => DetailsScreen(
-                                    //       workshop:
-                                    //           state.featuredWorkshop[index],
-                                    //     ),
-                                    //   ),
-                                    // );
                                   },
                                   workshop: state.featuredWorkshop[index],
                                 ),
@@ -296,6 +283,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               );
+            } else if (state.uiState == UiState.error) {
+              return NoInternetWidget(
+                errorMessage: state.erroemessage ?? '',
+                onTap: () async {
+                  await BlocProvider.of<HomeViewModel>(context).init();
+                },
+              );
             } else {
               return Text('There is an error');
             }
@@ -305,19 +299,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  PageController changeImage(HomeState state) {
-    PageController _pageController = PageController(
-      initialPage: state.currentBannerIndex,
-    );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_pageController.hasClients) {
-        _pageController.animateToPage(
-          state.currentBannerIndex,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-    return _pageController;
-  }
+  // PageController changeImage(HomeState state) {
+  //   PageController _pageController = PageController(
+  //     initialPage: state.currentBannerIndex,
+  //   );
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (_pageController.hasClients) {
+  //       _pageController.animateToPage(
+  //         state.currentBannerIndex,
+  //         duration: Duration(milliseconds: 500),
+  //         curve: Curves.easeInOut,
+  //       );
+  //     }
+  //   });
+  //   return _pageController;
+  // }
 }

@@ -63,7 +63,15 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController accountType = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
   List<String> userType = ['مستخدم', 'مقدم خدمة'];
+  List<String> userLocation = [
+    'حمص المدينة',
+    'ريف حمص الشمالي',
+    'ريف حمص الجنوبي',
+    'ريف حمص الشرقي',
+    'ريف حمص الغربي',
+  ];
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -309,13 +317,65 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       },
                     ),
                   ),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: DropdownButtonFormField<String>(
+                      focusColor: Colors.red,
+                      dropdownColor: kMainDarkColor,
+                      hint: Text(
+                        'الموقع',
+                        style: TextStyle(color: Colors.white),
+                      ),
 
-                  // AccountTypeField(),
-                  const SizedBox(height: 30),
+                      borderRadius: BorderRadius.circular(20),
+                      menuMaxHeight: 120,
+                      iconEnabledColor: Colors.white,
+                      decoration: InputDecoration(
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
 
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      items: [
+                        for (var i = 0; i < userLocation.length; i++)
+                          DropdownMenuItem(
+                            value: userLocation[i],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      userLocation[i],
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                      validator: (value) => value == null ? 'حقل مطلوب' : null,
+                      onChanged: (value) {
+                        locationController.text = value ?? '';
+                      },
+                    ),
+                  ),
+
+                  // const SizedBox(height: 30),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.1,
+                      vertical: MediaQuery.of(context).size.height * 0.04,
                     ),
                     child: CustomButton(
                       btnText: 'إرسال ',
@@ -328,6 +388,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                           lastName: lastNameController.text,
                           userType: accountType.text,
                           phoneNumber: phoneController.text,
+                          location: locationController.text,
                         );
                         if (formKey.currentState!.validate()) {
                           AwesomeDialog(

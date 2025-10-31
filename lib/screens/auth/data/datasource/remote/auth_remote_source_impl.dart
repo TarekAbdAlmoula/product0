@@ -20,6 +20,7 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
           "last_name": user.lastName,
           "account_type": user.userType,
           "phone_number": user.phoneNumber,
+          "user_location": user.location,
         },
       );
       return response;
@@ -46,7 +47,7 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
         'https://wasla.barmijha.net/wp-json/jwt-auth/v1/token',
         data: {"username": email, "password": password},
       );
-
+      print('login response $response');
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

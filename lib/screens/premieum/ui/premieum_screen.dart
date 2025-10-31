@@ -1,8 +1,9 @@
-import 'package:dio/dio.dart' show Dio;
+import 'package:dio/dio.dart' show BaseOptions, Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/custom_button.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/premieum/data/model/premieum.dart';
@@ -21,7 +22,15 @@ class PremieumScreen extends StatelessWidget {
       create: (context) => PremieumViewmodel(
         premieumRepositoryImpl: PremieumRepositoryImpl(
           premieumRemoteSource: PremieumRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -49,13 +58,6 @@ class PremieumScreenBody extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(color: kMainColor),
           );
-        } else if (state.uiState == UiState.error) {
-          return const Center(
-            child: Text(
-              'Error fetching plans',
-              style: TextStyle(color: Colors.red),
-            ),
-          );
         } else if (state.uiState == UiState.data && state.premieum.isNotEmpty) {
           return ListView.builder(
             padding: EdgeInsets.all(10),
@@ -67,8 +69,15 @@ class PremieumScreenBody extends StatelessWidget {
               );
             },
           );
+        } else if (state.uiState == UiState.error) {
+          return NoInternetWidget(
+            errorMessage: state.erroemessage ?? '',
+            onTap: () async {
+              BlocProvider.of<PremieumViewmodel>(context).getPlans();
+            },
+          );
         }
-        return Column(children: []);
+        return SizedBox();
       },
     );
   }

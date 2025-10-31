@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/models/categories.dart';
@@ -9,88 +7,96 @@ import 'package:product0/screens/home/ui/viewmodel/home_State.dart';
 
 class HomeViewModel extends Cubit<HomeState> {
   final HomeRepositoryImpl homeRepositoryImpl;
-  Timer? _bannerTimer;
 
   HomeViewModel({required this.homeRepositoryImpl})
-    : super(HomeState(uiState: UiState.data)) {
+    : super(HomeState(uiState: UiState.loading)) {
     init();
   }
 
   Future init() async {
-    await Future.wait([
-      getFeaturedWorkshops(),
-      getAdds(),
-      getCategories(),
-      getTopRatedWorkshop(),
-      addPoints(),
-      getUserName(),
-    ]);
-  }
-
-  Future getCategories() async {
-    emit(state.copyWith(uiState: UiState.loading));
-    try {
-      List<Categories> categories = await homeRepositoryImpl.getCategories();
-      emit(state.copyWith(uiState: UiState.data, categories: categories));
-    } catch (e) {}
-  }
-
-  Future getAdds() async {
-    emit(state.copyWith(uiState: UiState.loading));
-    try {
-      var adds = await homeRepositoryImpl.getAdds();
-      emit(state.copyWith(uiState: UiState.data, adds: adds));
-      // startBanerAutoScroll();
-    } catch (e) {}
-  }
-
-  // void startBanerAutoScroll() {
-  //   if (state.adds.isEmpty) return;
-  //   _bannerTimer = Timer.periodic(Duration(seconds: 3), (timer) {
-  //     emit(
-  //       state.copyWith(
-  //         uiState: UiState.data,
-  //         currentBannerIndex:
-  //             (state.currentBannerIndex + 1) % state.adds.length,
-  //       ),
-  //     );
-  //   });
-  // }
-
-  Future getFeaturedWorkshops() async {
     emit(state.copyWith(uiState: UiState.loading));
 
     try {
-      List<Workshop> featuredWorkshop = await homeRepositoryImpl
-          .getFeaturedWorkshops();
+      final categories = await homeRepositoryImpl.getCategories();
+      final adds = await homeRepositoryImpl.getAdds();
+      final featuredWorkshop = await homeRepositoryImpl.getFeaturedWorkshops();
+      final topRatedWorkshop = await homeRepositoryImpl.getTopRatedWorkshop();
+      final userPoints = await homeRepositoryImpl.getUserPoints();
+      final userName = await homeRepositoryImpl.getLocalData(key: 'username');
+      final pointMessage = await homeRepositoryImpl.addPoints(
+        action: 'daily_login',
+      );
+
       emit(
         state.copyWith(
           uiState: UiState.data,
+          categories: categories,
+          adds: adds,
           featuredWorkshop: featuredWorkshop,
+          topRatedWorkshop: topRatedWorkshop,
+          userPoints: userPoints,
+          userName: userName,
+          pointMessage: pointMessage,
         ),
       );
+    } catch (e) {
+      final errorMessage = e is String
+          ? e
+          : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
+      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+    }
+  }
+
+  Future getCategories() async {
+    try {
+      List<Categories> categories = await homeRepositoryImpl.getCategories();
+      // emit(state.copyWith(uiState: UiState.data, categories: categories));
+    } catch (e) {
+      final errorMessage = e is String
+          ? e
+          : e.toString().replaceAll('Exception: ', '');
+
+      // emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+    }
+  }
+
+  Future getAdds() async {
+    try {
+      var adds = await homeRepositoryImpl.getAdds();
+      // emit(state.copyWith(uiState: UiState.data, adds: adds));
+    } catch (e) {}
+  }
+
+  Future getFeaturedWorkshops() async {
+    try {
+      List<Workshop> featuredWorkshop = await homeRepositoryImpl
+          .getFeaturedWorkshops();
+      // emit(
+      //   state.copyWith(
+      //     uiState: UiState.data,
+      //     featuredWorkshop: featuredWorkshop,
+      //   ),
+      // );
     } catch (e) {}
   }
 
   Future getTopRatedWorkshop() async {
-    emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Workshop> topRatedWorkshop = await homeRepositoryImpl
           .getTopRatedWorkshop();
-      emit(
-        state.copyWith(
-          uiState: UiState.data,
-          topRatedWorkshop: topRatedWorkshop,
-        ),
-      );
+      // emit(
+      //   state.copyWith(
+      //     uiState: UiState.data,
+      //     topRatedWorkshop: topRatedWorkshop,
+      //   ),
+      // );
     } catch (e) {}
   }
 
   Future getUserName() async {
-    emit(state.copyWith(uiState: UiState.loading));
     try {
       String userNamae = await homeRepositoryImpl.getLocalData(key: 'username');
-      emit(state.copyWith(uiState: UiState.data, userName: userNamae));
+      // emit(state.copyWith(uiState: UiState.data, userName: userNamae));
     } catch (e) {}
   }
 
@@ -98,7 +104,7 @@ class HomeViewModel extends Cubit<HomeState> {
     try {
       int userPoints = await homeRepositoryImpl.getUserPoints();
 
-      emit(state.copyWith(uiState: UiState.data, userPoints: userPoints));
+      // emit(state.copyWith(uiState: UiState.data, userPoints: userPoints));
     } catch (e) {}
   }
 
@@ -109,7 +115,6 @@ class HomeViewModel extends Cubit<HomeState> {
 
   Future searchWorkshops({required String query}) async {
     try {
-      emit(state.copyWith(uiState: UiState.loading));
       List<Workshop>? searchedWorkshops;
       searchedWorkshops = await homeRepositoryImpl.searchWorkshops(
         query: query,
@@ -122,12 +127,5 @@ class HomeViewModel extends Cubit<HomeState> {
         ),
       );
     } catch (e) {}
-  }
-
-  // Future searchWorkshops() {}
-  @override
-  Future<void> close() {
-    _bannerTimer?.cancel();
-    return super.close();
   }
 }

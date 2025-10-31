@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
@@ -37,7 +35,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
       create: (context) => DetailsViewmodel(
         detailsRepositoryImpl: DetailsRepositoryImpl(
           detailsRemoteSourceImpl: DetailsRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -58,7 +64,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     Text(
                       '  عدد التقيمات ',
-
                       style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ],
@@ -119,88 +124,89 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       },
                                       // body: Text('data'),
                                     ).show();
+                                  } else if (state.uiState == UiState.error) {
+                                    AwesomeDialog(
+                                      context: context,
+                                      btnOkText: 'إغلاق',
+                                      body: Text(
+                                        state.erroemessage ?? '',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      dialogType: DialogType.error,
+                                      btnOkOnPress: () {},
+                                      // body: Text('data'),
+                                    ).show();
                                   }
                                 },
                                 builder: (context, state) {
-                                  if (state.uiState == UiState.loading) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        color: kMainColor,
-                                      ),
-                                    );
-                                  } else if (state.uiState == UiState.data) {
-                                    return Form(
-                                      key: _formKey,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            'ما رأيك ب ${widget.workshop.title}',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                  return Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'ما رأيك ب ${widget.workshop.title}',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          RatingBar.builder(
-                                            itemBuilder: (context, index) =>
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                            onRatingUpdate: (value) {
-                                              rating = value.toInt();
-                                            },
+                                        ),
+                                        RatingBar.builder(
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
                                           ),
-                                          SizedBox(height: 10),
-                                          Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: TextField(
-                                              cursorColor: kMainColor,
-                                              controller: ratingController,
-                                              maxLength: 50,
+                                          onRatingUpdate: (value) {
+                                            rating = value.toInt();
+                                          },
+                                        ),
+                                        SizedBox(height: 10),
+                                        Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: TextField(
+                                            cursorColor: kMainColor,
+                                            controller: ratingController,
+                                            maxLength: 50,
 
-                                              decoration: InputDecoration(
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  borderSide: const BorderSide(
-                                                    color: Colors
-                                                        .grey, // لون الحافة في الحالة العادية
-                                                    width: 1.5,
-                                                  ),
+                                            decoration: InputDecoration(
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: const BorderSide(
+                                                  color: Colors
+                                                      .grey, // لون الحافة في الحالة العادية
+                                                  width: 1.5,
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  borderSide: const BorderSide(
-                                                    color: Colors
-                                                        .green, // لون الحافة عند التركيز
-                                                    width: 2,
-                                                  ),
-                                                ),
-                                                hintText: 'اكتب تقيمك(اختياري)',
                                               ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: const BorderSide(
+                                                  color: Colors
+                                                      .green, // لون الحافة عند التركيز
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              hintText: 'اكتب تقيمك(اختياري)',
                                             ),
                                           ),
+                                        ),
 
-                                          CustomButton(
-                                            btnText: 'إرسال ',
+                                        CustomButton(
+                                          btnText: 'إرسال ',
 
-                                            color: kMainColor,
-                                            onTap: () async {
-                                              await detailsViewmodel.sendRating(
-                                                rating,
-                                                widget.workshop.id,
-                                                comment: ratingController.text,
-                                              );
-                                            },
-                                          ),
-                                          // SizedBox(height: 150),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    return Text('يوجد خطأ');
-                                  }
+                                          color: kMainColor,
+                                          onTap: () async {
+                                            await detailsViewmodel.sendRating(
+                                              rating,
+                                              widget.workshop.id,
+                                              comment: ratingController.text,
+                                            );
+                                          },
+                                        ),
+                                        // SizedBox(height: 150),
+                                      ],
+                                    ),
+                                  );
                                 },
                               ),
                             ),

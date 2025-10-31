@@ -4,10 +4,21 @@ import 'package:product0/screens/premieum/data/model/premieum.dart';
 class PremieumState {
   final UiState uiState;
   final List<Premieum> premieum;
-  PremieumState({this.uiState = UiState.loading, this.premieum = const []});
+  final String? erroemessage;
 
-  PremieumState copyWith({UiState? uiState, List<Premieum>? premieum}) {
+  PremieumState({
+    this.uiState = UiState.loading,
+    this.premieum = const [],
+    this.erroemessage,
+  });
+
+  PremieumState copyWith({
+    UiState? uiState,
+    List<Premieum>? premieum,
+    String? erroemessage,
+  }) {
     return PremieumState(
+      erroemessage: erroemessage ?? this.erroemessage,
       uiState: uiState ?? this.uiState,
       premieum: premieum ?? this.premieum,
     );

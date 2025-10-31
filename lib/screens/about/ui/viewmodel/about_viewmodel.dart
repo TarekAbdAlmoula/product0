@@ -16,7 +16,10 @@ class AboutViewmodel extends Cubit<AboutState> {
       List<About> about = await aboutRepositoryImpl.fetchAboutInfo();
       emit(state.copyWith(uiState: UiState.data, about: about));
     } catch (e) {
-      emit(state.copyWith(uiState: UiState.error));
+      final errorMessage = e is String
+          ? e
+          : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
+      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
     }
   }
 }

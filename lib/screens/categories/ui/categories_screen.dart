@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product0/core/api/dio_consumer.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/models/categories.dart';
@@ -21,11 +22,20 @@ class CategoriesScreen extends StatelessWidget {
       create: (context) => CategoriesViewmodel(
         categoriesRepository: CategoriesRepositoryImpl(
           categoriesRemoteSource: CategoriesRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  connectTimeout: const Duration(seconds: 8),
+                  sendTimeout: const Duration(seconds: 8),
+                  receiveTimeout: const Duration(seconds: 8),
+                ),
+              ),
+            ),
           ),
         ),
       ),
       child: Scaffold(
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(name, style: TextStyle(color: Colors.white)),
@@ -86,8 +96,17 @@ class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
               );
             },
           );
+        } else if (state.uiState == UiState.error) {
+          return NoInternetWidget(
+            errorMessage: state.erroemessage ?? '',
+            onTap: () async {
+              await BlocProvider.of<CategoriesViewmodel>(
+                context,
+              ).getCategoriesById(widget.id);
+            },
+          );
         } else {
-          return Container();
+          return Text('');
         }
       },
     );
