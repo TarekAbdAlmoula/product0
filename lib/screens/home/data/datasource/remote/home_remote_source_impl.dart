@@ -70,7 +70,7 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   Future getFeaturedWorkshops() async {
     try {
       var response = await api.get(
-        'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple?is_featured=true',
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple?category=العقارات&exclude=true&is_featured=true',
       );
       return response;
     } on DioException catch (e) {

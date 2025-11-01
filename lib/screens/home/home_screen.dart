@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 context.pushNamed(
                                   AppRouteConstants.showMore,
-                                  extra: state.featuredWorkshop,
+                                  extra: state.topRatedWorkshop,
                                 );
                               },
                               child: Text(

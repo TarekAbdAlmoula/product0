@@ -79,9 +79,7 @@ class HomeRepositoryImpl implements HomeRepository {
       for (var data in response) {
         workshop.add(Workshop.fromJson(data));
       }
-      workshop.sort((a, b) {
-        return b.rating.compareTo(a.rating);
-      });
+
       return workshop;
     } on ServerException catch (e) {
       throw e.message;

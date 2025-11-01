@@ -12,6 +12,7 @@ class ShowmoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: kMainDarkColor,
