@@ -162,11 +162,8 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
                   AnimatedBorderCircle(),
-
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-
                   CustomTextField(
                     onTap: () {},
                     hintText: 'الاسم الاول',
@@ -310,7 +307,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       validator: (value) => value == null ? 'حقل مطلوب' : null,
                       onChanged: (value) {
                         if (value == userType[1]) {
-                          accountType.text = 'ورشة';
+                          accountType.text = 'مقدم خدمة';
                         } else if (value == userType[0]) {
                           accountType.text = 'مستخدم';
                         }
@@ -353,10 +350,12 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Column(
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       userLocation[i],
                                       style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.end,
                                     ),
                                   ],
                                 ),

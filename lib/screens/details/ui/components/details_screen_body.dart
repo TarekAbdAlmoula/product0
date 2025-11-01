@@ -70,33 +70,6 @@ class DetailsScreenBody extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.width * 0.015,
-                          ),
-                          child: SvgPicture.asset(
-                            height: 15,
-                            'assets/icons/Star.svg',
-                            color: Colors.amber,
-                          ),
-                        ),
-                        Text(
-                          ((workshop.rating / 5) * 100).toString().length > 4
-                              ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
-                              : '${((workshop.rating / 5) * 100).toString()}%',
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
                 Text(
@@ -105,11 +78,110 @@ class DetailsScreenBody extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
+
                     color: Color(0xff094067),
                   ),
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xffA3A3A3)),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color(0xffF8F8F8),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.width * 0.015,
+                            ),
+                            child: SvgPicture.asset(
+                              height: 20,
+                              'assets/icons/Star.svg',
+                              color: Colors.amber,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+
+                          Text(
+                            ((workshop.rating / 5) * 100).toString().length > 4
+                                ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
+                                : '${((workshop.rating / 5) * 100).toString()}%',
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff5C5C5C),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'تقييم الخدمة',
+
+                        style: TextStyle(
+                          color: Color(0xff5C5C5C),
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xffA3A3A3)),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color(0xffF8F8F8),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: SvgPicture.asset(
+                              'assets/images/multi_user.svg',
+                              color: kMainDarkColor,
+                              height: 25,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            workshop.totalRateers.toString(),
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff5C5C5C),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'مستخدم قيموا الخدمة',
+                        style: TextStyle(
+                          color: Color(0xff5C5C5C),
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
             DetailsCard(content: workshop.content, title: ': الوصف'),
             DetailsCard(
               content: workshop.phoneNumber,
@@ -119,7 +191,7 @@ class DetailsScreenBody extends StatelessWidget {
               content: workshop.location.isNotEmpty
                   ? workshop.location
                   : 'لايوجد',
-              title: ': منطقة الخدمة',
+              title: ': المنطقة ',
             ),
 
             GestureDetector(

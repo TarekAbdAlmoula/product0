@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/utils/constants.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String userName;
   final String userPoints;
+  final String pointsExpl;
   final void Function(String)? onSubmitted;
   const CustomAppBar({
     super.key,
     required this.userName,
     required this.userPoints,
     required this.onSubmitted,
+    required this.pointsExpl,
   });
 
   @override
@@ -24,42 +26,45 @@ class CustomAppBar extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed(AppRouteConstants.search);
-                        },
-                        child: Text(
-                          'مرحبا بك',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: kMainDarkColor,
+              GestureDetector(
+                onTap: () {
+                  print(pointsExpl);
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            'مرحبا بك',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: kMainDarkColor,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 5),
-                      Image.asset('assets/images/hello_icon.png', height: 20),
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.45,
+                        SizedBox(width: 5),
+                        Image.asset('assets/images/hello_icon.png', height: 20),
+                      ],
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
 
-                    child: Text(
-                      userName,
-                      style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: kMainDarkColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                      child: Text(
+                        userName,
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: kMainDarkColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               Spacer(flex: 20),
@@ -83,17 +88,56 @@ class CustomAppBar extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return Container(
-                        margin: EdgeInsets.all(0),
-                        height: double.infinity,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(children: [Text('نقاطي')]),
-                        ),
+                      return Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: 25,
+                              left: 25,
+                              right: 25,
+                            ),
+                            // height: double.infinity,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Html(data: pointsExpl),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              context.pop();
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                                color: Colors.red,
+                              ),
+                              margin: EdgeInsets.only(left: 25, right: 25),
+                              child: Center(
+                                child: Text(
+                                  'إغلاق',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

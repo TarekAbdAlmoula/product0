@@ -15,12 +15,6 @@ class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
 
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Builds the widget tree for the NotificationScreen.
-  ///
-  /// It returns a BlocProvider which creates an instance of NotificationViewmodel
-  /// and uses it to build the widget tree.
-  /*******  b90b8ee7-619d-4245-a4a8-a3bb6c95a6e2  *******/
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NotificationViewmodel(

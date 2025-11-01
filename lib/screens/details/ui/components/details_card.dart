@@ -13,7 +13,7 @@ class DetailsCard extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Color(0xffA3A3A3)),
         borderRadius: BorderRadius.circular(16),
-        color: const Color.fromARGB(255, 242, 242, 242),
+        color: Color(0xffF8F8F8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -31,10 +31,7 @@ class DetailsCard extends StatelessWidget {
           Text(
             content,
             textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: 17,
-              color: const Color.fromARGB(255, 140, 140, 140),
-            ),
+            style: TextStyle(fontSize: 17, color: Color(0xff5C5C5C)),
           ),
         ],
       ),

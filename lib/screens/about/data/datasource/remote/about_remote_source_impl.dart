@@ -13,7 +13,6 @@ class AboutRemoteSourceImpl implements AboutRemoteSource {
       var response = await api.get(
         'https://wasla.barmijha.net/wp-json/custom-api/v1/about_app',
       );
-      print(response);
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

@@ -12,7 +12,6 @@ class PremieumViewmodel extends Cubit<PremieumState> {
   }
 
   Future init() async {
-    print('--------------------------------------');
     await Future.wait([getPlans()]);
   }
 

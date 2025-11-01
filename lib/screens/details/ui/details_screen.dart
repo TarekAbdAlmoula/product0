@@ -53,23 +53,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      widget.workshop.totalRateers.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      '  عدد التقيمات ',
-                      style: TextStyle(color: Colors.white, fontSize: 22),
-                    ),
-                  ],
-                ),
-              ),
-              centerTitle: true,
               actions: [
                 GestureDetector(
                   onTap: () {

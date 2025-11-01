@@ -16,6 +16,11 @@ class ProductsViewmodel extends Cubit<ProductsState> {
           .getProductsByCategory(id);
 
       emit(state.copyWith(uiState: UiState.data, workshop: workshop));
-    } catch (e) {}
+    } catch (e) {
+      final errorMessage = e is String
+          ? e
+          : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
+      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+    }
   }
 }

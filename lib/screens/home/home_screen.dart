@@ -10,9 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
-import 'package:product0/core/components/custom_button.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
-import 'package:product0/core/utils/app_images.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/home/data/datasource/local/home_local_source_impl.dart';
@@ -34,12 +32,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: kMainDarkColor,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-    );
     super.initState();
   }
 
@@ -63,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       child: Scaffold(
+        appBar: AppBar(toolbarHeight: 5, backgroundColor: kMainDarkColor),
         backgroundColor: backgroundColor,
         body: BlocConsumer<HomeViewModel, HomeState>(
           listener: (context, state) {
@@ -96,12 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.only(
                       right: 5,
                       left: 5,
-                      top: MediaQuery.of(context).size.height * 0.04,
+                      top: MediaQuery.of(context).size.height * 0.01,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         CustomAppBar(
+                          pointsExpl: state.pointsExpl ?? '',
+
                           onSubmitted: (query) async {
                             if (query.length > 2) {
                               context.pushNamed(
@@ -116,12 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               : state.userPoints.toString(),
                         ),
                         CarouselSlider.builder(
-                          itemCount: state.adds.length,
+                          itemCount: state.ads!.dataAds.length,
                           itemBuilder: (context, index, realIndex) {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: CachedNetworkImage(
-                                imageUrl: state.adds[index],
+                                imageUrl: state.ads!.dataAds[index].image,
                                 fit: BoxFit.fill,
                                 placeholder: (context, url) => const Center(
                                   child: LoadingIndicator(

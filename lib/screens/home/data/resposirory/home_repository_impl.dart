@@ -2,6 +2,7 @@ import 'package:product0/core/utils/exceptions.dart';
 import 'package:product0/models/categories.dart';
 import 'package:product0/models/workshop.dart';
 import 'package:product0/screens/home/data/datasource/local/home_local_source_impl.dart';
+import 'package:product0/screens/home/data/model/ads.dart';
 import 'package:product0/screens/home/data/model/prod.dart';
 import 'package:product0/screens/home/data/resposirory/home_repository.dart';
 import 'package:product0/screens/home/data/datasource/remote/home_remote_source_impl.dart';
@@ -60,11 +61,10 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future getAdds() async {
     try {
-      var response = await homeRemoteSourceImpl.getAdds();
-      List<String> adds = [];
-      for (var data in response) {
-        adds.add(data['featured_image_url']);
-      }
+      final String token = await homeLocalSourceImpl.getLocalData('token');
+      var response = await homeRemoteSourceImpl.getAdds(token: token);
+      Ads adds;
+      adds = Ads.fromJson(response);
       return adds;
     } on ServerException catch (e) {
       throw e.message;
@@ -146,6 +146,16 @@ class HomeRepositoryImpl implements HomeRepository {
         searchedWorkshops.add(Workshop.fromJson(data));
       }
       return searchedWorkshops;
+    } on ServerException catch (e) {
+      throw e.message;
+    }
+  }
+
+  @override
+  Future getPointsExpl() async {
+    try {
+      var response = await homeRemoteSourceImpl.getPointsExpl();
+      return response;
     } on ServerException catch (e) {
       throw e.message;
     }

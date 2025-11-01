@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' show BaseOptions, Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/custom_button.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
@@ -124,12 +125,28 @@ class PremieumCard extends StatelessWidget {
                       itemCount: premieum.content.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return Text(
-                          '${premieum.content[index]}',
-                          style: TextStyle(
-                            color: Colors.grey.shade100,
-                            fontSize: 16,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Html(
+                            data: premieum.content[index],
+                            style: {
+                              "body": Style(
+                                direction: TextDirection.rtl,
+                                fontFamily: 'Arial',
+                                fontSize: FontSize(17),
+                                color: const Color(0xFFE9E9E9),
+                                lineHeight: const LineHeight(1.6),
+                              ),
+                              "span": Style(color: const Color(0xFFE9E9E9)),
+                            },
                           ),
+                          //  Text(
+                          //   premieum.content[index],
+                          //   style: TextStyle(
+                          //     color: Colors.grey.shade100,
+                          //     fontSize: 16,
+                          //   ),
+                          // ),
                         );
                       },
                     ),
@@ -158,7 +175,7 @@ class PremieumCard extends StatelessWidget {
                       );
                     }
                   },
-                  btnText: 'اشترك الآن',
+                  btnText: index == 0 ? 'انشر إعلانك الآن' : 'اشترك الآن',
                 ),
                 // SizedBox(height: 50),
               ],

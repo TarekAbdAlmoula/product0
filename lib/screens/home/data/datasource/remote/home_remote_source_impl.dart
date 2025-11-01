@@ -43,7 +43,6 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
       var response = await api.get(
         'https://barmijha.net/test/wp-json/wc/v3/products?category=$id&_fields=id,name,price,images,rating_count,featured,short_description&per_page=100',
       );
-      print('---------------->$response');
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -53,10 +52,11 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   }
 
   @override
-  Future getAdds() async {
+  Future getAdds({required String token}) async {
     try {
       var response = await api.get(
-        'https://wasla.barmijha.net/wp-json/wp/v2/ads?_fields=id,title,featured_image_url',
+        token: token,
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/ads',
       );
       return response;
     } on DioException catch (e) {
@@ -135,6 +135,20 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
       );
 
       return response;
+    } on DioException catch (e) {
+      throw ErrorHandler.handleDioError(e);
+    } catch (e) {
+      throw ServerException("حدث خطأ غير متوقع ");
+    }
+  }
+
+  @override
+  Future getPointsExpl() async {
+    try {
+      var response = await api.get(
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/about_app',
+      );
+      return response[1]['about_us'];
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
     } catch (e) {

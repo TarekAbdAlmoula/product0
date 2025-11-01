@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/ui_state.dart';
@@ -22,6 +23,7 @@ class WorkshopsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 25),
@@ -35,7 +37,15 @@ class WorkshopsScreen extends StatelessWidget {
         create: (context) => ProductsViewmodel(
           productsRepositoryImpl: WorkshopsRepositoryImpl(
             productsRemoteSourceImpl: WorkshopsRemoteSourceImpl(
-              DioConsumer(dio: Dio()),
+              DioConsumer(
+                dio: Dio(
+                  BaseOptions(
+                    connectTimeout: const Duration(seconds: 8),
+                    sendTimeout: const Duration(seconds: 8),
+                    receiveTimeout: const Duration(seconds: 8),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -101,8 +111,17 @@ class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
               );
             },
           );
+        } else if (state.uiState == UiState.error) {
+          return NoInternetWidget(
+            errorMessage: state.erroemessage ?? '',
+            onTap: () async {
+              BlocProvider.of<ProductsViewmodel>(
+                context,
+              ).getProductsByCategory(id: widget.categoryId);
+            },
+          );
         } else {
-          return Container();
+          return SizedBox();
         }
       },
     );

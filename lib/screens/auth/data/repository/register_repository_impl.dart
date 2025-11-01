@@ -88,7 +88,6 @@ class AuthRepositoryImpl implements AuthRepository {
       action: action,
       token: token,
     );
-    print('points_added ----------->from repos $addedPoints');
     return addedPoints;
   }
 }
