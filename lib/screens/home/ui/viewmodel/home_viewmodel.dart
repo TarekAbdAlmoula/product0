@@ -20,13 +20,13 @@ class HomeViewModel extends Cubit<HomeState> {
       final ads = await homeRepositoryImpl.getAdds();
       final featuredWorkshop = await homeRepositoryImpl.getFeaturedWorkshops();
       final topRatedWorkshop = await homeRepositoryImpl.getTopRatedWorkshop();
+      final pointsExpl = await homeRepositoryImpl.getPointsExpl();
+
       final pointMessage = await homeRepositoryImpl.addPoints(
         action: 'daily_login',
       );
       final userPoints = await homeRepositoryImpl.getUserPoints();
       final userName = await homeRepositoryImpl.getLocalData(key: 'username');
-
-      final pointsExpl = await homeRepositoryImpl.getPointsExpl();
 
       emit(
         state.copyWith(
