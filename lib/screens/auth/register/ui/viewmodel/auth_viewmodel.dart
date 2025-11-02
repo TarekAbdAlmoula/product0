@@ -7,6 +7,7 @@ import 'package:product0/screens/auth/register/ui/viewmodel/auth_state.dart';
 
 class AuthViewmodel extends Cubit<AuthState> {
   final AuthRepositoryImpl authRepositoryImp;
+
   AuthViewmodel({required this.authRepositoryImp})
     : super(AuthState(uiState: UiState.data));
 
@@ -30,21 +31,37 @@ class AuthViewmodel extends Cubit<AuthState> {
       final AuthResponse authResponse = await authRepositoryImp.verifyOtp(
         otp: otp,
       );
+      String accoutnType = await authRepositoryImp.getLocalData(
+        key: 'accountType',
+      );
+      bool isServiceProvider = false;
+
+      if (accoutnType == 'مقدم خدمة') {
+        isServiceProvider = true;
+      }
       if (authResponse.isSuccess == true) {
         String addedPoints = await authRepositoryImp.addPoints(
           action: 'first_signup',
         );
+        print('-------isServiceProvider------>$isServiceProvider');
         emit(
           state.copyWith(
             uiState: UiState.data,
             authResponse: authResponse,
             addedPoints: addedPoints,
+            isServiceProvider: isServiceProvider,
           ),
         );
       } else if (authResponse.isSuccess == false) {
         emit(state.copyWith(uiState: UiState.data, authResponse: authResponse));
       }
-    } catch (e) {}
+    } catch (e) {
+      final errorMessage = e is String
+          ? e
+          : e.toString().replaceAll('Exception: ', '');
+
+      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+    }
   }
 
   Future login(String email, String password) async {

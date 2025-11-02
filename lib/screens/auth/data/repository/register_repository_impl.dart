@@ -90,4 +90,9 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     return addedPoints;
   }
+
+  @override
+  Future getLocalData({required String key}) async {
+    return await authLocalSourceImpl.getData(key);
+  }
 }

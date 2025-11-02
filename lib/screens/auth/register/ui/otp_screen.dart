@@ -60,15 +60,19 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
       listener: (context, state) {
         if (state.authResponse != null &&
             state.authResponse!.isSuccess == true) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.success,
-            body: Html(data: state.pointsMessage),
-            btnOkText: 'حسناً',
-            btnOkOnPress: () {
-              context.goNamed(AppRouteConstants.home);
-            },
-          ).show();
+          if (state.isServiceProvider == false) {
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              body: Html(data: state.pointsMessage),
+              btnOkText: 'حسناً',
+              btnOkOnPress: () {
+                context.goNamed(AppRouteConstants.home);
+              },
+            ).show();
+          } else {
+            context.goNamed(AppRouteConstants.home);
+          }
         } else if (state.authResponse != null &&
             state.authResponse!.isSuccess == false) {
           AwesomeDialog(

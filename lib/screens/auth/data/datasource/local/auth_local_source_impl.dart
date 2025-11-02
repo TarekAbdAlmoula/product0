@@ -29,7 +29,7 @@ class AuthLocalSourceImpl implements AuthLocalSource {
   @override
   Future<String> getData(String data) async {
     String? value = await _storage.read(key: data);
-    return value ?? 'This key is empty';
+    return value ?? '';
   }
 
   @override
