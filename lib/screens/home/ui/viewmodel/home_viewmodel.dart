@@ -16,17 +16,30 @@ class HomeViewModel extends Cubit<HomeState> {
     emit(state.copyWith(uiState: UiState.loading));
 
     try {
+      final token = await homeRepositoryImpl.getLocalData(key: 'token');
+      final accountType = await homeRepositoryImpl.getLocalData(
+        key: 'accountType',
+      );
+      final isGuest = token == null || token.isEmpty;
       final categories = await homeRepositoryImpl.getCategories();
       final ads = await homeRepositoryImpl.getAdds();
       final featuredWorkshop = await homeRepositoryImpl.getFeaturedWorkshops();
       final topRatedWorkshop = await homeRepositoryImpl.getTopRatedWorkshop();
       final pointsExpl = await homeRepositoryImpl.getPointsExpl();
-
-      final pointMessage = await homeRepositoryImpl.addPoints(
-        action: 'daily_login',
-      );
-      final userPoints = await homeRepositoryImpl.getUserPoints();
-      final userName = await homeRepositoryImpl.getLocalData(key: 'username');
+      String? pointMessage;
+      int? userPoints;
+      String? userName;
+      bool? isServiceProvider;
+      if (!isGuest) {
+        userName = await homeRepositoryImpl.getLocalData(key: 'username');
+        if (accountType != 'مقدم خدمة') {
+          pointMessage = await homeRepositoryImpl.addPoints(
+            action: 'daily_login',
+          );
+          userPoints = await homeRepositoryImpl.getUserPoints();
+          isServiceProvider = false;
+        }
+      }
 
       emit(
         state.copyWith(
@@ -39,6 +52,7 @@ class HomeViewModel extends Cubit<HomeState> {
           userName: userName,
           pointMessage: pointMessage,
           pointsExpl: pointsExpl,
+          isServiceProvider: isServiceProvider,
         ),
       );
     } catch (e) {

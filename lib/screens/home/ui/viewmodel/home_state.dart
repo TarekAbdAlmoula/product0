@@ -20,6 +20,7 @@ class HomeState {
   final String? pointMessage;
   final Ads? ads;
   final String? pointsExpl;
+  final bool isServiceProvider;
   HomeState({
     this.uiState,
     this.prod = const [],
@@ -36,6 +37,7 @@ class HomeState {
     this.pointMessage,
     this.ads,
     this.pointsExpl,
+    this.isServiceProvider = true,
   });
 
   HomeState copyWith({
@@ -54,6 +56,7 @@ class HomeState {
     String? userName,
     int? userPoints,
     String? pointsExpl,
+    bool? isServiceProvider,
   }) {
     return HomeState(
       uiState: uiState ?? this.uiState,
@@ -71,6 +74,7 @@ class HomeState {
       pointMessage: pointMessage ?? this.pointMessage,
       ads: ads ?? this.ads,
       pointsExpl: pointsExpl ?? this.pointsExpl,
+      isServiceProvider: isServiceProvider ?? this.isServiceProvider,
     );
   }
 }

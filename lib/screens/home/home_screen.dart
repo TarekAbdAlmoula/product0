@@ -59,14 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: backgroundColor,
         body: BlocConsumer<HomeViewModel, HomeState>(
           listener: (context, state) {
-            if (state.uiState == UiState.data && state.pointMessage != '') {
+            if (state.uiState == UiState.data &&
+                state.pointMessage != '' &&
+                state.isServiceProvider == false) {
               AwesomeDialog(
                 context: context,
                 dialogType: DialogType.success,
                 body: Html(data: state.pointMessage ?? "<p></p>"),
                 btnOkText: 'حسناً',
                 btnOkOnPress: () {
-                  print(state.pointMessage);
                   setState(() {});
                 },
               ).show();
