@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' show BaseOptions, Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/custom_button.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
@@ -95,58 +96,43 @@ class PremieumCard extends StatelessWidget {
         SizedBox(height: MediaQuery.of(context).size.height * 0.001),
 
         Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.03,
-          ),
+          margin: EdgeInsets.symmetric(horizontal: 10.h),
           width: double.infinity,
           decoration: BoxDecoration(
             color: kMainDarkColor,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 25.h),
             child: Column(
               children: [
                 Text(
                   premieum.title,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: premieum.content.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Html(
-                            data: premieum.content[index],
-                            style: {
-                              "body": Style(
-                                direction: TextDirection.rtl,
-                                fontFamily: 'Arial',
-                                fontSize: FontSize(17),
-                                color: const Color(0xFFE9E9E9),
-                                lineHeight: const LineHeight(1.6),
-                              ),
-                              "span": Style(color: const Color(0xFFE9E9E9)),
-                            },
+                          padding: EdgeInsets.symmetric(vertical: 5.h),
+                          child: Text(
+                            premieum.content[index],
+                            style: TextStyle(
+                              color: Colors.grey.shade100,
+                              fontSize: 16.sp,
+                            ),
                           ),
-                          //  Text(
-                          //   premieum.content[index],
-                          //   style: TextStyle(
-                          //     color: Colors.grey.shade100,
-                          //     fontSize: 16,
-                          //   ),
-                          // ),
                         );
                       },
                     ),
