@@ -58,6 +58,7 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
         token: token,
         'https://wasla.barmijha.net/wp-json/custom-api/v1/ads',
       );
+      print(response);
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

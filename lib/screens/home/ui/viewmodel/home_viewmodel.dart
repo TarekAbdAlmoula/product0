@@ -17,6 +17,7 @@ class HomeViewModel extends Cubit<HomeState> {
 
     try {
       final token = await homeRepositoryImpl.getLocalData(key: 'token');
+      print('token from vriewmodel $token ');
       final accountType = await homeRepositoryImpl.getLocalData(
         key: 'accountType',
       );

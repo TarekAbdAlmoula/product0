@@ -18,7 +18,7 @@ import 'package:product0/shell_screen.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/home',
     routes: [
       ShellRoute(
         builder: (context, state, child) => ShellScreen(child: child),

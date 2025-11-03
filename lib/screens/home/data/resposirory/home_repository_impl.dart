@@ -62,9 +62,11 @@ class HomeRepositoryImpl implements HomeRepository {
   Future getAdds() async {
     try {
       final String token = await homeLocalSourceImpl.getLocalData('token');
+      print("token from get ads is $token");
       var response = await homeRemoteSourceImpl.getAdds(token: token);
       Ads adds;
       adds = Ads.fromJson(response);
+      print("I am trying to print inside get ads");
       return adds;
     } on ServerException catch (e) {
       throw e.message;

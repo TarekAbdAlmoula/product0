@@ -29,7 +29,14 @@
             versionCode = flutter.versionCode
             versionName = flutter.versionName
         }
-
+        splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk = true
+                }
+            }
         buildTypes {
             release {
                 // TODO: Add your own signing config for the release build.
