@@ -2,7 +2,7 @@ abstract class HomeRemoteSource {
   Future getProducts();
   Future getCategories();
   Future getProductsByCategory(int id);
-  Future getAdds({required String token});
+  Future getAdds({String? token});
   Future getFeaturedWorkshops();
   Future getTopRatedWorkshop();
   Future getUserPoints({required String token});

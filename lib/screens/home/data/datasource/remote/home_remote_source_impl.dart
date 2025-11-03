@@ -38,6 +38,12 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   }
 
   @override
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /// Get products by category id.
+  ///
+  /// [id] is the id of the category.
+  ///
+  /*******  80cd4636-665a-4929-92a0-3d4d54bbfb5a  *******/
   Future getProductsByCategory(int id) async {
     try {
       var response = await api.get(
@@ -52,7 +58,7 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   }
 
   @override
-  Future getAdds({required String token}) async {
+  Future getAdds({String? token}) async {
     try {
       var response = await api.get(
         token: token,
