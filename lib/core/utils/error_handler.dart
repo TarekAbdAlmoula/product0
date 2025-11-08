@@ -7,9 +7,9 @@ class ErrorHandler {
       case DioExceptionType.connectionTimeout:
         return ServerException("الانترنت بطيء،تحقق من اتصالك");
       case DioExceptionType.sendTimeout:
-        return ServerException("انتهت مهلة الإرسال إلى الخادم");
+        return ServerException("الانترنت بطيء،تحقق من اتصالك");
       case DioExceptionType.receiveTimeout:
-        return ServerException("انتهت مهلة الاستجابة من الخادم");
+        return ServerException("الانترنت بطيء،تحقق من اتصالك");
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode;
         final message =

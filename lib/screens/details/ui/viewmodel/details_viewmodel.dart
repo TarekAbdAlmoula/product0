@@ -12,7 +12,7 @@ class DetailsViewmodel extends Cubit<DetailsState> {
     init();
   }
   void init() async {
-    await getAccountType();
+    await getToken();
   }
 
   Future sendRating(num rating, int workshopId, {String? comment}) async {
@@ -48,14 +48,14 @@ class DetailsViewmodel extends Cubit<DetailsState> {
     }
   }
 
-  Future getAccountType() async {
-    if (isClosed) return;
-    emit(state.copyWith(uiState: UiState.loading));
+  // Future getAccountType() async {
+  //   if (isClosed) return;
+  //   emit(state.copyWith(uiState: UiState.loading));
 
-    final FlutterSecureStorage storage = const FlutterSecureStorage();
-    String accountType = await storage.read(key: 'accountType') ?? '';
-    if (!isClosed) {
-      emit(state.copyWith(accountType: accountType, uiState: UiState.data));
-    }
-  }
+  //   final FlutterSecureStorage storage = const FlutterSecureStorage();
+  //   String accountType = await storage.read(key: 'accountType') ?? '';
+  //   if (!isClosed) {
+  //     emit(state.copyWith(accountType: accountType, uiState: UiState.data));
+  //   }
+  // }
 }

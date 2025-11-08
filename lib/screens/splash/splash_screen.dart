@@ -17,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    checkToken();
+    delayBeforeHome();
     super.initState();
   }
 
@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future checkToken() async {
+  Future delayBeforeHome() async {
     Future.delayed(const Duration(seconds: 3), () {
       context.goNamed(AppRouteConstants.home);
     });

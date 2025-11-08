@@ -74,7 +74,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               Spacer(flex: 20),
               Padding(
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.width * 0.03,
+                  top: MediaQuery.of(context).size.height * 0.03,
                   left: MediaQuery.of(context).size.width * 0.01,
                 ),
                 child: Text(
