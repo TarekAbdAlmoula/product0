@@ -62,13 +62,11 @@ class HomeRepositoryImpl implements HomeRepository {
   Future getAdds() async {
     try {
       final String? token = await homeLocalSourceImpl.getLocalData('token');
-      print("token from get ads is $token");
       var response = await homeRemoteSourceImpl.getAdds(
         token: (token != null && token.isNotEmpty) ? token : null,
       );
       Ads adds;
       adds = Ads.fromJson(response);
-      print("I am trying to print inside get ads");
       return adds;
     } on ServerException catch (e) {
       throw e.message;
@@ -96,9 +94,7 @@ class HomeRepositoryImpl implements HomeRepository {
       var response = await homeRemoteSourceImpl.getTopRatedWorkshop();
       List<Workshop> topRatedWorkshop = [];
       for (var data in response) {
-        if (((data['average_rating'] / 5) * 100) >= 50) {
-          topRatedWorkshop.add(Workshop.fromJson(data));
-        }
+        topRatedWorkshop.add(Workshop.fromJson(data));
       }
       topRatedWorkshop.sort((a, b) {
         return b.rating.compareTo(a.rating);
@@ -132,7 +128,6 @@ class HomeRepositoryImpl implements HomeRepository {
         action: action,
         token: token,
       );
-
       return pointMessage;
     } on ServerException catch (e) {
       throw e.message;
@@ -147,6 +142,10 @@ class HomeRepositoryImpl implements HomeRepository {
       for (var data in response) {
         searchedWorkshops.add(Workshop.fromJson(data));
       }
+      searchedWorkshops.sort((a, b) {
+        if (a.isFeatured == b.isFeatured) return 0;
+        return a.isFeatured ? -1 : 1;
+      });
       return searchedWorkshops;
     } on ServerException catch (e) {
       throw e.message;

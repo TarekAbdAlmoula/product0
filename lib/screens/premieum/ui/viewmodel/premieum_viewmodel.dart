@@ -16,15 +16,22 @@ class PremieumViewmodel extends Cubit<PremieumState> {
   }
 
   Future getPlans() async {
+    if (isClosed) return;
     emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Premieum> premieum = await premieumRepositoryImpl.getPlans();
-      emit(state.copyWith(uiState: UiState.data, premieum: premieum));
+      if (!isClosed) {
+        emit(state.copyWith(uiState: UiState.data, premieum: premieum));
+      }
     } catch (e) {
       final errorMessage = e is String
           ? e
           : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
-      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.error, erroemessage: errorMessage),
+        );
+      }
     }
   }
 }

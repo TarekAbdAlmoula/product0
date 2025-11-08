@@ -1,10 +1,13 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product0/core/utils/constants.dart';
 
 class AnimatedBorderCircle extends StatefulWidget {
+  const AnimatedBorderCircle({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AnimatedBorderCircleState createState() => _AnimatedBorderCircleState();
 }
 
@@ -17,7 +20,7 @@ class _AnimatedBorderCircleState extends State<AnimatedBorderCircle>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 6),
+      duration: const Duration(seconds: 6),
     )..repeat();
   }
 
@@ -29,28 +32,38 @@ class _AnimatedBorderCircleState extends State<AnimatedBorderCircle>
 
   @override
   Widget build(BuildContext context) {
+    double screenMin = math.min(1.sw, 1.sh);
+    double circleSize = screenMin * 0.6;
+    double strokeWidth = circleSize * 0.02;
+
     return Center(
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return CustomPaint(
-            painter: CircleBorderPainter(_controller.value),
-            child: Container(
-              // margin: EdgeInsets.all(20),
-              // padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/logo_w.jpeg'),
-                  fit: BoxFit.fill,
-                ),
+      child: SizedBox(
+        width: circleSize,
+        height: circleSize,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // الصورة
+            ClipOval(
+              child: Image.asset(
+                'assets/images/logo_w.jpeg',
+                width: circleSize,
+                height: circleSize,
+                fit: BoxFit.fill,
               ),
-              width: MediaQuery.of(context).size.width * 0.66,
-              height: MediaQuery.of(context).size.height * 0.3,
-              // alignment: Alignment.center,
             ),
-          );
-        },
+            // الحد الخارجي المتحرك
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: CircleBorderPainter(_controller.value, strokeWidth),
+                  size: Size(circleSize, circleSize),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -58,7 +71,9 @@ class _AnimatedBorderCircleState extends State<AnimatedBorderCircle>
 
 class CircleBorderPainter extends CustomPainter {
   final double progress;
-  CircleBorderPainter(this.progress);
+  final double strokeWidth;
+
+  CircleBorderPainter(this.progress, this.strokeWidth);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -70,13 +85,13 @@ class CircleBorderPainter extends CustomPainter {
         startAngle: 0,
         endAngle: 2 * math.pi,
         colors: [kMainColor, Colors.white, kMainDarkColor],
-        stops: [0.0, 0.5, 1.0],
+        stops: const [0.0, 0.5, 1.0],
         transform: GradientRotation(startAngle),
       ).createShader(rect)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 15;
+      ..strokeWidth = strokeWidth;
 
-    final radius = size.width / 2 - 6;
+    final radius = (size.width / 2) - strokeWidth / 2;
     canvas.drawCircle(size.center(Offset.zero), radius, paint);
   }
 

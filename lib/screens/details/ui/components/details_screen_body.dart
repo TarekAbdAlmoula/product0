@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:photo_view/photo_view.dart';
@@ -18,7 +19,7 @@ class DetailsScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -27,17 +28,23 @@ class DetailsScreenBody extends StatelessWidget {
                       ? ProductImagesViewer(imageUrls: workshop.gallery)
                       : Hero(
                           tag: "hero_${workshop.code}",
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              image: DecorationImage(
-                                image: NetworkImage(workshop.featuredImageUrl),
-                                fit: BoxFit.fill,
+                          child: AspectRatio(
+                            aspectRatio: 2.5 / 2,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffA3A3A3)),
+
+                                borderRadius: BorderRadius.circular(16),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    workshop.featuredImageUrl,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
+                              width: double.infinity,
                             ),
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.3,
                           ),
                         )
                 : Hero(
@@ -45,6 +52,8 @@ class DetailsScreenBody extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xffA3A3A3)),
+
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
                           image: NetworkImage(workshop.featuredImageUrl),
@@ -58,26 +67,20 @@ class DetailsScreenBody extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'ID:${workshop.code}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Color(0xff5C5C5C),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                  ],
+                Text(
+                  'ID:${workshop.code}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
+                    color: Color(0xff5C5C5C),
+                  ),
                 ),
                 Text(
                   textAlign: TextAlign.end,
                   workshop.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 20.sp,
 
                     color: Color(0xff094067),
                   ),
@@ -90,7 +93,7 @@ class DetailsScreenBody extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.45,
                   padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 5),
+                  margin: EdgeInsets.symmetric(vertical: 5.h),
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xffA3A3A3)),
                     borderRadius: BorderRadius.circular(16),
@@ -106,7 +109,7 @@ class DetailsScreenBody extends StatelessWidget {
                               bottom: MediaQuery.of(context).size.width * 0.015,
                             ),
                             child: SvgPicture.asset(
-                              height: 20,
+                              height: 20.h,
                               'assets/icons/Star.svg',
                               color: Colors.amber,
                             ),
@@ -114,26 +117,28 @@ class DetailsScreenBody extends StatelessWidget {
                           SizedBox(width: 5),
 
                           Text(
-                            ((workshop.rating / 5) * 100).toString().length > 4
-                                ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
-                                : '${((workshop.rating / 5) * 100).toString()}%',
+                            (workshop.rating != 0
+                                ? '${workshop.rating.toString()}%'
+                                : 'لايوجد تقيمات'),
                             textAlign: TextAlign.end,
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: workshop.rating == 0 ? 16.sp : 22.sp,
                               color: Color(0xff5C5C5C),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                      Text(
-                        'تقييم الخدمة',
+                      workshop.rating == 0
+                          ? Text('')
+                          : Text(
+                              'تقييم الخدمة',
 
-                        style: TextStyle(
-                          color: Color(0xff5C5C5C),
-                          fontSize: 15,
-                        ),
-                      ),
+                              style: TextStyle(
+                                color: Color(0xff5C5C5C),
+                                fontSize: 15,
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -264,25 +269,30 @@ class _ProductImagesViewerState extends State<ProductImagesViewer> {
                   onTap: () => _openFullScreenGallery(index),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: url,
-                      fit: BoxFit.fill,
-                      width: double.infinity,
-                      placeholder: (context, url) => const Center(
-                        child: LoadingIndicator(
-                          indicatorType: Indicator.lineSpinFadeLoader,
-                          colors: [kMainColor, kMainDarkColor],
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xffA3A3A3)),
                       ),
-                      errorWidget: (context, url, error) => Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'خطأ في تحميل الصورة',
-                            style: TextStyle(fontSize: 16),
+                      child: CachedNetworkImage(
+                        imageUrl: url,
+                        fit: BoxFit.fill,
+                        width: double.infinity,
+                        placeholder: (context, url) => const Center(
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.lineSpinFadeLoader,
+                            colors: [kMainColor, kMainDarkColor],
                           ),
-                          const Icon(Icons.error),
-                        ],
+                        ),
+                        errorWidget: (context, url, error) => Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'خطأ في تحميل الصورة',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            const Icon(Icons.error),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -43,7 +43,6 @@ class AuthViewmodel extends Cubit<AuthState> {
         String addedPoints = await authRepositoryImp.addPoints(
           action: 'first_signup',
         );
-        print('-------isServiceProvider------>$isServiceProvider');
         emit(
           state.copyWith(
             uiState: UiState.data,

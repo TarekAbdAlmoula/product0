@@ -3,9 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
@@ -95,22 +95,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        CustomAppBar(
-                          pointsExpl: state.pointsExpl ?? '',
-
-                          onSubmitted: (query) async {
-                            if (query.length > 2) {
-                              context.pushNamed(
-                                AppRouteConstants.search,
-                                pathParameters: {'query': query},
-                              );
-                            }
-                          },
-                          userName: state.userName ?? '',
-                          userPoints: state.userPoints == null
-                              ? ''
-                              : state.userPoints.toString(),
-                        ),
+                        state.token == null
+                            ? CustomAppbarWithoutToken(
+                                pointsExpl: state.pointsExpl ?? '',
+                              )
+                            : CustomAppBar(
+                                pointsExpl: state.pointsExpl ?? '',
+                                onSubmitted: (query) async {
+                                  if (query.length > 2) {
+                                    context.pushNamed(
+                                      AppRouteConstants.search,
+                                      pathParameters: {'query': query},
+                                    );
+                                  }
+                                },
+                                userName: state.userName ?? '',
+                                userPoints: state.userPoints == null
+                                    ? ''
+                                    : state.userPoints.toString(),
+                              ),
                         CarouselSlider.builder(
                           itemCount: state.ads!.dataAds.length,
                           itemBuilder: (context, index, realIndex) {
@@ -185,11 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
+
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.23,
+                          height: 160.h,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
                             reverse: true,
@@ -213,9 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
+                        SizedBox(height: 5.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -249,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: MediaQuery.of(context).size.height * 0.01,
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.24,
+                          height: 160.h,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
                             reverse: true,
@@ -263,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 press: () {
                                   context.pushNamed(
                                     AppRouteConstants.details,
-                                    extra: state.featuredWorkshop[index],
+                                    extra: state.topRatedWorkshop[index],
                                   );
                                 },
                                 workshop: state.topRatedWorkshop[index],

@@ -15,16 +15,25 @@ class NotificationViewmodel extends Cubit<NotificationState> {
   }
 
   Future getNotifications() async {
+    if (isClosed) return;
     emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Notifications> notifications = await notificationRepositoryImpl
           .getNotifications();
-      emit(state.copyWith(uiState: UiState.data, notification: notifications));
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.data, notification: notifications),
+        );
+      }
     } catch (e) {
       final errorMessage = e is String
           ? e
           : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
-      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.error, erroemessage: errorMessage),
+        );
+      }
     }
   }
 }

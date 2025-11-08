@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
@@ -42,7 +43,6 @@ class RegisterScreen extends StatelessWidget {
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: kMainDarkColor,
         body: RegisterScreenBody(),
       ),
     );
@@ -110,7 +110,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
             body: Text(
               state.erroemessage ?? '',
               textAlign: TextAlign.end,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
             ),
             btnOkOnPress: () {
               // context.goNamed(AppRouteConstants.login);
@@ -123,19 +123,19 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
         height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
-          // color: kMainDarkColor,
+          color: kMainDarkColor,
           image: DecorationImage(
             image: AssetImage("assets/images/gradient_background.png"),
             fit: BoxFit.fill,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, right: 30, left: 30),
+          padding: EdgeInsets.only(top: 50.h, right: 30.w, left: 30.w),
           child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,14 +266,14 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                         style: TextStyle(color: Colors.white),
                       ),
 
-                      borderRadius: BorderRadius.circular(20),
-                      menuMaxHeight: 120,
+                      borderRadius: BorderRadius.circular(20.r),
+                      menuMaxHeight: 120.h,
                       iconEnabledColor: Colors.white,
                       decoration: InputDecoration(
                         border: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
 
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -372,10 +372,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
 
                   // const SizedBox(height: 30),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.1,
-                      vertical: MediaQuery.of(context).size.height * 0.04,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 30.h),
                     child: CustomButton(
                       btnText: 'إرسال ',
                       color: kMainColor,
@@ -404,18 +401,16 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                                   style: TextStyle(
                                     color: kMainDarkColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 18.sp,
                                   ),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.14,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  height: 60.h,
+                                  width: 70.w,
                                   child: LoadingIndicator(
                                     indicatorType: Indicator.pacman,
                                     colors: const [kMainDarkColor, kMainColor],
-                                    strokeWidth: 3,
+                                    strokeWidth: 3.w,
                                     backgroundColor: Colors.white,
                                     pathBackgroundColor: Colors.black,
                                   ),

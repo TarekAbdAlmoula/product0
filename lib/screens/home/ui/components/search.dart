@@ -22,6 +22,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeViewModel(
+        runInit: false,
         homeRepositoryImpl: HomeRepositoryImpl(
           homeLocalSourceImpl: HomeLocalSourceImpl(),
           homeRemoteSourceImpl: HomeRemoteSourceImpl(
@@ -67,7 +68,6 @@ class SearchScreenBody extends StatefulWidget {
 class _SearchScreenBodyState extends State<SearchScreenBody> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<HomeViewModel>(
       context,

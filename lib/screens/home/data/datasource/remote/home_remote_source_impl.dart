@@ -38,12 +38,6 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   }
 
   @override
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /// Get products by category id.
-  ///
-  /// [id] is the id of the category.
-  ///
-  /*******  80cd4636-665a-4929-92a0-3d4d54bbfb5a  *******/
   Future getProductsByCategory(int id) async {
     try {
       var response = await api.get(
@@ -64,7 +58,6 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
         token: token,
         'https://wasla.barmijha.net/wp-json/custom-api/v1/ads',
       );
-      print(response);
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -91,7 +84,7 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
   Future getTopRatedWorkshop() async {
     try {
       var response = await api.get(
-        'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple',
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple_min_rating',
       );
       return response;
     } on DioException catch (e) {
@@ -125,7 +118,6 @@ class HomeRemoteSourceImpl implements HomeRemoteSource {
         data: {"action": action},
         token: token,
       );
-      print(response['message']);
       return response['message'];
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

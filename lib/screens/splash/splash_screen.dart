@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:product0/app_route_constants.dart';
 
@@ -25,42 +25,32 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * 0.1,
-          horizontal: MediaQuery.of(context).size.width * 0.18,
-        ),
-        child: Column(
-          children: [
-            Spacer(flex: 1),
-            Image.asset(
-              'assets/images/splash_gif.gif',
-              width: MediaQuery.of(context).size.width * 0.5,
-            ),
-            Spacer(),
-            Text(
-              'وصلة أقرب طريق لخدمتك',
-              style: TextStyle(
-                fontSize: 20,
-                color: kMainDarkColor,
-                fontWeight: FontWeight.bold,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 90.h, horizontal: 40.w),
+          child: Column(
+            children: [
+              Spacer(flex: 1),
+              Image.asset('assets/images/splash_gif.gif', width: 220.h),
+              Spacer(),
+              Text(
+                'أسرع وصول للخدمة',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  color: kMainDarkColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Future checkToken() async {
-    final FlutterSecureStorage _storage = FlutterSecureStorage();
-    String? token = await _storage.read(key: 'token');
     Future.delayed(const Duration(seconds: 3), () {
-      if (token != null) {
-        context.goNamed(AppRouteConstants.home);
-      } else {
-        context.goNamed(AppRouteConstants.login);
-      }
+      context.goNamed(AppRouteConstants.home);
     });
   }
 }

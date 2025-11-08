@@ -66,7 +66,6 @@ class WorkshopsScreenBody extends StatefulWidget {
 class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<ProductsViewmodel>(
       context,

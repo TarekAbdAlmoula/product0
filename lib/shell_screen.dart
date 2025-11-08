@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:product0/app_route_constants.dart';
@@ -34,35 +35,43 @@ class _ShellScreenState extends State<ShellScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: ConvexAppBar(
-        backgroundColor: kMainDarkColor,
-        height: MediaQuery.of(context).size.height * 0.07,
-        // backgroundColor: Colors.white,
-        items: [
-          TabItem(icon: Icons.info, title: 'عن التطبيق'),
-
-          TabItem(icon: Icons.people, title: 'حسابي'),
-          TabItem(
-            icon: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(
-                'assets/images/crown.svg',
-                color: Colors.amber.shade300,
-              ),
-            ),
-            isIconBlend: false,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          textTheme: TextTheme(
+            bodyMedium: TextStyle(color: Colors.white, fontSize: 8.sp),
           ),
+        ),
+        child: ConvexAppBar(
+          backgroundColor: kMainDarkColor,
+          height: 50.h,
 
-          TabItem(icon: Icons.notifications_active, title: 'الاشعارات'),
+          // backgroundColor: Colors.white,
+          items: [
+            TabItem(icon: Icons.info, title: 'عن وصلة'),
 
-          TabItem(icon: Icons.home, title: 'الرئيسية'),
-        ],
-        style: TabStyle.fixedCircle,
-        initialActiveIndex: selectedItem,
-        onTap: onTap,
+            TabItem(icon: Icons.people, title: 'حسابي'),
+            TabItem(
+              icon: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(
+                  'assets/images/crown.svg',
+                  color: Colors.amber.shade300,
+                ),
+              ),
+              isIconBlend: false,
+            ),
+
+            TabItem(icon: Icons.notifications_active, title: 'الاشعارات'),
+
+            TabItem(icon: Icons.home, title: 'الرئيسية'),
+          ],
+          style: TabStyle.fixedCircle,
+          initialActiveIndex: selectedItem,
+          onTap: onTap,
+        ),
       ),
     );
   }

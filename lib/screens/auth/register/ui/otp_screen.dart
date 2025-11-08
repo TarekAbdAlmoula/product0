@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -190,10 +191,6 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                   color: kMainColor,
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      // BlocProvider.of<AuthViewmodel>(
-                      //   context,
-                      // ).verifyOtp(otp: otp, userId: int.parse(widget.userId));
-
                       AwesomeDialog(
                         // dismissOnTouchOutside: false,
                         dialogBackgroundColor: Colors.white,
@@ -212,12 +209,12 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.14,
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              height: 60.h,
+                              width: 70.w,
                               child: LoadingIndicator(
                                 indicatorType: Indicator.ballClipRotatePulse,
                                 colors: const [kMainDarkColor, kMainColor],
-                                strokeWidth: 3,
+                                strokeWidth: 3.w,
                                 backgroundColor: Colors.white,
                                 pathBackgroundColor: Colors.black,
                               ),

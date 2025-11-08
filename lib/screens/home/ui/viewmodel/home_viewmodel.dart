@@ -7,17 +7,20 @@ import 'package:product0/screens/home/ui/viewmodel/home_State.dart';
 class HomeViewModel extends Cubit<HomeState> {
   final HomeRepositoryImpl homeRepositoryImpl;
 
-  HomeViewModel({required this.homeRepositoryImpl})
+  HomeViewModel({required this.homeRepositoryImpl, bool runInit = true})
     : super(HomeState(uiState: UiState.loading)) {
-    init();
+    if (runInit) {
+      init();
+    }
   }
 
   Future init() async {
+    if (isClosed) return;
+
     emit(state.copyWith(uiState: UiState.loading));
 
     try {
       final token = await homeRepositoryImpl.getLocalData(key: 'token');
-      print('token from vriewmodel $token ');
       final accountType = await homeRepositoryImpl.getLocalData(
         key: 'accountType',
       );
@@ -42,25 +45,33 @@ class HomeViewModel extends Cubit<HomeState> {
         }
       }
 
-      emit(
-        state.copyWith(
-          uiState: UiState.data,
-          categories: categories,
-          ads: ads,
-          featuredWorkshop: featuredWorkshop,
-          topRatedWorkshop: topRatedWorkshop,
-          userPoints: userPoints,
-          userName: userName,
-          pointMessage: pointMessage,
-          pointsExpl: pointsExpl,
-          isServiceProvider: isServiceProvider,
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            uiState: UiState.data,
+            categories: categories,
+            ads: ads,
+            featuredWorkshop: featuredWorkshop,
+            topRatedWorkshop: topRatedWorkshop,
+            userPoints: userPoints,
+            userName: userName,
+            pointMessage: pointMessage,
+            pointsExpl: pointsExpl,
+            isServiceProvider: isServiceProvider,
+            token: token,
+          ),
+        );
+      }
     } catch (e) {
       final errorMessage = e is String
           ? e
           : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى";
-      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.error, erroemessage: errorMessage),
+        );
+      }
     }
   }
 
@@ -131,6 +142,7 @@ class HomeViewModel extends Cubit<HomeState> {
   //   }
 
   Future searchWorkshops({required String query}) async {
+    emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Workshop>? searchedWorkshops;
       searchedWorkshops = await homeRepositoryImpl.searchWorkshops(

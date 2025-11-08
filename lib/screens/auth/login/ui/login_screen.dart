@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:product0/app_route_constants.dart';
@@ -40,7 +41,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-      child: Scaffold(body: LoginScreenBody(), backgroundColor: kMainColor),
+      child: Scaffold(resizeToAvoidBottomInset: true, body: LoginScreenBody()),
     );
   }
 }
@@ -59,7 +60,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -132,8 +132,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   AnimatedBorderCircle(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
@@ -203,19 +203,18 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                                   style: TextStyle(
                                     color: kMainDarkColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 18.sp,
                                   ),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.14,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  height: 60.h,
+                                  width: 70.w,
                                   child: LoadingIndicator(
                                     indicatorType:
                                         Indicator.ballClipRotatePulse,
                                     colors: const [kMainDarkColor, kMainColor],
-                                    strokeWidth: 3,
+                                    strokeWidth: 3.w,
+
                                     backgroundColor: Colors.white,
                                     pathBackgroundColor: Colors.black,
                                   ),

@@ -10,17 +10,24 @@ class ProductsViewmodel extends Cubit<ProductsState> {
     : super(ProductsState(uiState: UiState.data));
 
   Future getProductsByCategory({required int id}) async {
+    if (isClosed) return;
     emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Workshop> workshop = await productsRepositoryImpl
           .getProductsByCategory(id);
 
-      emit(state.copyWith(uiState: UiState.data, workshop: workshop));
+      if (!isClosed) {
+        emit(state.copyWith(uiState: UiState.data, workshop: workshop));
+      }
     } catch (e) {
       final errorMessage = e is String
           ? e
           : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
-      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.error, erroemessage: errorMessage),
+        );
+      }
     }
   }
 }

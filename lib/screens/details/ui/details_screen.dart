@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/utils/constants.dart';
@@ -15,6 +16,7 @@ import 'package:product0/screens/details/ui/components/details_screen_body.dart'
 import 'package:product0/screens/details/ui/viewmodel/details_state.dart';
 import 'package:product0/screens/details/ui/viewmodel/details_viewmodel.dart';
 import 'package:product0/models/workshop.dart';
+import 'package:product0/screens/home/ui/components/register_button.dart';
 
 class DetailsScreen extends StatefulWidget {
   final Workshop workshop;
@@ -54,162 +56,217 @@ class _DetailsScreenState extends State<DetailsScreen> {
             backgroundColor: Colors.white,
             appBar: AppBar(
               actions: [
-                GestureDetector(
-                  onTap: () {
-                    final detailsViewmodel = context.read<DetailsViewmodel>();
+                BlocBuilder<DetailsViewmodel, DetailsState>(
+                  builder: (context, state) {
+                    if (state.uiState == UiState.loading) {
+                      return SizedBox();
+                    }
+                    return Visibility(
+                      visible: state.accountType != 'مقدم خدمة',
+                      child: GestureDetector(
+                        onTap: () async {
+                          final detailsViewmodel = context
+                              .read<DetailsViewmodel>();
+                          await detailsViewmodel.getToken();
+                          final token = detailsViewmodel.state.token;
 
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (bottomSheetContext) {
-                        return BlocProvider.value(
-                          value: detailsViewmodel,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(
-                                bottomSheetContext,
-                              ).viewInsets.bottom,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.all(10),
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.28,
-                              child: BlocConsumer<DetailsViewmodel, DetailsState>(
-                                listener: (context, state) {
-                                  if (state.uiState == UiState.data &&
-                                      state.ratingModel!.success == true) {
-                                    AwesomeDialog(
-                                      context: bottomSheetContext,
-                                      btnOkText: 'إغلاق',
-                                      // title: state.ratingModel!.message,
-                                      dialogType: DialogType.success,
-                                      btnOkOnPress: () {
-                                        Navigator.pop(bottomSheetContext);
-                                        ratingController.clear();
-                                      },
-                                      body: Html(
-                                        data: state.ratingModel!.message,
-                                      ),
-                                    ).show();
-                                  } else if (state.uiState == UiState.data &&
-                                      state.ratingModel!.success == false) {
-                                    AwesomeDialog(
-                                      context: bottomSheetContext,
-                                      btnOkText: 'إغلاق',
-                                      body: Html(
-                                        data: state.ratingModel!.message,
-                                      ),
-                                      dialogType: DialogType.error,
-                                      btnOkOnPress: () {
-                                        Navigator.pop(bottomSheetContext);
-                                        ratingController.clear();
-                                      },
-                                      // body: Text('data'),
-                                    ).show();
-                                  } else if (state.uiState == UiState.error) {
-                                    AwesomeDialog(
-                                      context: context,
-                                      btnOkText: 'إغلاق',
-                                      body: Text(
-                                        state.erroemessage ?? '',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      dialogType: DialogType.error,
-                                      btnOkOnPress: () {},
-                                      // body: Text('data'),
-                                    ).show();
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'ما رأيك ب ${widget.workshop.title}',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        RatingBar.builder(
-                                          itemBuilder: (context, index) => Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          ),
-                                          onRatingUpdate: (value) {
-                                            rating = value.toInt();
-                                          },
-                                        ),
-                                        SizedBox(height: 10),
-                                        Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: TextField(
-                                            cursorColor: kMainColor,
-                                            controller: ratingController,
-                                            maxLength: 50,
-
-                                            decoration: InputDecoration(
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                borderSide: const BorderSide(
-                                                  color: Colors
-                                                      .grey, // لون الحافة في الحالة العادية
-                                                  width: 1.5,
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                borderSide: const BorderSide(
-                                                  color: Colors
-                                                      .green, // لون الحافة عند التركيز
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              hintText: 'اكتب تقيمك(اختياري)',
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (bottomSheetContext) {
+                              return BlocProvider.value(
+                                value: detailsViewmodel,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(
+                                      bottomSheetContext,
+                                    ).viewInsets.bottom,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
+                                    width: double.infinity,
+                                    height: 200.h,
+                                    child: BlocConsumer<DetailsViewmodel, DetailsState>(
+                                      listener: (context, state) {
+                                        if (state.uiState == UiState.data &&
+                                            state.ratingModel!.success ==
+                                                true) {
+                                          AwesomeDialog(
+                                            context: bottomSheetContext,
+                                            btnOkText: 'حسناً',
+                                            dialogType: DialogType.success,
+                                            btnOkOnPress: () {
+                                              Navigator.pop(bottomSheetContext);
+                                              ratingController.clear();
+                                            },
+                                            body: Html(
+                                              data: state.ratingModel!.message,
                                             ),
-                                          ),
-                                        ),
+                                          ).show();
+                                        } else if (state.uiState ==
+                                                UiState.data &&
+                                            state.ratingModel!.success ==
+                                                false) {
+                                          AwesomeDialog(
+                                            context: bottomSheetContext,
+                                            btnOkText: 'حسناً',
+                                            body: Html(
+                                              data: state.ratingModel!.message,
+                                            ),
+                                            dialogType: DialogType.error,
+                                            btnOkOnPress: () {
+                                              Navigator.pop(bottomSheetContext);
+                                              ratingController.clear();
+                                            },
+                                          ).show();
+                                        } else if (state.uiState ==
+                                            UiState.error) {
+                                          AwesomeDialog(
+                                            context: context,
+                                            btnOkText: 'حسناً',
+                                            body: Text(
+                                              state.erroemessage ?? '',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            dialogType: DialogType.error,
+                                            btnOkOnPress: () {},
+                                          ).show();
+                                        }
+                                      },
+                                      builder: (context, state) {
+                                        return (token == '' || token == null)
+                                            ? SingleChildScrollView(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/userBlock.png',
+                                                      height: 100.h,
+                                                      width: 150.w,
+                                                    ),
+                                                    SizedBox(height: 10.h),
+                                                    RegisterButton(),
+                                                  ],
+                                                ),
+                                              )
+                                            : Form(
+                                                key: _formKey,
+                                                child: SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        'ما رأيك ب ${widget.workshop.title}',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      RatingBar.builder(
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                Icon(
+                                                                  Icons.star,
+                                                                  color: Colors
+                                                                      .amber,
+                                                                ),
+                                                        onRatingUpdate:
+                                                            (value) {
+                                                              rating = value
+                                                                  .toInt();
+                                                            },
+                                                      ),
+                                                      SizedBox(height: 10.h),
+                                                      Directionality(
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                        child: TextField(
+                                                          cursorColor:
+                                                              kMainColor,
+                                                          controller:
+                                                              ratingController,
+                                                          maxLength: 50,
 
-                                        CustomButton(
-                                          btnText: 'إرسال ',
+                                                          decoration: InputDecoration(
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    width: 1.5,
+                                                                  ),
+                                                            ),
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                    color: Colors
+                                                                        .green,
+                                                                    width: 2,
+                                                                  ),
+                                                            ),
+                                                            hintText:
+                                                                'اكتب تقيمك(اختياري)',
+                                                          ),
+                                                        ),
+                                                      ),
 
-                                          color: kMainColor,
-                                          onTap: () async {
-                                            await detailsViewmodel.sendRating(
-                                              rating,
-                                              widget.workshop.id,
-                                              comment: ratingController.text,
-                                            );
-                                          },
-                                        ),
-                                        // SizedBox(height: 150),
-                                      ],
+                                                      CustomButton(
+                                                        btnText: 'إرسال ',
+
+                                                        color: kMainColor,
+                                                        onTap: () async {
+                                                          await detailsViewmodel
+                                                              .sendRating(
+                                                                rating,
+                                                                widget
+                                                                    .workshop
+                                                                    .id,
+                                                                comment:
+                                                                    ratingController
+                                                                        .text,
+                                                              );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: SvgPicture.asset(
+                            'assets/icons/Star.svg',
+                            height: 20.h,
+                            colorFilter: ColorFilter.mode(
+                              Colors.amber,
+                              BlendMode.srcIn,
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: SvgPicture.asset(
-                      'assets/icons/Star.svg',
-                      height: 20,
-                      color: Colors.amber,
-                    ),
-                  ),
                 ),
               ],
               backgroundColor: kMainDarkColor,
-              iconTheme: IconThemeData(color: Colors.white),
+              iconTheme: IconThemeData(color: Colors.white, size: 25.h),
             ),
             body: DetailsScreenBody(workshop: widget.workshop),
           );

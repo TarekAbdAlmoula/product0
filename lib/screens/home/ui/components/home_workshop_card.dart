@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/models/workshop.dart';
@@ -18,16 +19,12 @@ class HomeWorkshopCard extends StatelessWidget {
       onTap: press,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            // padding: const EdgeInsets.all(3),
-            // height: MediaQuery.of(context).size.height * 0.,
-            width: MediaQuery.of(context).size.width * 0.4,
-            // height: 170,
-            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+            width: 140.w,
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
 
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.w),
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(color: Colors.black.withOpacity(0.15)),
@@ -39,7 +36,7 @@ class HomeWorkshopCard extends StatelessWidget {
                   color: Colors.black.withOpacity(0.15),
                   blurRadius: 1,
                   spreadRadius: 1,
-                  offset: Offset(0, 2), // ظل علوي
+                  offset: Offset(0, 2),
                 ),
               ],
             ),
@@ -49,10 +46,10 @@ class HomeWorkshopCard extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.125,
-                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: 80.h,
+                      width: 150.w,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16.r),
                         image: DecorationImage(
                           fit: BoxFit.fill,
                           image: NetworkImage(workshop.featuredImageUrl),
@@ -62,7 +59,7 @@ class HomeWorkshopCard extends StatelessWidget {
                     Positioned(
                       child: Container(
                         padding: EdgeInsets.all(5),
-                        height: MediaQuery.of(context).size.height * 0.03,
+                        height: 22.h,
                         decoration: BoxDecoration(
                           color: Color(0xffF75859),
                           borderRadius: BorderRadius.only(
@@ -73,23 +70,23 @@ class HomeWorkshopCard extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          workshop.servicesCategory![0],
+                          workshop.servicesCategory[1],
                           textAlign: TextAlign.end,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 4,
-                  ),
+                  padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 4.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 5),
+                      SizedBox(height: 5.h),
                       Text(
                         textAlign: TextAlign.center,
                         workshop.title,
@@ -99,7 +96,7 @@ class HomeWorkshopCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 5.h),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,11 +104,7 @@ class HomeWorkshopCard extends StatelessWidget {
                           Row(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).size.height *
-                                      0.009,
-                                ),
+                                padding: EdgeInsets.only(bottom: 5.h),
                                 child: SvgPicture.asset(
                                   "assets/icons/Star.svg",
                                   color: Color(0xFFEEA939),
@@ -119,12 +112,8 @@ class HomeWorkshopCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                ((workshop.rating / 5) * 100)
-                                            .toString()
-                                            .length >
-                                        4
-                                    ? '${((workshop.rating / 5) * 100).toString().substring(0, 4)}%'
-                                    : '${((workshop.rating / 5) * 100).toString()}%',
+                                '${(workshop.rating).toString()}%',
+
                                 style: const TextStyle(
                                   color: kMainDarkColor,
 

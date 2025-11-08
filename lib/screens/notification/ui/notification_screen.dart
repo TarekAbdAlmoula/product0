@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
@@ -86,7 +87,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
       padding: EdgeInsets.all(10),
       width: double.infinity,
 
@@ -103,7 +104,7 @@ class NotificationCard extends StatelessWidget {
             textAlign: TextAlign.end,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 17,
+              fontSize: 17.sp,
               color: kMainColor,
             ),
           ),
@@ -113,7 +114,7 @@ class NotificationCard extends StatelessWidget {
             child: Text(
               notification.content,
               textAlign: TextAlign.end,
-              style: TextStyle(color: Color(0xff5C5C5C), fontSize: 16),
+              style: TextStyle(color: Color(0xff5C5C5C), fontSize: 15.sp),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),

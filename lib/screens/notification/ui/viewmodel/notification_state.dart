@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:product0/core/utils/ui_state.dart';
 import 'package:product0/screens/notification/data/model/notification.dart';
 

@@ -37,7 +37,7 @@ class DioConsumer implements ApiConsumer {
     var res = await dio.post(
       path,
       data: data,
-      options: token == null ? optionWithoutToken : option,
+      options: (token == null || token.isEmpty) ? optionWithoutToken : option,
     );
     return res.data;
   }

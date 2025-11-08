@@ -5,7 +5,7 @@ class ErrorHandler {
   static ServerException handleDioError(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
-        return ServerException("انتهت مهلة الاتصال، تحقق من الإنترنت");
+        return ServerException("الانترنت بطيء،تحقق من اتصالك");
       case DioExceptionType.sendTimeout:
         return ServerException("انتهت مهلة الإرسال إلى الخادم");
       case DioExceptionType.receiveTimeout:

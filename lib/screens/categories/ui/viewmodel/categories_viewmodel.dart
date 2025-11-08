@@ -9,16 +9,24 @@ class CategoriesViewmodel extends Cubit<CategoriesState> {
   CategoriesViewmodel({required this.categoriesRepository})
     : super(CategoriesState(uiState: UiState.data));
   Future getCategoriesById(int id) async {
+    if (isClosed) return;
+
     emit(state.copyWith(uiState: UiState.loading));
     try {
       List<Categories> categories = [];
       categories = await categoriesRepository.getCategoriesById(id);
-      emit(state.copyWith(uiState: UiState.data, categories: categories));
+      if (!isClosed) {
+        emit(state.copyWith(uiState: UiState.data, categories: categories));
+      }
     } catch (e) {
       final errorMessage = e is String
           ? e
           : "فشل الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.";
-      emit(state.copyWith(uiState: UiState.error, erroemessage: errorMessage));
+      if (!isClosed) {
+        emit(
+          state.copyWith(uiState: UiState.error, erroemessage: errorMessage),
+        );
+      }
     }
   }
 }

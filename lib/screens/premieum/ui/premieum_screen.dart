@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart' show BaseOptions, Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/custom_button.dart';
@@ -118,20 +117,42 @@ class PremieumCard extends StatelessWidget {
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    padding: EdgeInsets.only(right: 15.w),
                     child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: premieum.content.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.h),
-                          child: Text(
-                            premieum.content[index],
-                            style: TextStyle(
-                              color: Colors.grey.shade100,
-                              fontSize: 16.sp,
-                            ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5.h,
+                            horizontal: 10.w,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 10.w,
+                                child: Text(
+                                  premieum.content[index].substring(0, 2),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade100,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              SizedBox(
+                                width: 260.w,
+                                child: Text(
+                                  premieum.content[index].substring(3),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade100,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
 import 'package:product0/core/utils/constants.dart';
@@ -72,11 +73,11 @@ class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
           return Center(child: CircularProgressIndicator(color: kMainColor));
         } else if (state.uiState == UiState.data) {
           return GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10.h),
             itemCount: state.categories.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisSpacing: 30,
+              mainAxisSpacing: 30.w,
               crossAxisSpacing: 0,
             ),
             itemBuilder: (context, index) {
@@ -122,15 +123,15 @@ class CategoriesCardV2 extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: NetworkImage(categories.image!.ulr),
-          radius: 43,
+          radius: 43.r,
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 10.h),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.025,
-          width: MediaQuery.of(context).size.width * 0.35,
+          height: 20.h,
+          width: 80.w,
           child: Text(
             categories.name,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 15.sp),
             textAlign: TextAlign.center,
           ),
         ),
