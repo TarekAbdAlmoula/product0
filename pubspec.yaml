@@ -33,10 +33,11 @@ dependencies:
   photo_view: ^0.15.0
   carousel_slider: ^5.1.1
   lottie: ^3.3.1
-  flutter_native_splash: ^2.4.7
   flutter_html: ^3.0.0
   flutter_typeahead: ^5.2.0
   flutter_screenutil: ^5.9.3
+  in_app_update: ^4.2.5
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -62,3 +63,8 @@ flutter:
           weight: 400
         - asset: assets/fonts/Tajawal-Bold.ttf
           weight: 700
+flutter_native_splash:
+  image: assets/images/app_icon.png  
+  color: "#ffffff"                
+  android: true
+  ios: true

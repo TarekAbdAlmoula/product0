@@ -29,7 +29,7 @@ class DetailsScreenBody extends StatelessWidget {
                       : Hero(
                           tag: "hero_${workshop.code}",
                           child: AspectRatio(
-                            aspectRatio: 2.5 / 2,
+                            aspectRatio: 3 / 2,
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(

@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC6eADjN4kHUoKHvPSJBkK6wj7B9vVhGbE',
-    appId: '1:581042203049:android:b5138af74863c2a7c7bcb8',
+    appId: '1:581042203049:android:19340b413b054761c7bcb8',
     messagingSenderId: '581042203049',
     projectId: 'wasla-app-10a46',
     storageBucket: 'wasla-app-10a46.firebasestorage.app',

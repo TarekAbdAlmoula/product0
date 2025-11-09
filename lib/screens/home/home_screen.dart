@@ -117,26 +117,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         CarouselSlider.builder(
                           itemCount: state.ads!.dataAds.length,
                           itemBuilder: (context, index, realIndex) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: CachedNetworkImage(
-                                imageUrl: state.ads!.dataAds[index].image,
-                                fit: BoxFit.fill,
-                                placeholder: (context, url) => const Center(
-                                  child: LoadingIndicator(
-                                    indicatorType: Indicator.lineSpinFadeLoader,
-                                    colors: [kMainColor, kMainDarkColor],
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) => Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'خطأ في تحميل الصورة',
-                                      style: TextStyle(fontSize: 16),
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(17),
+                                border: Border.all(color: Color(0xffA3A3A3)),
+                                // borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadiusGeometry.circular(16),
+                                child: CachedNetworkImage(
+                                  imageUrl: state.ads!.dataAds[index].image,
+                                  fit: BoxFit.fill,
+                                  placeholder: (context, url) => const Center(
+                                    child: LoadingIndicator(
+                                      indicatorType:
+                                          Indicator.lineSpinFadeLoader,
+                                      colors: [kMainColor, kMainDarkColor],
                                     ),
-                                    const Icon(Icons.error),
-                                  ],
+                                  ),
+                                  errorWidget: (context, url, error) => Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.error),
+                                      Text(
+                                        'خطأ في تحميل الصورة',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -194,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
                             reverse: true,
-                            // shrinkWrap: true,
                             itemCount: state.featuredWorkshop.length > 5
                                 ? 5
                                 : state.featuredWorkshop.length,
@@ -293,20 +301,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // PageController changeImage(HomeState state) {
-  //   PageController _pageController = PageController(
-  //     initialPage: state.currentBannerIndex,
-  //   );
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (_pageController.hasClients) {
-  //       _pageController.animateToPage(
-  //         state.currentBannerIndex,
-  //         duration: Duration(milliseconds: 500),
-  //         curve: Curves.easeInOut,
-  //       );
-  //     }
-  //   });
-  //   return _pageController;
-  // }
 }

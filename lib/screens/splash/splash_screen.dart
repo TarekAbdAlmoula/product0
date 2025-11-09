@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:product0/app_route_constants.dart';
-
 import 'package:product0/core/utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,22 +17,41 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    delayBeforeHome();
     super.initState();
+    _goToHome();
+    _checkForUpdate();
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final info = await InAppUpdate.checkForUpdate();
+
+      if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.completeFlexibleUpdate();
+      }
+    } catch (e) {
+      debugPrint("فشل التحقق من التحديث: $e");
+    }
+  }
+
+  void _goToHome() {
+    Future.delayed(const Duration(seconds: 3), () {
+      context.goNamed(AppRouteConstants.home);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFFFFFF),
+      backgroundColor: const Color(0xffFFFFFF),
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 90.h, horizontal: 40.w),
           child: Column(
             children: [
-              Spacer(flex: 1),
+              const Spacer(),
               Image.asset('assets/images/splash_gif.gif', width: 220.h),
-              Spacer(),
+              const Spacer(),
               Text(
                 'أسرع وصول للخدمة',
                 style: TextStyle(
@@ -46,11 +65,5 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
-  }
-
-  Future delayBeforeHome() async {
-    Future.delayed(const Duration(seconds: 3), () {
-      context.goNamed(AppRouteConstants.home);
-    });
   }
 }

@@ -12,17 +12,27 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  await FirebaseMessaging.instance.subscribeToTopic('all_users');
 
   runApp(MyApp());
+  initializeFirebase();
+}
+
+Future<void> initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    await FirebaseMessaging.instance.subscribeToTopic('all_users');
+  } catch (e) {
+    debugPrint('⚠️ Firebase init error: $e');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -34,14 +44,16 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => MaterialApp.router(
-        // ignore: deprecated_member_use
-        useInheritedMediaQuery: true,
+      builder: (_, child) => MediaQuery.withNoTextScaling(
+        child: MaterialApp.router(
+          // ignore: deprecated_member_use
+          useInheritedMediaQuery: true,
 
-        routerConfig: AppRouter.router,
+          routerConfig: AppRouter.router,
 
-        theme: ThemeData(fontFamily: 'Tajawal'),
-        debugShowCheckedModeBanner: false,
+          theme: ThemeData(fontFamily: 'Tajawal'),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
