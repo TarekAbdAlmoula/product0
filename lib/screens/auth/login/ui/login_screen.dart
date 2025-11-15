@@ -76,6 +76,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
             dialogBackgroundColor: Colors.white,
             titleTextStyle: TextStyle(color: Colors.black),
             context: context,
+            dismissOnTouchOutside: false,
+
             dialogType: DialogType.error,
             animType: AnimType.bottomSlide,
             body: Html(data: state.authResponse!.message),
@@ -85,6 +87,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
         } else if (state.uiState == UiState.error) {
           context.pop();
           AwesomeDialog(
+            dismissOnTouchOutside: false,
+
             dialogBackgroundColor: Colors.white,
             titleTextStyle: TextStyle(color: Colors.black),
             context: context,

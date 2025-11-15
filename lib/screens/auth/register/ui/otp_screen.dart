@@ -30,7 +30,14 @@ class OtpScreen extends StatelessWidget {
         authRepositoryImp: AuthRepositoryImpl(
           authLocalSourceImpl: AuthLocalSourceImpl(),
           authRemoteSourceImpl: AuthRemoteSourceImpl(
-            api: DioConsumer(dio: Dio()),
+            api: DioConsumer(
+              dio: Dio(
+                BaseOptions(
+                  receiveTimeout: const Duration(seconds: 5),
+                  connectTimeout: const Duration(seconds: 5),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -63,6 +70,8 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
             state.authResponse!.isSuccess == true) {
           if (state.isServiceProvider == false) {
             AwesomeDialog(
+              dismissOnTouchOutside: false,
+
               context: context,
               dialogType: DialogType.success,
               body: Html(data: state.pointsMessage),
@@ -78,12 +87,14 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
             state.authResponse!.isSuccess == false) {
           AwesomeDialog(
             context: context,
+            dismissOnTouchOutside: false,
+
             dialogType: DialogType.error,
             title: 'خطأ',
             body: Html(data: state.authResponse!.message),
             btnOkText: 'حسناً',
             btnOkOnPress: () {
-              context.goNamed(AppRouteConstants.register);
+              // context.goNamed(AppRouteConstants.register);
             },
           ).show();
         } else if (state.uiState == UiState.error) {
@@ -92,6 +103,8 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
             dialogBackgroundColor: Colors.white,
             titleTextStyle: TextStyle(color: Colors.black),
             context: context,
+            dismissOnTouchOutside: false,
+
             dialogType: DialogType.error,
             animType: AnimType.bottomSlide,
             body: Text(
@@ -100,7 +113,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
               style: TextStyle(fontSize: 16),
             ),
             btnOkOnPress: () {
-              // context.goNamed(AppRouteConstants.login);
+              context.goNamed(AppRouteConstants.login);
             },
             btnOkText: 'حسناً',
           ).show();
@@ -192,7 +205,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
                       AwesomeDialog(
-                        // dismissOnTouchOutside: false,
+                        dismissOnTouchOutside: false,
                         dialogBackgroundColor: Colors.white,
                         titleTextStyle: TextStyle(color: Colors.black),
                         context: context,

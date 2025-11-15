@@ -16,7 +16,7 @@ class ProductsState {
     return ProductsState(
       uiState: uiState ?? this.uiState,
       workshop: workshop ?? this.workshop,
-      erroemessage: erroemessage,
+      erroemessage: erroemessage ?? this.erroemessage,
     );
   }
 }

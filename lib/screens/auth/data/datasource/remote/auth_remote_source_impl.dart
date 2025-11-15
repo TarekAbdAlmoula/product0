@@ -33,11 +33,17 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
 
   @override
   Future verifyOtp({required String otp, required String userId}) async {
-    var response = await api.post(
-      'https://wasla.barmijha.net/wp-json/custom-api/v1/verify-otp',
-      data: {"user_id": int.parse(userId), "otp": otp},
-    );
-    return response;
+    try {
+      var response = await api.post(
+        'https://wasla.barmijha.net/wp-json/custom-api/v1/verify-otp',
+        data: {"user_id": int.parse(userId), "otp": otp},
+      );
+      return response;
+    } on DioException catch (e) {
+      throw ErrorHandler.handleDioError(e);
+    } catch (e) {
+      throw ServerException("حدث خطأ غير متوقع أثناء التسجيل");
+    }
   }
 
   @override

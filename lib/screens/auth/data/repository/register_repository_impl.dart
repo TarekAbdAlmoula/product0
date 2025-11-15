@@ -67,18 +67,22 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future verifyOtp({required String otp}) async {
-    String userId = await authLocalSourceImpl.getData('userId');
-    var response = await authRemoteSourceImpl.verifyOtp(
-      otp: otp,
-      userId: userId,
-    );
-    final AuthResponse authResponse = AuthResponse.fromJson(response);
-    if (authResponse.isSuccess == true) {
-      await authLocalSourceImpl.saveSpecificData(
-        value: authResponse.token ?? '',
+    try {
+      String userId = await authLocalSourceImpl.getData('userId');
+      var response = await authRemoteSourceImpl.verifyOtp(
+        otp: otp,
+        userId: userId,
       );
+      final AuthResponse authResponse = AuthResponse.fromJson(response);
+      if (authResponse.isSuccess == true) {
+        await authLocalSourceImpl.saveSpecificData(
+          value: authResponse.token ?? '',
+        );
+      }
+      return authResponse;
+    } on ServerException catch (e) {
+      throw e.message;
     }
-    return authResponse;
   }
 
   @override

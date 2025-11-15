@@ -64,6 +64,8 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
   final TextEditingController accountType = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
   List<String> userType = ['مستخدم', 'مقدم خدمة'];
   List<String> userLocation = [
     'حمص المدينة',
@@ -74,8 +76,6 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
   ];
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-
     return BlocListener<AuthViewmodel, AuthState>(
       listener: (context, state) {
         if (state.authResponse != null &&
@@ -91,6 +91,8 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
             dialogBackgroundColor: Colors.white,
             titleTextStyle: TextStyle(color: Colors.black),
             context: context,
+            dismissOnTouchOutside: false,
+
             dialogType: DialogType.error,
             animType: AnimType.bottomSlide,
             body: Html(data: state.authResponse!.message),
@@ -105,6 +107,8 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
             dialogBackgroundColor: Colors.white,
             titleTextStyle: TextStyle(color: Colors.black),
             context: context,
+            dismissOnTouchOutside: false,
+
             dialogType: DialogType.error,
             animType: AnimType.bottomSlide,
             body: Text(

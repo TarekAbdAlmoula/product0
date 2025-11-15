@@ -77,8 +77,8 @@ class _CategoriesScreenBodyState extends State<CategoriesScreenBody> {
             itemCount: state.categories.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisSpacing: 30.w,
-              crossAxisSpacing: 0,
+              mainAxisSpacing: 10.h,
+              childAspectRatio: 0.8,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -123,12 +123,12 @@ class CategoriesCardV2 extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: NetworkImage(categories.image!.ulr),
-          radius: 43.r,
+          radius: 45.r,
         ),
         SizedBox(height: 10.h),
         SizedBox(
-          height: 20.h,
-          width: 80.w,
+          height: 35.h,
+          width: 90.w,
           child: Text(
             categories.name,
             style: TextStyle(fontSize: 15.sp),
