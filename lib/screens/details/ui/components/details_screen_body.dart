@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:photo_view/photo_view.dart';
@@ -9,12 +11,34 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:product0/core/utils/constants.dart';
 import 'package:product0/screens/details/ui/components/details_card.dart';
 import 'package:product0/models/workshop.dart';
+import 'package:product0/screens/details/ui/viewmodel/details_viewmodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DetailsScreenBody extends StatelessWidget {
+class DetailsScreenBody extends StatefulWidget {
   final Workshop workshop;
+
   const DetailsScreenBody({super.key, required this.workshop});
 
+  @override
+  State<DetailsScreenBody> createState() => _DetailsScreenBodyState();
+}
+
+class _DetailsScreenBodyState extends State<DetailsScreenBody> {
+  @override
+  initState() {
+    super.initState();
+    getToken();
+  }
+
+  Future<String?> getToken() async {
+    final FlutterSecureStorage storage = const FlutterSecureStorage();
+    token = await storage.read(key: 'token') ?? '';
+    setState(() {});
+    return token;
+  }
+
+  String token = '';
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,11 +47,11 @@ class DetailsScreenBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            workshop.isFeatured
-                ? workshop.gallery.isNotEmpty
-                      ? ProductImagesViewer(imageUrls: workshop.gallery)
+            widget.workshop.isFeatured || widget.workshop.isAccredited
+                ? widget.workshop.gallery.isNotEmpty
+                      ? ProductImagesViewer(imageUrls: widget.workshop.gallery)
                       : Hero(
-                          tag: "hero_${workshop.code}",
+                          tag: "hero_${widget.workshop.code}",
                           child: AspectRatio(
                             aspectRatio: 3 / 2,
                             child: Container(
@@ -38,7 +62,7 @@ class DetailsScreenBody extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(16),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    workshop.featuredImageUrl,
+                                    widget.workshop.featuredImageUrl,
                                   ),
                                   fit: BoxFit.fill,
                                 ),
@@ -48,7 +72,7 @@ class DetailsScreenBody extends StatelessWidget {
                           ),
                         )
                 : Hero(
-                    tag: "hero_${workshop.code}",
+                    tag: "hero_${widget.workshop.code}",
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
@@ -56,7 +80,7 @@ class DetailsScreenBody extends StatelessWidget {
 
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
-                          image: NetworkImage(workshop.featuredImageUrl),
+                          image: NetworkImage(widget.workshop.featuredImageUrl),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -68,7 +92,7 @@ class DetailsScreenBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'ID:${workshop.code}',
+                  'ID:${widget.workshop.code}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,
@@ -77,7 +101,7 @@ class DetailsScreenBody extends StatelessWidget {
                 ),
                 Text(
                   textAlign: TextAlign.end,
-                  workshop.title,
+                  widget.workshop.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.sp,
@@ -87,121 +111,230 @@ class DetailsScreenBody extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.45,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 5.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xffA3A3A3)),
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xffF8F8F8),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).size.width * 0.015,
-                            ),
-                            child: SvgPicture.asset(
-                              height: 20.h,
-                              'assets/icons/Star.svg',
-                              color: Colors.amber,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-
-                          Text(
-                            (workshop.rating != 0
-                                ? '${workshop.rating.toString()}%'
-                                : 'لايوجد تقيمات'),
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              fontSize: workshop.rating == 0 ? 16.sp : 22.sp,
-                              color: Color(0xff5C5C5C),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      workshop.rating == 0
-                          ? Text('')
-                          : Text(
-                              'تقييم الخدمة',
-
-                              style: TextStyle(
-                                color: Color(0xff5C5C5C),
-                                fontSize: 15,
+            Visibility(
+              visible:
+                  widget.workshop.servicesCategory[0] == "بيع وإيجار" ||
+                      widget.workshop.servicesCategory[0] == "العقارات"
+                  ? false
+                  : true,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.symmetric(vertical: 5.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffA3A3A3)),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffF8F8F8),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.width * 0.015,
+                              ),
+                              child: SvgPicture.asset(
+                                height: 20.h,
+                                'assets/icons/Star.svg',
+                                color: Colors.amber,
                               ),
                             ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xffA3A3A3)),
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xffF8F8F8),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: SvgPicture.asset(
-                              'assets/images/multi_user.svg',
-                              color: kMainDarkColor,
-                              height: 25,
+                            SizedBox(width: 5),
+
+                            Text(
+                              (widget.workshop.rating != 0
+                                  ? '${widget.workshop.rating.toString()}%'
+                                  : 'لايوجد تقيمات'),
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontSize: widget.workshop.rating == 0
+                                    ? 16.sp
+                                    : 22.sp,
+                                color: Color(0xff5C5C5C),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            workshop.totalRateers.toString(),
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Color(0xff5C5C5C),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'مستخدم قيموا الخدمة',
-                        style: TextStyle(
-                          color: Color(0xff5C5C5C),
-                          fontSize: 15,
+                          ],
                         ),
-                      ),
-                    ],
+                        widget.workshop.rating == 0
+                            ? Text('')
+                            : Text(
+                                'تقييم الخدمة',
+
+                                style: TextStyle(
+                                  color: Color(0xff5C5C5C),
+                                  fontSize: 15,
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffA3A3A3)),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffF8F8F8),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: SvgPicture.asset(
+                                'assets/images/multi_user.svg',
+                                color: kMainDarkColor,
+                                height: 25,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              widget.workshop.totalRateers.toString(),
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Color(0xff5C5C5C),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'مستخدم قيموا الخدمة',
+                          style: TextStyle(
+                            color: Color(0xff5C5C5C),
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
 
-            DetailsCard(content: workshop.content, title: ': الوصف'),
+            DetailsCard(content: widget.workshop.content, title: ': الوصف'),
+            (widget.workshop.isAccredited && token == '')
+                ? SizedBox()
+                : DetailsCard(
+                    content: widget.workshop.phoneNumber,
+                    title: ': معلومات الاتصال',
+                  ),
             DetailsCard(
-              content: workshop.phoneNumber,
-              title: ': معلومات الاتصال',
-            ),
-            DetailsCard(
-              content: workshop.location.isNotEmpty
-                  ? workshop.location
+              content: widget.workshop.location.isNotEmpty
+                  ? widget.workshop.location
                   : 'لايوجد',
               title: ': المنطقة ',
             ),
+            widget.workshop.isAccredited && widget.workshop.comments.isNotEmpty
+                ? AnimatedContainer(
+                    height: isExpanded ? 400.h : 70.h,
+                    duration: Duration(milliseconds: 250),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.symmetric(vertical: 5.w),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xffA3A3A3)),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xffF8F8F8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isExpanded = !isExpanded;
+                                  });
+                                },
+                                child: isExpanded
+                                    ? Icon(
+                                        Icons.arrow_drop_down,
+                                        color: kMainColor,
+                                      )
+                                    : Icon(
+                                        Icons.arrow_drop_up,
+                                        color: kMainColor,
+                                      ),
+                              ),
+                              Text(
+                                'آراء المستخدمين',
+                                style: TextStyle(
+                                  color: kMainColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                          Divider(color: Colors.grey),
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.workshop.comments.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      widget.workshop.comments[index],
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        color: Color(0xff5C5C5C),
+                                      ),
+                                    ),
+                                    Divider(color: Colors.grey),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Visibility(
+                    visible: widget.workshop.isAccredited,
+                    child: DetailsCard(
+                      content: 'لايوجد تعليقات',
+                      title: 'آراء المستخدمين',
+                    ),
+                  ),
             GestureDetector(
               onTap: () async {
-                final String phoneNumber = workshop.phoneNumber;
+                if (widget.workshop.isAccredited) {
+                  if (token == '') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Text('يرجى تسجيل الدخول للاتصال'),
+                        ),
+                      ),
+                    );
+                    return;
+                  } else {
+                    BlocProvider.of<DetailsViewmodel>(
+                      context,
+                    ).callService(workshopId: widget.workshop.id.toString());
+                  }
+                }
+
+                final String phoneNumber = widget.workshop.phoneNumber;
                 final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
                 await launchUrl(launchUri);
               },
@@ -220,6 +353,7 @@ class DetailsScreenBody extends StatelessWidget {
                 ),
               ),
             ),
+
             SizedBox(height: MediaQuery.of(context).size.height * 0.03),
           ],
         ),
@@ -302,7 +436,6 @@ class _ProductImagesViewerState extends State<ProductImagesViewer> {
             options: CarouselOptions(
               viewportFraction: 1,
               enlargeCenterPage: false,
-              // pageSnapping: true,
               aspectRatio: 3 / 2,
               autoPlay: true,
               onPageChanged: (index, reason) {
@@ -382,8 +515,6 @@ class FullScreenGallery extends StatelessWidget {
           heroAttributes: PhotoViewHeroAttributes(tag: images[index]),
         );
       },
-      // scrollPhysics: const BouncingScrollPhysics(),
-      // backgroundDecoration: const BoxDecoration(color: Colors.black),
     );
   }
 }

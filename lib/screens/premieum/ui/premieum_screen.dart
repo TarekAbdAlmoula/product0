@@ -84,10 +84,23 @@ class PremieumScreenBody extends StatelessWidget {
   }
 }
 
-class PremieumCard extends StatelessWidget {
+class PremieumCard extends StatefulWidget {
   const PremieumCard({super.key, required this.premieum, required this.index});
   final Premieum premieum;
   final int index;
+
+  @override
+  State<PremieumCard> createState() => _PremieumCardState();
+}
+
+class _PremieumCardState extends State<PremieumCard> {
+  List<String> btnText = [
+    'إضافة منتج',
+    'أضف خدمتك الآن',
+    'كن ورشة معتمدة',
+    'انشر إعلانك الآن',
+    'اجعل خدمتك مميزة',
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -106,7 +119,7 @@ class PremieumCard extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  premieum.title,
+                  widget.premieum.title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22.sp,
@@ -120,7 +133,7 @@ class PremieumCard extends StatelessWidget {
                     padding: EdgeInsets.only(right: 15.w),
                     child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: premieum.content.length,
+                      itemCount: widget.premieum.content.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -134,7 +147,10 @@ class PremieumCard extends StatelessWidget {
                               SizedBox(
                                 width: 10.w,
                                 child: Text(
-                                  premieum.content[index].substring(0, 2),
+                                  widget.premieum.content[index].substring(
+                                    0,
+                                    2,
+                                  ),
                                   style: TextStyle(
                                     color: Colors.grey.shade100,
                                     fontSize: 16.sp,
@@ -145,7 +161,7 @@ class PremieumCard extends StatelessWidget {
                               SizedBox(
                                 width: 260.w,
                                 child: Text(
-                                  premieum.content[index].substring(3),
+                                  widget.premieum.content[index].substring(3),
                                   style: TextStyle(
                                     color: Colors.grey.shade100,
                                     fontSize: 16.sp,
@@ -164,7 +180,7 @@ class PremieumCard extends StatelessWidget {
                   color: Color(0xffef4565),
                   onTap: () async {
                     final String phoneNumber = "963965325745";
-                    if (index == 0) {
+                    if (widget.index == 0) {
                       final url = Uri.parse(
                         "https://wa.me/${phoneNumber.replaceAll('+', '')}?text=${Uri.encodeComponent("السلام عليكم أريد نشر إعلان لنشاطي التجاري ")}",
                       );
@@ -182,7 +198,7 @@ class PremieumCard extends StatelessWidget {
                       );
                     }
                   },
-                  btnText: index == 0 ? 'انشر إعلانك الآن' : 'اشترك الآن',
+                  btnText: btnText[widget.index],
                 ),
                 // SizedBox(height: 50),
               ],

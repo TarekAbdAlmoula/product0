@@ -10,4 +10,5 @@ abstract class HomeRepository {
   Future addPoints({required String action});
   Future searchWorkshops({required String query});
   Future getPointsExpl();
+  Future getAccreditedWorkshop();
 }

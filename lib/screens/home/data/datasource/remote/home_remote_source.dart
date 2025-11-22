@@ -9,4 +9,5 @@ abstract class HomeRemoteSource {
   Future addPoints({required String action, required String token});
   Future searchWorkshops({required String query});
   Future getPointsExpl();
+  Future getAccreditedWorkshop();
 }

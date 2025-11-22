@@ -62,7 +62,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     if (state.uiState == UiState.loading) {
                       AwesomeDialog(
                         dismissOnTouchOutside: false,
-
                         context: context,
                         title: '...جاري التقييم ',
                         dialogType: DialogType.noHeader,
@@ -263,12 +262,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: SvgPicture.asset(
-                          'assets/icons/Star.svg',
-                          height: 20.h,
-                          colorFilter: ColorFilter.mode(
-                            Colors.amber,
-                            BlendMode.srcIn,
+                        child: Visibility(
+                          visible:
+                              widget.workshop.servicesCategory[0] ==
+                                      "بيع وإيجار" ||
+                                  widget.workshop.servicesCategory[0] ==
+                                      "العقارات"
+                              ? false
+                              : true,
+                          child: SvgPicture.asset(
+                            'assets/icons/Star.svg',
+                            height: 20.h,
+                            colorFilter: ColorFilter.mode(
+                              Colors.amber,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ),

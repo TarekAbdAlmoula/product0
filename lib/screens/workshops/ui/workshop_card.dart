@@ -39,15 +39,24 @@ class WorkshopCard extends StatelessWidget {
                 Row(
                   children: [
                     Visibility(
-                      visible: workshop.isFeatured,
-                      child: SvgPicture.asset(
-                        'assets/images/crown.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                          Colors.amber,
-                          BlendMode.srcIn,
-                        ),
-                      ),
+                      visible:
+                          (workshop.servicesCategory[0] == "بيع وإيجار" ||
+                              workshop.servicesCategory[0] == "العقارات")
+                          ? false
+                          : workshop.isFeatured || workshop.isAccredited,
+                      child: workshop.isFeatured
+                          ? SvgPicture.asset(
+                              'assets/images/crown.svg',
+                              height: 20.h,
+                              colorFilter: ColorFilter.mode(
+                                Colors.amber,
+                                BlendMode.srcIn,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/images/accredited_workshop.png',
+                              height: 20.h,
+                            ),
                     ),
                     SizedBox(width: 30.w),
 
@@ -100,29 +109,36 @@ class WorkshopCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(bottom: 5.h, right: 2.w),
-                      child: SvgPicture.asset(
-                        'assets/icons/Star.svg',
-                        colorFilter: const ColorFilter.mode(
-                          Colors.amber,
-                          BlendMode.srcIn,
-                        ),
-                      ),
+                      child:
+                          (workshop.servicesCategory[0] == "بيع وإيجار" ||
+                              workshop.servicesCategory[0] == "العقارات")
+                          ? SizedBox(width: 25.h)
+                          : SvgPicture.asset(
+                              'assets/icons/Star.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Colors.amber,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                     ),
-                    SizedBox(
-                      width: 62.w,
-                      height: 18.h,
-                      child: Text(
-                        '${(workshop.rating).toString()}%',
+                    (workshop.servicesCategory[0] == "بيع وإيجار" ||
+                            workshop.servicesCategory[0] == "العقارات")
+                        ? SizedBox(width: 52.w)
+                        : SizedBox(
+                            width: 62.w,
+                            height: 18.h,
+                            child: Text(
+                              '${(workshop.rating).toString()}%',
 
-                        style: TextStyle(
-                          color: workshop.rating >= 2.5
-                              ? Colors.green
-                              : Colors.red,
+                              style: TextStyle(
+                                color: workshop.rating >= 2.5
+                                    ? Colors.green
+                                    : Colors.red,
 
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                     SizedBox(width: 65.w),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.156,

@@ -15,16 +15,33 @@ class WorkshopsRepositoryImpl extends WorkshopsRepository {
       for (var data in response) {
         workshop.add(Workshop.fromJson(data));
       }
-      workshop.sort((a, b) {
-        if (a.isFeatured == b.isFeatured) {
-          return 0;
-        } else if (a.isFeatured) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
       return workshop;
+    } on ServerException catch (e) {
+      throw e.message;
+    }
+  }
+
+  @override
+  Future searchedWorkshop({required String query, required int id}) async {
+    try {
+      var response = await productsRemoteSourceImpl.searchedWorkshop(
+        id: id,
+        query: query,
+      );
+      List<Workshop> searchedWorkshop = [];
+      for (var data in response) {
+        searchedWorkshop.add(Workshop.fromJson(data));
+      }
+      searchedWorkshop.sort((a, b) {
+        if (a.isAccredited && !b.isAccredited) return -1;
+        if (!a.isAccredited && b.isAccredited) return 1;
+
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
+
+        return 0;
+      });
+      return searchedWorkshop;
     } on ServerException catch (e) {
       throw e.message;
     }

@@ -12,6 +12,7 @@ class HomeState {
   final int currentBannerIndex;
   final List<Workshop> featuredWorkshop;
   final List<Workshop> topRatedWorkshop;
+  final List<Workshop> accreditedWorkshop;
   final bool hasSearched;
   final String? erroemessage;
   final List<Workshop> searchedWorkshops;
@@ -40,6 +41,7 @@ class HomeState {
     this.pointsExpl,
     this.isServiceProvider = true,
     this.token,
+    this.accreditedWorkshop = const [],
   });
 
   HomeState copyWith({
@@ -51,6 +53,7 @@ class HomeState {
     List<Workshop>? featuredWorkshop,
     List<Workshop>? topRatedWorkshop,
     List<Workshop>? searchedWorkshops,
+    List<Workshop>? accreditedWorkshop,
     bool? hasSearched,
     String? erroemessage,
     String? pointMessage,
@@ -59,7 +62,7 @@ class HomeState {
     int? userPoints,
     String? pointsExpl,
     bool? isServiceProvider,
-    final String? token,
+    String? token,
   }) {
     return HomeState(
       uiState: uiState ?? this.uiState,
@@ -69,6 +72,7 @@ class HomeState {
       currentBannerIndex: currentBannerIndex ?? this.currentBannerIndex,
       featuredWorkshop: featuredWorkshop ?? this.featuredWorkshop,
       topRatedWorkshop: topRatedWorkshop ?? this.topRatedWorkshop,
+      accreditedWorkshop: accreditedWorkshop ?? this.accreditedWorkshop,
       searchedWorkshops: searchedWorkshops ?? this.searchedWorkshops,
       userName: userName ?? this.userName,
       userPoints: userPoints ?? this.userPoints,

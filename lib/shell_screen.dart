@@ -44,8 +44,7 @@ class _ShellScreenState extends State<ShellScreen> {
         child: ConvexAppBar(
           backgroundColor: kMainDarkColor,
           height: 50.h,
-
-          // backgroundColor: Colors.white,
+          top: -17.h,
           items: [
             TabItem(icon: Icons.info, title: 'عن وصلة'),
 
@@ -53,22 +52,21 @@ class _ShellScreenState extends State<ShellScreen> {
             TabItem(
               icon: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  'assets/images/crown.svg',
-                  color: Colors.amber.shade300,
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/images/add.gif'),
+                  ),
                 ),
               ),
-              isIconBlend: false,
+              title: 'انشر الآن',
             ),
 
             TabItem(icon: Icons.notifications_active, title: 'الاشعارات'),
 
             TabItem(icon: Icons.home, title: 'الرئيسية'),
           ],
-          style: TabStyle.fixedCircle,
+          style: TabStyle.fixed,
           initialActiveIndex: selectedItem,
           onTap: onTap,
         ),

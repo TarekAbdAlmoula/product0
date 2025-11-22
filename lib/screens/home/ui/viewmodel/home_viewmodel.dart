@@ -29,6 +29,8 @@ class HomeViewModel extends Cubit<HomeState> {
       final ads = await homeRepositoryImpl.getAdds();
       final featuredWorkshop = await homeRepositoryImpl.getFeaturedWorkshops();
       final topRatedWorkshop = await homeRepositoryImpl.getTopRatedWorkshop();
+      final accreditedWorkshop = await homeRepositoryImpl
+          .getAccreditedWorkshop();
       final pointsExpl = await homeRepositoryImpl.getPointsExpl();
       String? pointMessage;
       int? userPoints;
@@ -53,6 +55,7 @@ class HomeViewModel extends Cubit<HomeState> {
             ads: ads,
             featuredWorkshop: featuredWorkshop,
             topRatedWorkshop: topRatedWorkshop,
+            accreditedWorkshop: accreditedWorkshop,
             userPoints: userPoints,
             userName: userName,
             pointMessage: pointMessage,
@@ -63,6 +66,7 @@ class HomeViewModel extends Cubit<HomeState> {
         );
       }
     } catch (e) {
+      print(e);
       final errorMessage = e is String ? e : "التطبيق في حالة الصيانة ";
 
       if (!isClosed) {

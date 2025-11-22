@@ -33,4 +33,16 @@ class DetailsRemoteSourceImpl implements DetailsRemoteSource {
       throw ServerException("حدث خطأ غير متوقع ");
     }
   }
+
+  @override
+  Future callService({
+    required String token,
+    required String workshopId,
+  }) async {
+    var response = await api.post(
+      'https://wasla.barmijha.net/wp-json/custom-api/v1/call_service',
+      data: {"workshop_id": workshopId},
+      token: token,
+    );
+  }
 }

@@ -5,4 +5,5 @@ abstract class DetailsRemoteSource {
     String token, {
     String? comment,
   });
+  Future callService({required String token, required String workshopId});
 }

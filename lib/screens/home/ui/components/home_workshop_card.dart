@@ -91,9 +91,10 @@ class HomeWorkshopCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         workshop.title,
                         maxLines: 1,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: kMainDarkColor,
                           fontWeight: FontWeight.bold,
+                          fontSize: 13.sp,
                         ),
                       ),
                       SizedBox(height: 5.h),

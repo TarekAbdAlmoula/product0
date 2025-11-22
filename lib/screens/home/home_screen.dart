@@ -168,6 +168,76 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
 
+                        /*تجربة المعتمدون */
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRouteConstants.showMore,
+                                  extra: state.accreditedWorkshop,
+                                );
+                              },
+                              child: Text(
+                                'عرض الكل',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kMainColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'الورشات المعتمدة',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: kMainDarkColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 160.h,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            reverse: true,
+                            itemCount: state.accreditedWorkshop.length > 5
+                                ? 5
+                                : state.accreditedWorkshop.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: Stack(
+                                  children: [
+                                    HomeWorkshopCard(
+                                      press: () {
+                                        context.pushNamed(
+                                          AppRouteConstants.details,
+                                          extra:
+                                              state.accreditedWorkshop[index],
+                                        );
+                                      },
+                                      workshop: state.accreditedWorkshop[index],
+                                    ),
+                                    Positioned(
+                                      top: 3.h,
+                                      left: 5.w,
+                                      child: Opacity(
+                                        opacity: 0.9,
+                                        child: Image.asset(
+                                          'assets/images/accredited_workshop.png',
+                                          height: 40.h,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -266,14 +336,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : state.topRatedWorkshop.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return HomeWorkshopCard(
-                                press: () {
-                                  context.pushNamed(
-                                    AppRouteConstants.details,
-                                    extra: state.topRatedWorkshop[index],
-                                  );
-                                },
-                                workshop: state.topRatedWorkshop[index],
+                              return Stack(
+                                children: [
+                                  HomeWorkshopCard(
+                                    press: () {
+                                      context.pushNamed(
+                                        AppRouteConstants.details,
+                                        extra: state.topRatedWorkshop[index],
+                                      );
+                                    },
+                                    workshop: state.topRatedWorkshop[index],
+                                  ),
+                                  state.topRatedWorkshop[index].isAccredited
+                                      ? Positioned(
+                                          top: 3.h,
+                                          left: 5.w,
+                                          child: Opacity(
+                                            opacity: 0.9,
+                                            child: Image.asset(
+                                              'assets/images/accredited_workshop.png',
+                                              height: 40.h,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
                               );
                             },
                           ),
@@ -294,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               );
             } else {
-              return Text('There is an error');
+              return Center(child: Text('There is an error'));
             }
           },
         ),

@@ -142,10 +142,7 @@ class HomeRepositoryImpl implements HomeRepository {
       for (var data in response) {
         searchedWorkshops.add(Workshop.fromJson(data));
       }
-      searchedWorkshops.sort((a, b) {
-        if (a.isFeatured == b.isFeatured) return 0;
-        return a.isFeatured ? -1 : 1;
-      });
+
       return searchedWorkshops;
     } on ServerException catch (e) {
       throw e.message;
@@ -157,6 +154,23 @@ class HomeRepositoryImpl implements HomeRepository {
     try {
       var response = await homeRemoteSourceImpl.getPointsExpl();
       return response;
+    } on ServerException catch (e) {
+      throw e.message;
+    }
+  }
+
+  @override
+  Future getAccreditedWorkshop() async {
+    try {
+      var response = await homeRemoteSourceImpl.getAccreditedWorkshop();
+      List<Workshop> accreditedWorkshop = [];
+      for (var data in response) {
+        accreditedWorkshop.add(Workshop.fromJson(data));
+      }
+      accreditedWorkshop.sort((a, b) {
+        return b.rating.compareTo(a.rating);
+      });
+      return accreditedWorkshop;
     } on ServerException catch (e) {
       throw e.message;
     }

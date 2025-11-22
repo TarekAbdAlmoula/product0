@@ -48,6 +48,10 @@ class DetailsViewmodel extends Cubit<DetailsState> {
     }
   }
 
+  Future callService({required String workshopId}) async {
+    await detailsRepositoryImpl.callService(workshopId: workshopId);
+  }
+
   // Future getAccountType() async {
   //   if (isClosed) return;
   //   emit(state.copyWith(uiState: UiState.loading));

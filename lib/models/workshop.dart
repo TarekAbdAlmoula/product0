@@ -12,6 +12,8 @@ class Workshop {
   final List<String> gallery;
   final List<String> servicesCategory;
   final num totalRateers;
+  final bool isAccredited;
+  final List<String> comments;
 
   Workshop({
     required this.id,
@@ -27,10 +29,17 @@ class Workshop {
     required this.gallery,
     required this.servicesCategory,
     required this.totalRateers,
+    required this.isAccredited,
+    required this.comments,
   });
 
   factory Workshop.fromJson(Map<String, dynamic> json) {
     return Workshop(
+      comments: (json['comments'] is List)
+          ? (json['comments'] as List<dynamic>)
+                .map((e) => e.toString())
+                .toList()
+          : [],
       id: json['id'] ?? 0,
       title: json['title'] ?? '',
       content: json['content'] ?? '',
@@ -42,6 +51,7 @@ class Workshop {
       rating: (json['average_rating'] ?? 0) as num,
       location: json['location'] ?? '',
       totalRateers: json['total_raters'] ?? 0,
+      isAccredited: json['is_accredited'] ?? false,
       gallery:
           (json['gallery'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -54,21 +64,4 @@ class Workshop {
           [],
     );
   }
-
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'id': id,
-  //     'title': title,
-  //     'content': content,
-  //     'excerpt': excerpt,
-  //     'workshop_code': code,
-  //     'is_featured': isFeatured,
-  //     'featured_image_url': featuredImageUrl,
-  //     'phone_number': phoneNumber,
-  //     'average_rating': rating,
-  //     'location': location,
-  //     'gallery': gallery,
-  //     'services_category': servicesCategory,
-  //   };
-  // }
 }
