@@ -28,11 +28,13 @@ class DetailsRepositoryImpl implements DetailsRepository {
 
   @override
   Future callService({required String workshopId}) async {
-    final FlutterSecureStorage storage = const FlutterSecureStorage();
-    final String? token = await storage.read(key: 'token');
-    await detailsRemoteSourceImpl.callService(
-      token: token ?? '',
-      workshopId: workshopId,
-    );
+    try {
+      final FlutterSecureStorage storage = const FlutterSecureStorage();
+      final String? token = await storage.read(key: 'token');
+      await detailsRemoteSourceImpl.callService(
+        token: token ?? '',
+        workshopId: workshopId,
+      );
+    } catch (e) {}
   }
 }

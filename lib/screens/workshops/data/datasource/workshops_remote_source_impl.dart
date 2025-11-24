@@ -10,12 +10,9 @@ class WorkshopsRemoteSourceImpl extends WorkshopRemoteSource {
   @override
   Future getProductsByCategory(int id) async {
     try {
-      // print('-------------> from remote getProductsByCategory');
       var response = await api.get(
         'https://wasla.barmijha.net/wp-json/custom-api/v1/services_simple?category=$id',
       );
-      // print(response);
-      // print('------------->after from remote getProductsByCategory');
 
       return response;
     } on DioException catch (e) {

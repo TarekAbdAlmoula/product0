@@ -222,7 +222,7 @@ class _DetailsScreenBodyState extends State<DetailsScreenBody> {
             ),
 
             DetailsCard(content: widget.workshop.content, title: ': الوصف'),
-            (widget.workshop.isAccredited && token == '')
+            (widget.workshop.isAccredited)
                 ? SizedBox()
                 : DetailsCard(
                     content: widget.workshop.phoneNumber,

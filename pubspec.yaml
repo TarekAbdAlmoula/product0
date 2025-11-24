@@ -38,6 +38,9 @@ dependencies:
   flutter_screenutil: ^5.9.3
   in_app_update: ^4.2.5
   flutter_native_splash: ^2.4.7
+  permission_handler: ^12.0.1
+  multi_image_picker_view: ^3.0.0
+  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:

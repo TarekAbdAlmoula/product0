@@ -138,43 +138,58 @@ class _WorkshopsScreenBodyState extends State<WorkshopsScreenBody> {
                 state.uiState == UiState.loading
                     ? CircularProgressIndicator()
                     : Flexible(
-                        child: ListView.builder(
-                          itemCount: state.searchedWorkshop!.isEmpty
-                              ? state.workshop.length
-                              : state.searchedWorkshop!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailsScreen(
-                                      workshop: state.workshop[index],
-                                    ),
+                        child:
+                            (searchController.text.isNotEmpty &&
+                                (state.searchedWorkshop?.isEmpty ?? true))
+                            ? Center(
+                                child: Text(
+                                  'لا يوجد نتائج',
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: Colors.grey,
                                   ),
-                                );
-                              },
-                              child: WorkshopCard(
-                                press: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailsScreen(
-                                        workshop:
-                                            state.searchedWorkshop!.isEmpty
-                                            ? state.workshop[index]
-                                            : state.searchedWorkshop![index],
-                                      ),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: state.searchedWorkshop!.isEmpty
+                                    ? state.workshop.length
+                                    : state.searchedWorkshop!.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailsScreen(
+                                            workshop: state.workshop[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: WorkshopCard(
+                                      press: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DetailsScreen(
+                                              workshop:
+                                                  state
+                                                      .searchedWorkshop!
+                                                      .isEmpty
+                                                  ? state.workshop[index]
+                                                  : state
+                                                        .searchedWorkshop![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      workshop: state.searchedWorkshop!.isEmpty
+                                          ? state.workshop[index]
+                                          : state.searchedWorkshop![index],
                                     ),
                                   );
                                 },
-                                workshop: state.searchedWorkshop!.isEmpty
-                                    ? state.workshop[index]
-                                    : state.searchedWorkshop![index],
                               ),
-                            );
-                          },
-                        ),
                       ),
               ],
             ),

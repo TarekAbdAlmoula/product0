@@ -49,17 +49,10 @@ class DetailsViewmodel extends Cubit<DetailsState> {
   }
 
   Future callService({required String workshopId}) async {
-    await detailsRepositoryImpl.callService(workshopId: workshopId);
+    try {
+      await detailsRepositoryImpl.callService(workshopId: workshopId);
+    } on Exception catch (e) {
+      // TODO
+    }
   }
-
-  // Future getAccountType() async {
-  //   if (isClosed) return;
-  //   emit(state.copyWith(uiState: UiState.loading));
-
-  //   final FlutterSecureStorage storage = const FlutterSecureStorage();
-  //   String accountType = await storage.read(key: 'accountType') ?? '';
-  //   if (!isClosed) {
-  //     emit(state.copyWith(accountType: accountType, uiState: UiState.data));
-  //   }
-  // }
 }

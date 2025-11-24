@@ -2,6 +2,8 @@ import 'package:dio/dio.dart' show BaseOptions, Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/api/dio_consumer.dart';
 import 'package:product0/core/components/custom_button.dart';
 import 'package:product0/core/components/no_internet_widget.dart';
@@ -39,7 +41,7 @@ class PremieumScreen extends StatelessWidget {
         backgroundColor: backgroundColor,
         appBar: AppBar(
           backgroundColor: kMainDarkColor,
-          title: Text('اشترك معنا', style: TextStyle(color: Colors.white)),
+          title: Text('خدمات النشر', style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),
         body: const PremieumScreenBody(),
@@ -95,11 +97,11 @@ class PremieumCard extends StatefulWidget {
 
 class _PremieumCardState extends State<PremieumCard> {
   List<String> btnText = [
-    'إضافة منتج',
     'أضف خدمتك الآن',
+    'انشر الآن',
     'كن ورشة معتمدة',
-    'انشر إعلانك الآن',
     'اجعل خدمتك مميزة',
+    'انشر إعلانك الآن',
   ];
   @override
   Widget build(BuildContext context) {
@@ -180,17 +182,11 @@ class _PremieumCardState extends State<PremieumCard> {
                   color: Color(0xffef4565),
                   onTap: () async {
                     final String phoneNumber = "963965325745";
-                    if (widget.index == 0) {
-                      final url = Uri.parse(
-                        "https://wa.me/${phoneNumber.replaceAll('+', '')}?text=${Uri.encodeComponent("السلام عليكم أريد نشر إعلان لنشاطي التجاري ")}",
-                      );
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.externalApplication,
-                      );
+                    if (widget.index == 0 || widget.index == 1) {
+                      context.pushNamed(AppRouteConstants.form);
                     } else {
                       final url = Uri.parse(
-                        "https://wa.me/${phoneNumber.replaceAll('+', '')}?text=${Uri.encodeComponent("السلام عليكم أريد الاشتراك كعضو مميز ")}",
+                        "https://wa.me/${phoneNumber.replaceAll('+', '')}?text=${Uri.encodeComponent("السلام عليكم أريد التواصل معكم بخصوص ")}",
                       );
                       await launchUrl(
                         url,

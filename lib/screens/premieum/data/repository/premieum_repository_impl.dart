@@ -2,6 +2,7 @@ import 'package:product0/core/utils/exceptions.dart';
 import 'package:product0/screens/premieum/data/model/premieum.dart';
 import 'package:product0/screens/premieum/data/remote/premieum_remote_source.dart';
 import 'package:product0/screens/premieum/data/repository/premieum_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PremieumRepositoryImpl implements PremieumRepository {
   PremieumRemoteSource premieumRemoteSource;
@@ -15,6 +16,38 @@ class PremieumRepositoryImpl implements PremieumRepository {
         premieum.add(Premieum.fromJson(data));
       }
       return premieum;
+    } on ServerException catch (e) {
+      throw e.message;
+    }
+  }
+
+  @override
+  Future pickImages() async {
+    final ImagePicker picker = ImagePicker();
+    List<XFile>? picked = await picker.pickMultiImage(imageQuality: 60);
+    return picked;
+  }
+
+  @override
+  Future uploadImages({
+    required Object? images,
+    required String token,
+    required String productName,
+    required String productDescription,
+    required String location,
+    required String phoneNumber,
+    String price = '',
+  }) {
+    try {
+      return premieumRemoteSource.uploadImages(
+        images: images as List<XFile>?,
+        token: token,
+        productName: productName,
+        productDescription: productDescription,
+        location: location,
+        phoneNumber: phoneNumber,
+        price: price,
+      );
     } on ServerException catch (e) {
       throw e.message;
     }

@@ -32,15 +32,7 @@ class WorkshopsRepositoryImpl extends WorkshopsRepository {
       for (var data in response) {
         searchedWorkshop.add(Workshop.fromJson(data));
       }
-      searchedWorkshop.sort((a, b) {
-        if (a.isAccredited && !b.isAccredited) return -1;
-        if (!a.isAccredited && b.isAccredited) return 1;
 
-        if (a.isFeatured && !b.isFeatured) return -1;
-        if (!a.isFeatured && b.isFeatured) return 1;
-
-        return 0;
-      });
       return searchedWorkshop;
     } on ServerException catch (e) {
       throw e.message;

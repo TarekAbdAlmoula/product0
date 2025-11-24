@@ -12,4 +12,5 @@ abstract class AppRouteConstants {
   static String showMore = 'showMore';
   static String details = 'details';
   static String search = 'search';
+  static String form = 'form';
 }

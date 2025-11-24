@@ -1,7 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:product0/app_route_constants.dart';
 import 'package:product0/core/utils/constants.dart';
@@ -50,12 +49,16 @@ class _ShellScreenState extends State<ShellScreen> {
 
             TabItem(icon: Icons.people, title: 'حسابي'),
             TabItem(
-              icon: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('assets/images/add.gif'),
+              icon: Transform.translate(
+                offset: Offset(0, -5.h),
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage('assets/images/add.gif'),
+                    ),
                   ),
                 ),
               ),
