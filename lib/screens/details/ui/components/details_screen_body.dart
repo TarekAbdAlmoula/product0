@@ -235,75 +235,81 @@ class _DetailsScreenBodyState extends State<DetailsScreenBody> {
               title: ': المنطقة ',
             ),
             widget.workshop.isAccredited && widget.workshop.comments.isNotEmpty
-                ? AnimatedContainer(
-                    height: isExpanded ? 400.h : 70.h,
-                    duration: Duration(milliseconds: 250),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.symmetric(vertical: 5.w),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffA3A3A3)),
-                        borderRadius: BorderRadius.circular(16),
-                        color: Color(0xffF8F8F8),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isExpanded = !isExpanded;
-                                  });
-                                },
-                                child: isExpanded
-                                    ? Icon(
-                                        Icons.arrow_drop_down,
-                                        color: kMainColor,
-                                      )
-                                    : Icon(
-                                        Icons.arrow_drop_up,
-                                        color: kMainColor,
-                                      ),
-                              ),
-                              Text(
-                                'آراء المستخدمين',
-                                style: TextStyle(
-                                  color: kMainColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                ? ClipRect(
+                    child: AnimatedSize(
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.easeInOut,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xffA3A3A3)),
+                          borderRadius: BorderRadius.circular(16),
+                          color: Color(0xffF8F8F8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isExpanded = !isExpanded;
+                                    });
+                                  },
+                                  child: isExpanded
+                                      ? Icon(
+                                          Icons.arrow_drop_down,
+                                          color: kMainColor,
+                                        )
+                                      : Icon(
+                                          Icons.arrow_drop_up,
+                                          color: kMainColor,
+                                        ),
                                 ),
-                                textAlign: TextAlign.end,
-                              ),
-                            ],
-                          ),
-                          Divider(color: Colors.grey),
-                          Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: widget.workshop.comments.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      widget.workshop.comments[index],
-                                      textAlign: TextAlign.end,
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        color: Color(0xff5C5C5C),
-                                      ),
-                                    ),
-                                    Divider(color: Colors.grey),
-                                  ],
-                                );
-                              },
+                                Text(
+                                  'آراء المستخدمين',
+                                  style: TextStyle(
+                                    color: kMainColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            Divider(color: Colors.grey),
+                            // ارتفاع القائمة ديناميكي حسب isExpanded
+                            if (isExpanded)
+                              Column(
+                                children: widget.workshop.comments.map((
+                                  comment,
+                                ) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          comment,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            color: Color(0xff5C5C5C),
+                                          ),
+                                        ),
+                                        Divider(color: Colors.grey),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   )

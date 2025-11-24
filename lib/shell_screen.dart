@@ -50,7 +50,7 @@ class _ShellScreenState extends State<ShellScreen> {
             TabItem(icon: Icons.people, title: 'حسابي'),
             TabItem(
               icon: Transform.translate(
-                offset: Offset(0, -5.h),
+                offset: Offset(0, -5.w),
 
                 child: Container(
                   decoration: BoxDecoration(
