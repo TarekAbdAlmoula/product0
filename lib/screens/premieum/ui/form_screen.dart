@@ -59,8 +59,8 @@ class _FormScreenState extends State<FormScreen> {
             api: DioConsumer(
               dio: Dio(
                 BaseOptions(
-                  connectTimeout: const Duration(seconds: 10),
-                  sendTimeout: const Duration(seconds: 10),
+                  connectTimeout: const Duration(seconds: 15),
+                  sendTimeout: const Duration(seconds: 15),
                   receiveTimeout: const Duration(seconds: 10),
                 ),
               ),
@@ -86,7 +86,7 @@ class _FormScreenState extends State<FormScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "جاري تحميل الملفات ...",
+                        "... جاري إرسال الطلب",
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,

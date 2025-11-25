@@ -36,7 +36,7 @@ class PremieumScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      )..getPlans(),
       child: Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(

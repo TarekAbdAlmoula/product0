@@ -8,13 +8,7 @@ import 'package:product0/screens/premieum/ui/viewmodel/premieum_state.dart';
 class PremieumViewmodel extends Cubit<PremieumState> {
   final PremieumRepositoryImpl premieumRepositoryImpl;
   PremieumViewmodel({required this.premieumRepositoryImpl})
-    : super(PremieumState(uiState: UiState.data)) {
-    init();
-  }
-
-  Future init() async {
-    await Future.wait([getPlans()]);
-  }
+    : super(PremieumState(uiState: UiState.data));
 
   Future getPlans() async {
     if (isClosed) return;

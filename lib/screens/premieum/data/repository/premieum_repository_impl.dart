@@ -37,9 +37,9 @@ class PremieumRepositoryImpl implements PremieumRepository {
     required String location,
     required String phoneNumber,
     String price = '',
-  }) {
+  }) async {
     try {
-      return premieumRemoteSource.uploadImages(
+      bool isSuccess = await premieumRemoteSource.uploadImages(
         images: images as List<XFile>?,
         token: token,
         productName: productName,
@@ -48,6 +48,7 @@ class PremieumRepositoryImpl implements PremieumRepository {
         phoneNumber: phoneNumber,
         price: price,
       );
+      return isSuccess;
     } on ServerException catch (e) {
       throw e.message;
     }

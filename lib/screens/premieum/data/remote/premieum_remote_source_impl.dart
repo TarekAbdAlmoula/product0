@@ -52,18 +52,13 @@ class PremieumRemoteSourceImpl implements PremieumRemoteSource {
         "images[]": imageFiles,
       });
 
-      var response = await Dio().post(
+      var response = await api.post(
         "https://wasla.barmijha.net/wp-json/custom-api/v1/add_service",
         data: formData,
-        options: Options(
-          headers: {
-            "Authorization": "Bearer $token",
-            "Accept": "application/json",
-            "Content-Type": "multipart/form-data",
-          },
-        ),
+        token: token,
       );
-      return response.data['success'];
+      print(response);
+      return response['success'];
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
     } catch (e) {
