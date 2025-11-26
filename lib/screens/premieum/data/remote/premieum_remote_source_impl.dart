@@ -57,7 +57,6 @@ class PremieumRemoteSourceImpl implements PremieumRemoteSource {
         data: formData,
         token: token,
       );
-      print(response);
       return response['success'];
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

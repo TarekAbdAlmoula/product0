@@ -29,9 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (info.updateAvailability == UpdateAvailability.updateAvailable) {
         await InAppUpdate.completeFlexibleUpdate();
       }
-    } catch (e) {
-      debugPrint("فشل التحقق من التحديث: $e");
-    }
+    } catch (e) {}
   }
 
   void _goToHome() {

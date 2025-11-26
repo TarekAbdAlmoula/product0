@@ -66,7 +66,6 @@ class HomeViewModel extends Cubit<HomeState> {
         );
       }
     } catch (e) {
-      print(e);
       final errorMessage = e is String ? e : "التطبيق في حالة الصيانة ";
 
       if (!isClosed) {
