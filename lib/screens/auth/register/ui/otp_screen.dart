@@ -112,9 +112,7 @@ class _OtpScreenBodyState extends State<OtpScreenBody> {
               textAlign: TextAlign.end,
               style: TextStyle(fontSize: 16),
             ),
-            btnOkOnPress: () {
-              context.goNamed(AppRouteConstants.login);
-            },
+            btnOkOnPress: () {},
             btnOkText: 'حسناً',
           ).show();
         }

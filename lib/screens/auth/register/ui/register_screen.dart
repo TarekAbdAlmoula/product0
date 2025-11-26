@@ -73,6 +73,19 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
     'ريف حمص الجنوبي',
     'ريف حمص الشرقي',
     'ريف حمص الغربي',
+    'دمشق',
+    'ريف دمشق',
+    'حلب',
+    'حماة',
+    'اللاذقية',
+    'طرطوس',
+    'إدلب',
+    'درعا',
+    'دير الزور',
+    'الرقة',
+    'الحسكة',
+    'السويداء',
+    'القنيطرة',
   ];
   @override
   Widget build(BuildContext context) {
@@ -354,7 +367,6 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       userLocation[i],
